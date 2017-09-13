@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Infrastructure.Filters
+namespace Web.Filters
 {
     public class GlobalActionFilter : IAsyncActionFilter
     {

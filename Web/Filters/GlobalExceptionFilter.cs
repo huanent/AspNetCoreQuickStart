@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Threading.Tasks;
-using Web.Infrastructure.Results;
+using Web.Results;
 
-namespace Web.Infrastructure.Filters
+namespace Web.Filters
 {
     public class GlobalExceptionFilter : IAsyncExceptionFilter
     {

@@ -1,4 +1,4 @@
-﻿namespace Web.Infrastructure.Results
+﻿namespace Web.Results
 {
     public class ErrorResponse
     {

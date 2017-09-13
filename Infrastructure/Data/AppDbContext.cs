@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
 
-namespace Api.Data
+namespace Infrastructure.Data
 {
-    public class AppDbContext : DbContext
+    internal class AppDbContext : DbContext
     {
         public DbSet<Demo> Demo { get; set; }
 

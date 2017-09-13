@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Web.Infrastructure.Results
+namespace Web.Results
 {
     public class AppErrorResult : ObjectResult
     {
