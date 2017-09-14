@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Web.Filters;
 
@@ -47,7 +48,7 @@ namespace Web
             services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("api", new Info());
-                //o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Api.xml"));
+                o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "docs.xml"));
             });
         }
 
