@@ -8,5 +8,6 @@ namespace ApplicationCore.Repositories
     public interface IDemoRepository
     {
         Demo GetDemoByKey(Guid key);
+        bool SaveDemo(Demo entity);
     }
 }

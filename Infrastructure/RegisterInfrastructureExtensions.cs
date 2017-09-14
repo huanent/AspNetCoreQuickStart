@@ -1,12 +1,9 @@
-﻿using ApplicationCore.Repositories;
-using Infrastructure.Data;
-using Infrastructure.RepositoriesImplment;
-using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
+using ApplicationCore.Repositories;
+using Infrastructure.RepositoriesImplment;
 
 namespace Infrastructure
 {
@@ -14,9 +11,9 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContextPool<AppDbContext>(b => b.UseSqlServer(configuration.GetConnectionString("")));
-
             services.AddScoped<IDemoRepository, DemoRepository>();
+
+            services.AddDbContextPool<AppDbContext>(b => b.UseSqlServer(configuration.GetConnectionString("")));
 
             return services;
         }

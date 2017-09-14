@@ -31,7 +31,7 @@ namespace Web
             });
 
             services.AddInfrastructure(Configuration);
-            services.AddApplicationCore(Configuration);
+            services.AddApplicationCore();
 
             services.AddAuthentication(o => o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(o =>

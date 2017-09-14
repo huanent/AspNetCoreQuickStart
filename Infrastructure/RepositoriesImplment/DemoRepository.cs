@@ -22,5 +22,11 @@ namespace Infrastructure.RepositoriesImplment
             if (entity == null) throw new KeyNotFoundException();
             return entity;
         }
+
+        public bool SaveDemo(Demo entity)
+        {
+            _dbContext.Add(entity);
+            return _dbContext.SaveChanges() > 0;
+        }
     }
 }
