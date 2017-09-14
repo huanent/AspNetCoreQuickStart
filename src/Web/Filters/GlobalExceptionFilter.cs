@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Exceptions;
+﻿using ApplicationCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

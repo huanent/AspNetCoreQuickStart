@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ApplicationCore.Entities
+namespace ApplicationCore
 {
 
     /// <summary>
