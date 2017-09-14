@@ -8,7 +8,7 @@ using ApplicationCore.Exceptions;
 
 namespace Infrastructure.RepositoriesImplment
 {
-    internal class DemoRepository : IDemoRepository
+    public class DemoRepository : IDemoRepository
     {
         AppDbContext _dbContext;
         public DemoRepository(AppDbContext dbContext)

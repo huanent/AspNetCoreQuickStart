@@ -7,7 +7,7 @@ using ApplicationCore.Repositories;
 
 namespace ApplicationCore.Services
 {
-    internal class DemoService : IDemoService
+    public class DemoService : IDemoService
     {
         IDemoRepository _demoRepository;
         public DemoService(IDemoRepository demoRepository)
