@@ -2,6 +2,7 @@
 using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using Web.Dtos;
@@ -20,7 +21,11 @@ namespace Web.Controllers
         [HttpGet]
         public IEnumerable<Demo> Get()
         {
-            return _repository.Query();
+            return _repository.Query(Include: q =>
+            {
+                q = q.Include(i => i.DemoItems);
+                return q;
+            });
         }
 
         [HttpPut("{id}")]

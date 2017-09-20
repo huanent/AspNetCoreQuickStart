@@ -31,6 +31,30 @@ namespace Infrastructure.Migrations
 
                     b.ToTable("Demo");
                 });
+
+            modelBuilder.Entity("ApplicationCore.Entities.DemoItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("DemoId");
+
+                    b.Property<int>("Order");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DemoId");
+
+                    b.ToTable("DemoItem");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.DemoItem", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.Demo")
+                        .WithMany("DemoItems")
+                        .HasForeignKey("DemoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 #pragma warning restore 612, 618
         }
     }
