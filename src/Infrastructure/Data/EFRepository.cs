@@ -19,6 +19,8 @@ namespace Infrastructure.Data
 
         public TEntity Find(object key) => Repository.Find(key);
 
+        public IQueryable<TEntity> Query => Repository.AsQueryable();
+
         public void Add(TEntity entity) => Repository.Add(entity);
 
         public void Update(TEntity entity) => Repository.Update(entity);
@@ -31,17 +33,5 @@ namespace Infrastructure.Data
 
         public void DeleteRange(IEnumerable<TEntity> entitys) => Repository.RemoveRange(entitys);
 
-        public IQueryable<TEntity> Query(
-            Expression<Func<TEntity, bool>> where = null,
-            bool tracking = false,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> Include = null
-            )
-        {
-            var query = tracking ? Repository.AsTracking() : Repository.AsNoTracking();
-            if (Include != null) query = Include(query);
-            if (query == null) throw new EFQueryIncludeException();
-            if (where != null) query = query.Where(where);
-            return query;
-        }
     }
 }

@@ -8,6 +8,7 @@ using ApplicationCore.Entities;
 using ApplicationCore;
 using Web.Dtos;
 using ApplicationCore.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.Controllers
 {
@@ -24,7 +25,9 @@ namespace Web.Controllers
         [HttpGet]
         public IEnumerable<DemoItem> Get()
         {
-            return _repository.Query();
+            return _repository.Query
+                .AsNoTracking()
+                .ToArray();
         }
 
         // POST: api/DemoItem

@@ -11,11 +11,7 @@ namespace ApplicationCore
     {
         TEntity Find(object key);
 
-        IQueryable<TEntity> Query(
-            Expression<Func<TEntity, bool>> where = null,
-            bool tracking = false,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> Include = null
-            );
+        IQueryable<TEntity> Query { get; }
 
         void Add(TEntity entity);
 
@@ -28,5 +24,6 @@ namespace ApplicationCore
         void Delete(TEntity entity);
 
         void DeleteRange(IEnumerable<TEntity> entitys);
+
     }
 }

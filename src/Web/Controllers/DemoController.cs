@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Web.Dtos;
 
 namespace Web.Controllers
@@ -21,11 +22,10 @@ namespace Web.Controllers
         [HttpGet]
         public IEnumerable<Demo> Get()
         {
-            return _repository.Query(Include: q =>
-            {
-                q = q.Include(i => i.DemoItems);
-                return q;
-            });
+            return _repository.Query
+                .AsNoTracking()
+                .Include(i => i.DemoItems)
+                .ToArray();
         }
 
         [HttpPut("{id}")]
