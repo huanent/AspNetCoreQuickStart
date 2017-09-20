@@ -1,5 +1,6 @@
 ﻿using ApplicationCore;
 using Infrastructure;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,8 +32,10 @@ namespace Web
                 o.Filters.Add<GlobalExceptionFilter>();
             });
 
-            services.AddInfrastructure(Configuration);
-            services.AddApplicationCore();
+            services.AddDbContextPool<AppDbContext>(o =>
+            {
+                o.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
 
             services.AddAuthentication(o => o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(o =>
@@ -50,6 +53,9 @@ namespace Web
                 o.SwaggerDoc("api", new Info());
                 o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "docs.xml"));
             });
+
+            services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+            services.AddScoped(typeof(IUnitOfWork), s => s.GetService<AppDbContext>());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -60,12 +66,12 @@ namespace Web
             app.UseSwagger();
             app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", "api"));
 
-            //var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            //using (var scope = scopeFactory.CreateScope())
-            //{
-            //    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            //    db.Database.Migrate();
-            //}
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                db.Database.Migrate();
+            }
         }
     }
 }

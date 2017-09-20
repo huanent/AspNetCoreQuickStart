@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore
+namespace Infrastructure.Data
 {
-    public interface IService
+    class EFQueryIncludeException : Exception
     {
     }
 }

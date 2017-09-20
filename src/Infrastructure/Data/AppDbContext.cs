@@ -1,14 +1,13 @@
-﻿using ApplicationCore.Entities;
+﻿using ApplicationCore;
+using ApplicationCore.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
 
 namespace Infrastructure.Data
 {
-    internal class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IUnitOfWork
     {
-        public DbSet<Demo> Demo { get; set; }
-
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }

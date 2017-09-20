@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApplicationCore
+namespace ApplicationCore.Exceptions
 {
     /// <summary>
     /// 作为程序级别异常的基类，程序异常都应该派生自此类，以便程序返回400错误时携带错误信息

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore
+namespace ApplicationCore.Service
 {
-    public interface IRepository
+    public interface IService
     {
+
     }
 }
