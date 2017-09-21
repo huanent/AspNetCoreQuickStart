@@ -71,6 +71,21 @@ namespace Web
             app.UseSwagger();
             app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", "api"));
 
+            app.UseCors(o =>
+            {
+                o.AllowAnyHeader();
+                o.AllowAnyMethod();
+                if (env.IsProduction())
+                {
+                    o.WithOrigins("http://xxx.xxx.com/");
+                    throw new Exception("替换上方http://xxx.xxx.com/为你的前端项目部署地址,并删除此异常");
+                }
+                else
+                {
+                    o.AllowAnyOrigin();
+                }
+            });
+
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {

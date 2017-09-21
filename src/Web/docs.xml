@@ -4,5 +4,11 @@
         <name>Web</name>
     </assembly>
     <members>
+        <member name="M:Web.Controllers.DemoController.Get">
+            <summary>
+            获得Demo列表（包含DemoItem）
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>
