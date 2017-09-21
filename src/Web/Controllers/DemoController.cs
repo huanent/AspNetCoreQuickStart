@@ -20,6 +20,10 @@ namespace Web.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        /// 获得Demo列表（包含DemoItem）
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Demo> Get()
         {

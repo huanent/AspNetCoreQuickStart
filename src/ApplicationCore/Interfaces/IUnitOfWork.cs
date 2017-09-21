@@ -10,6 +10,6 @@ namespace ApplicationCore.Interfaces
     {
         int SaveChanges();
 
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
-}
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+    }
 }
