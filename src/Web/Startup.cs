@@ -1,6 +1,8 @@
-﻿using ApplicationCore;
-using Infrastructure;
+﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Interfaces.IServices;
+using ApplicationCore.Service;
 using Infrastructure.Data;
+using Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,6 +58,9 @@ namespace Web
 
             services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
             services.AddScoped(typeof(IUnitOfWork), s => s.GetService<AppDbContext>());
+            services.AddSingleton<IJsonConventer, JsonConventer>();
+            services.AddScoped(typeof(IAppLogger<>), typeof(AppLogger<>));
+            services.AddScoped<IDemoReportingService, DemoReportingService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -71,6 +76,9 @@ namespace Web
             {
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 db.Database.Migrate();
+
+                var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<Startup>>();
+                logger.Warn($"当前运行环境：{env.EnvironmentName}");
             }
         }
     }

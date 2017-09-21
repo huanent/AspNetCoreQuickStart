@@ -5,13 +5,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace ApplicationCore
+namespace ApplicationCore.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : Entity
     {
         TEntity Find(object key);
 
-        IQueryable<TEntity> Query { get; }
+        IQueryable<TEntity> Query(
+            List<Expression<Func<TEntity, object>>> includes = null,
+            bool tracking = false
+            );
 
         void Add(TEntity entity);
 

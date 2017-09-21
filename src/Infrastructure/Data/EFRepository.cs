@@ -1,12 +1,10 @@
-﻿using ApplicationCore;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Linq.Expressions;
-using ApplicationCore.Exceptions;
 
 namespace Infrastructure.Data
 {
@@ -19,7 +17,17 @@ namespace Infrastructure.Data
 
         public TEntity Find(object key) => Repository.Find(key);
 
-        public IQueryable<TEntity> Query => Repository.AsQueryable();
+        public IQueryable<TEntity> Query(List<Expression<Func<TEntity, object>>> includes = null, bool tracking = false)
+        {
+            var queryable = tracking ? Repository.AsTracking() : Repository.AsNoTracking();
+
+            if (includes != null) queryable = includes.Aggregate(
+                   Repository.AsQueryable(),
+                   (current, include) => current.Include(include)
+                   );
+
+            return queryable;
+        }
 
         public void Add(TEntity entity) => Repository.Add(entity);
 

@@ -1,14 +1,12 @@
-﻿using System;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
+using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ApplicationCore.Entities;
-using ApplicationCore;
 using Web.Dtos;
-using ApplicationCore.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Web.Controllers
 {
@@ -25,9 +23,7 @@ namespace Web.Controllers
         [HttpGet]
         public IEnumerable<DemoItem> Get()
         {
-            return _repository.Query
-                .AsNoTracking()
-                .ToArray();
+            return _repository.Query().ToArray();
         }
 
         // POST: api/DemoItem

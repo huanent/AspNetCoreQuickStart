@@ -1,11 +1,12 @@
-﻿using ApplicationCore;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Web.Dtos;
 
 namespace Web.Controllers
@@ -22,10 +23,10 @@ namespace Web.Controllers
         [HttpGet]
         public IEnumerable<Demo> Get()
         {
-            return _repository.Query
-                .AsNoTracking()
-                .Include(i => i.DemoItems)
-                .ToArray();
+            return _repository.Query(new List<Expression<Func<Demo, object>>> {
+                d=>d.DemoItems
+            })
+            .ToArray();
         }
 
         [HttpPut("{id}")]
@@ -51,6 +52,12 @@ namespace Web.Controllers
             if (entity == null) throw new AppException("未找到要删除的Demo");
             _repository.Delete(entity);
             return unitOfWork.SaveChanges() > 0;
+        }
+
+        [HttpGet(nameof(JsonReporting))]
+        public string JsonReporting([FromServices] IDemoReportingService demoReportingService)
+        {
+            return demoReportingService.ExportDemoToJson();
         }
     }
 }

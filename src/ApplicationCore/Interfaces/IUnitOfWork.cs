@@ -4,12 +4,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationCore
+namespace ApplicationCore.Interfaces
 {
     public interface IUnitOfWork
     {
         int SaveChanges();
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
-    }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+}
 }
