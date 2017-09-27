@@ -1,24 +1,29 @@
 ﻿using ApplicationCore.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xunit;
 
 namespace ApplicationCoreTest
 {
-    [TestClass]
     public class RepositoryBaseTest
     {
-        [TestMethod]
-        public void FindTest()
+        AppDbContext _dbContext;
+
+        public RepositoryBaseTest()
         {
             var optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseInMemoryDatabase("TestDb");
-            var context = new AppDbContext(optionsBuilder.Options);
-            var demoSet = context.Set<Demo>();
+            _dbContext = new AppDbContext(optionsBuilder.Options);
+        }
+
+        [Fact]
+        public void FindTest()
+        {
+            var demoSet = _dbContext.Set<Demo>();
             var id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd");
 
             demoSet.Add(new Demo
@@ -26,16 +31,18 @@ namespace ApplicationCoreTest
                 Id = id,
                 Name = "a"
             });
-            context.SaveChanges();
+            _dbContext.SaveChanges();
 
-            var context2 = new AppDbContext(optionsBuilder.Options);
-            var demoSet2 = context.Set<Demo>();
-            var entity = demoSet2.Find(id);
+            Assert.Equal(1, demoSet.Count());
 
-            Assert.IsNotNull(entity);
-            Assert.AreEqual(entity.Id, id);
-            Assert.AreEqual(entity.Name, "a");
+            var entity = demoSet.Find(id);
+
+            Assert.NotNull(entity);
+            Assert.Equal(entity.Id, id);
+            Assert.Equal(entity.Name, "a");
         }
+
+
 
     }
 }
