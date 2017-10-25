@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ApplicationCore.IRepositories
 {
-    public interface IDemoRepository : IRepository
+    public interface IDemoRepository
     {
     }
 }
