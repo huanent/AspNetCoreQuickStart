@@ -3,10 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.Entities
+namespace ApplicationCore.IRepositories
 {
-    public class Demo : EntityBase
+    public interface IDemoRepository : IRepository
     {
-        public string Name { get; set; }
     }
 }

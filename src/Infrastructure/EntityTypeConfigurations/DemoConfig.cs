@@ -1,15 +1,17 @@
 ﻿using ApplicationCore.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Data.EntityTypeConfigurations
+namespace Infrastructure.EntityTypeConfigurations
 {
-    internal class DemoTypeConfiguration : IEntityTypeConfiguration<Demo>
+    public class DemoConfig : IEntityTypeConfiguration<Demo>
     {
         public void Configure(EntityTypeBuilder<Demo> builder)
         {
             builder.HasKey(h => h.Id);
-            builder.HasMany(h => h.DemoItems).WithOne().HasForeignKey(f => f.DemoId);
         }
     }
 }

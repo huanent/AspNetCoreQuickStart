@@ -1,11 +1,10 @@
-﻿using ApplicationCore.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
 
-namespace Infrastructure.Data
+namespace Infrastructure
 {
-    public class AppDbContext : DbContext, IUnitOfWork
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {

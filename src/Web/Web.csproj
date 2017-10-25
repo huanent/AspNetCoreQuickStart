@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\.gitkeep" />
+    <None Remove="Dtos\.gitkeep" />
+    <None Remove="logs\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Huanent.Logging.File" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
@@ -30,6 +36,12 @@
     <None Update="docs.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>

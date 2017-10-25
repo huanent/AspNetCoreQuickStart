@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.Interfaces
+namespace ApplicationCore.SharedKernel
 {
     public interface IAppLogger<T>
     {

@@ -1,8 +1,6 @@
-﻿using ApplicationCore.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ApplicationCore.SharedKernel;
 using Newtonsoft.Json;
+using System;
 
 namespace Infrastructure.Utils
 {
@@ -30,7 +28,7 @@ namespace Infrastructure.Utils
 
         public T ToObject<T>(string json)
         {
-            T obj = default(T);
+            var obj = default(T);
             try
             {
                 obj = JsonConvert.DeserializeObject<T>(json);

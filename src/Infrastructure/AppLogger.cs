@@ -1,8 +1,6 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.SharedKernel;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure.Utils
 {
