@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApplicationCore.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
 
@@ -6,6 +7,8 @@ namespace Infrastructure
 {
     public class AppDbContext : DbContext
     {
+        public DbSet<Demo> Demo { get; set; }
+
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -13,7 +16,6 @@ namespace Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             RegisterEntityTypeConfigurations(modelBuilder);
         }
 
