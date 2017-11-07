@@ -6,9 +6,11 @@
 
   <ItemGroup>
     <None Remove="Entities\.gitkeep" />
+    <None Remove="Exceptions\.gitkeep" />
     <None Remove="IRepositories\.gitkeep" />
     <None Remove="IServices\.gitkeep" />
     <None Remove="Services\.gitkeep" />
+    <None Remove="SharedKernel\.gitkeep" />
   </ItemGroup>
 
 </Project>

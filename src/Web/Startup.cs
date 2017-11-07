@@ -90,6 +90,7 @@ namespace Web
             {
                 o.Filters.Add<GlobalActionFilter>();
                 o.Filters.Add<GlobalExceptionFilter>();
+                o.Filters.Add<GlobalAuthorizationFilter>();
             });
         }
         #endregion

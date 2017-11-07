@@ -13,6 +13,7 @@
   <ItemGroup>
     <None Remove="Controllers\.gitkeep" />
     <None Remove="Dtos\.gitkeep" />
+    <None Remove="Filters\.gitkeep" />
     <None Remove="logs\.gitkeep" />
   </ItemGroup>
 
