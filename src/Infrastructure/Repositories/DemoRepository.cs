@@ -15,6 +15,12 @@ namespace Infrastructure.Repositories
             _appDbContext = appDbContext;
         }
 
+        public async System.Threading.Tasks.Task AddDemoAsync(Demo demo)
+        {
+            _appDbContext.Add(demo);
+           await _appDbContext.SaveChangesAsync();
+        }
+
         public IEnumerable<Demo> AllDemo()
         {
             return _appDbContext.Demo.ToArray();

@@ -1,4 +1,7 @@
-﻿using Infrastructure;
+﻿using ApplicationCore.IRepositories;
+using ApplicationCore.SharedKernel;
+using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +31,10 @@ namespace Web
             AddDbContext(services);
             AddAuth(services);
             AddSwagger(services);
+            AddAppServices(services);
         }
+
+
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -41,6 +47,12 @@ namespace Web
         }
 
         #region 注册服务
+        private void AddAppServices(IServiceCollection services)
+        {
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDemoRepository, DemoRepository>();
+        }
+
         private static void AddSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen(o =>

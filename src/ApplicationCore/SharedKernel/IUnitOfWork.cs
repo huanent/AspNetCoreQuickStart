@@ -9,5 +9,6 @@ namespace ApplicationCore.SharedKernel
     public interface IUnitOfWork
     {
         void RunTransaction(Action<Commit, Rollback> action);
+
     }
 }
