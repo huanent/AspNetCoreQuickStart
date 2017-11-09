@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,18 +10,22 @@ namespace Web.Filters
 {
     public class GlobalAuthorizationFilter : IAsyncAuthorizationFilter
     {
-        public GlobalAuthorizationFilter(/*注入权限验证服务*/)
+        readonly AppSettings _appSettings;
+        public GlobalAuthorizationFilter(IOptionsMonitor<AppSettings> options)
         {
+            _appSettings = options.CurrentValue;
         }
 
         public Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
+            string userName = context.HttpContext.User.Identity.Name;
+            if (userName == _appSettings.SuperAdminUserName) return Task.CompletedTask;
+
             if (!context.ActionDescriptor.FilterDescriptors.Any(a => a.Filter is AllowAnonymousFilter))
             {
                 dynamic actionDescriptor = context.ActionDescriptor;
                 string controllerName = actionDescriptor.ControllerName;
                 string actionName = actionDescriptor.ActionName;
-                string userName = context.HttpContext.User.Identity.Name;
                 string method = context.HttpContext.Request.Method;
 
                 bool isValid = ValidPermission(controllerName, actionName, userName, method);

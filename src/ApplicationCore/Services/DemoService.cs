@@ -7,5 +7,6 @@ namespace ApplicationCore.Services
 {
     public class DemoService : IDemoService
     {
+        
     }
 }

@@ -13,6 +13,10 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Web.Filters;
+using AutoMapper;
+using System.Reflection;
+using ApplicationCore.IServices;
+using ApplicationCore.Services;
 
 namespace Web
 {
@@ -31,10 +35,10 @@ namespace Web
             AddDbContext(services);
             AddAuth(services);
             AddSwagger(services);
+            AddAutoMapper(services);
+            AddAppSettings(services);
             AddAppServices(services);
         }
-
-
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -47,10 +51,23 @@ namespace Web
         }
 
         #region 注册服务
+
+        private void AddAppSettings(IServiceCollection services)
+        {
+            services.Configure<AppSettings>(Configuration);
+        }
         private void AddAppServices(IServiceCollection services)
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ICoding, Coding>();
             services.AddScoped<IDemoRepository, DemoRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+        }
+
+        private void AddAutoMapper(IServiceCollection services)
+        {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         private static void AddSwagger(IServiceCollection services)

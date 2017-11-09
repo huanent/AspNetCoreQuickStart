@@ -9,6 +9,10 @@ namespace Infrastructure
     {
         public DbSet<Demo> Demo { get; set; }
 
+        public DbSet<User> User { get; set; }
+
+        public DbSet<Role> Role { get; set; }
+
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
