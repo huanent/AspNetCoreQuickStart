@@ -10,11 +10,11 @@ namespace Web
         /// <summary>
         /// 密码加盐
         /// </summary>
-        public string UserPwdSalt { get; set; }
+        public string UserPwdSalt { get; private set; }
 
         /// <summary>
         /// 超级管理员账户
         /// </summary>
-        public string SuperAdminUserName { get; set; }
+        public string SuperAdminUserName { get; private set; }
     }
 }

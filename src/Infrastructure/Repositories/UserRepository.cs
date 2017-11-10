@@ -5,6 +5,7 @@ using System.Text;
 using ApplicationCore.Entities;
 using System.Linq;
 using ApplicationCore.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -25,6 +26,11 @@ namespace Infrastructure.Repositories
         public IEnumerable<User> AllUser()
         {
             return _appDbContext.User.ToArray();
+        }
+
+        public bool ExistsById(Guid userId)
+        {
+            return _appDbContext.User.Any(a=>a.Id==userId);
         }
 
         public bool ExistUserByName(string name) => _appDbContext.User.Any(a => a.Name == name);

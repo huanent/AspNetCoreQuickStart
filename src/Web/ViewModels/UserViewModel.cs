@@ -1,13 +1,18 @@
-﻿using System;
+﻿using ApplicationCore.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Dtos
+namespace Web.ViewModels
 {
-    public class LoginDto
+    public class UserViewModel
     {
+        [Required]
+        [MaxLength(32)]
+        public string NickName { get; set; }
+
         [Required]
         [MinLength(6), MaxLength(32)]
         public string Name { get; set; }
@@ -15,5 +20,6 @@ namespace Web.Dtos
         [Required]
         [MinLength(8), MaxLength(32)]
         public string Pwd { get; set; }
+
     }
 }

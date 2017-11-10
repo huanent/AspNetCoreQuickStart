@@ -1,5 +1,5 @@
 ﻿using ApplicationCore.SharedKernel;
-using ApplicationCore.Valuse;
+using ApplicationCore.Values;
 using System;
 using System.Collections.Generic;
 using System.Text;

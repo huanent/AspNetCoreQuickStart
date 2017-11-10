@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Web.Dtos;
 using ApplicationCore.Entities;
+using Web.ViewModels;
 
 namespace Web.Mappers
 {
@@ -12,7 +12,7 @@ namespace Web.Mappers
     {
         public UserMapper()
         {
-            CreateMap<UserDto, User>();
+            CreateMap<UserViewModel, User>();
         }
     }
 }

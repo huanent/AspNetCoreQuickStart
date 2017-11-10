@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Web.Dtos;
 using AutoMapper;
 using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
@@ -15,6 +14,8 @@ using ApplicationCore.SharedKernel;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using ApplicationCore.Exceptions;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -31,7 +32,7 @@ namespace Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         public void Post(
-            [FromBody]UserDto userDto,
+            [FromBody]UserViewModel userDto,
             [FromServices] IMapper mapper,
             [FromServices] IUserService userService,
             [FromServices] IOptionsMonitor<AppSettings> options,
@@ -44,9 +45,9 @@ namespace Web.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost(nameof(Login))]
+        [HttpPost("Login")]
         public void Login(
-            [FromBody] LoginDto loginDto,
+            [FromBody] LoginViewModel loginDto,
             [FromServices] IUserService userService,
             [FromServices] IOptionsMonitor<AppSettings> options,
             [FromServices] ICoding coding)
@@ -61,9 +62,14 @@ namespace Web.Controllers
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
         }
 
-        [HttpPut(nameof(SetPermission))]
-        public void SetPermission()
+        [HttpPut("SetPermission/{userId}")]
+        public void SetPermission(
+            Guid userId,
+            [FromBody]IEnumerable<Permission> permission,
+            [FromServices] IUserRepository userRepository)
         {
+            bool existsUser = userRepository.ExistsById(userId);
+            if (!existsUser) throw new AppException("要更新权限的用户不存在");
 
         }
     }
