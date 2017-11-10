@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <None Remove="Controllers\.gitkeep" />
-    <None Remove="Dtos\.gitkeep" />
     <None Remove="logs\.gitkeep" />
+    <None Remove="ViewModels\.gitkeep" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,8 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
     <Folder Include="logs\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
