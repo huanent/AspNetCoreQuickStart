@@ -29,7 +29,6 @@ namespace Web.Controllers
             return userRepository.AllUser();
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public void Post(
             [FromBody]UserViewModel userDto,
@@ -65,12 +64,19 @@ namespace Web.Controllers
         [HttpPut("SetPermission/{userId}")]
         public void SetPermission(
             Guid userId,
-            [FromBody]IEnumerable<Permission> permission,
-            [FromServices] IUserRepository userRepository)
+            [FromBody]IEnumerable<PermissionViewModel> PermissionViewModels,
+            [FromServices] IPermissionService permissionService,
+            [FromServices] IMapper mapper)
         {
-            bool existsUser = userRepository.ExistsById(userId);
-            if (!existsUser) throw new AppException("要更新权限的用户不存在");
-
+            var permissions = PermissionViewModels.Select(s =>
+             {
+                 var permission = mapper.Map<Permission>(s);
+                 permission.UserId = userId;
+                 permission.Action = permission.Action.Trim().ToLower();
+                 permission.Controller = permission.Controller.Trim().ToLower();
+                 return permission;
+             });
+            permissionService.SetUserPermission(userId, permissions);
         }
     }
 }

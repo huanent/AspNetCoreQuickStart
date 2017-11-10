@@ -62,7 +62,9 @@ namespace Web
             services.AddTransient<ICoding, Coding>();
             services.AddScoped<IDemoRepository, DemoRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPermissionService, PermissionService>();
         }
 
         private void AddAutoMapper(IServiceCollection services)

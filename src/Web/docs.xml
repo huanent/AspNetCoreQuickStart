@@ -14,15 +14,5 @@
             超级管理员账户
             </summary>
         </member>
-        <member name="M:Web.Filters.GlobalAuthorizationFilter.ValidPermission(System.String,System.String,System.String,System.String)">
-            <summary>
-            此方法中进行用户的权限验证
-            </summary>
-            <param name="controllerName">控制器</param>
-            <param name="actionName">方法</param>
-            <param name="userName">用户名</param>
-            <param name="method">http方法</param>
-            <returns></returns>
-        </member>
     </members>
 </doc>

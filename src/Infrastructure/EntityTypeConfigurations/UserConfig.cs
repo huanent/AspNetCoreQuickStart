@@ -26,6 +26,7 @@ namespace Infrastructure.EntityTypeConfigurations
                 .IsRequired();
 
             builder.HasMany(m => m.Permissions).WithOne().HasForeignKey(h => h.UserId);
+            builder.HasOne(h => h.Role).WithMany().HasForeignKey(h => h.RoleId).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -13,6 +13,10 @@ namespace ApplicationCore.Entities
 
         public string Pwd { get; set; }
 
+        public Guid? RoleId { get; set; }
+
+        public Role Role { get; set; }
+
         public ICollection<Permission> Permissions { get; set; }
     }
 }

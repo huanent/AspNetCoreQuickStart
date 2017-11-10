@@ -14,6 +14,8 @@ namespace ApplicationCore.IRepositories
         bool ExistUserByName(string name);
 
         void AddUser(User user);
+
         bool ExistsById(Guid userId);
+
     }
 }

@@ -13,6 +13,8 @@ namespace Infrastructure
 
         public DbSet<Role> Role { get; set; }
 
+        public DbSet<Permission> Permission { get; set; }
+
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
