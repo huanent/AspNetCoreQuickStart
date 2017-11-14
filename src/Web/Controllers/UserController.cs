@@ -16,6 +16,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using ApplicationCore.Exceptions;
 using Web.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Web.Services;
 
 namespace Web.Controllers
 {
@@ -45,20 +47,21 @@ namespace Web.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        public void Login(
+        [Produces(typeof(string))]
+        public string Login(
             [FromBody] LoginViewModel loginDto,
             [FromServices] IUserService userService,
             [FromServices] IOptionsMonitor<AppSettings> options,
-            [FromServices] ICoding coding)
+            [FromServices] ICoding coding,
+            [FromServices] JwtService jwtService)
         {
             var appSettings = options.CurrentValue;
             string pwd = coding.MD5Encoding(loginDto.Pwd, appSettings.UserPwdSalt);
             if (loginDto.Name != appSettings.SuperAdminUserName) userService.ValidUserLogin(loginDto.Name, pwd);
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(ClaimTypes.Sid, loginDto.Name));
-            identity.AddClaim(new Claim(ClaimTypes.Name, loginDto.Name));
-            var principal = new ClaimsPrincipal(identity);
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
+
+            return jwtService.GetToken(new Claim[] {
+                new Claim(ClaimTypes.Name, loginDto.Name)
+            });
         }
 
         [HttpPut("SetPermission/{userId}")]

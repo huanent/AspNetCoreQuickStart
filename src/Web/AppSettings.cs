@@ -16,5 +16,10 @@ namespace Web
         /// 超级管理员账户
         /// </summary>
         public string SuperAdminUserName { get; set; }
+
+        /// <summary>
+        /// jwt密钥
+        /// </summary>
+        public string JwtKey { get; set; }
     }
 }

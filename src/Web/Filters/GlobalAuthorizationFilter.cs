@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.IServices;
 using ApplicationCore.Values;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,10 +15,15 @@ namespace Web.Filters
     {
         readonly AppSettings _appSettings;
         readonly IPermissionService _permissionService;
-        public GlobalAuthorizationFilter(IOptionsMonitor<AppSettings> options, IPermissionService permissionService)
+        IHostingEnvironment _hostingEnvironment;
+        public GlobalAuthorizationFilter(
+            IOptionsMonitor<AppSettings> options,
+            IPermissionService permissionService,
+            IHostingEnvironment hostingEnvironment)
         {
             _appSettings = options.CurrentValue;
             _permissionService = permissionService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public Task OnAuthorizationAsync(AuthorizationFilterContext context)

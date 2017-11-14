@@ -14,5 +14,10 @@
             超级管理员账户
             </summary>
         </member>
+        <member name="P:Web.AppSettings.JwtKey">
+            <summary>
+            jwt密钥
+            </summary>
+        </member>
     </members>
 </doc>

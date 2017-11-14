@@ -17,6 +17,10 @@ using AutoMapper;
 using System.Reflection;
 using ApplicationCore.IServices;
 using ApplicationCore.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Web.Services;
 
 namespace Web
 {
@@ -42,7 +46,6 @@ namespace Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
             app.UseAuthentication();
             app.UseMvc();
             UseSwagger(app);
@@ -56,6 +59,7 @@ namespace Web
         {
             services.Configure<AppSettings>(Configuration);
         }
+
         private void AddAppServices(IServiceCollection services)
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -65,6 +69,7 @@ namespace Web
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPermissionService, PermissionService>();
+            services.AddTransient<JwtService>();
         }
 
         private void AddAutoMapper(IServiceCollection services)
@@ -72,7 +77,7 @@ namespace Web
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
-        private static void AddSwagger(IServiceCollection services)
+        private void AddSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen(o =>
             {
@@ -81,18 +86,21 @@ namespace Web
             });
         }
 
-        private static void AddAuth(IServiceCollection services)
+        private void AddAuth(IServiceCollection services)
         {
-            services.AddAuthentication(o => o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(o =>
+            var jwtKey = JwtService.GetSecurityKey(Configuration.GetValue<string>("JwtKey"));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    o.ExpireTimeSpan = new TimeSpan(0, 5, 0);
-                    o.Events.OnRedirectToLogin = (context) =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    };
-                });
+                    ValidateIssuer = false, //不验证发行方
+                    ValidateAudience = false, //不验证受众方
+                    //ValidateLifetime = false, //不验证过期时间
+                    ClockSkew = TimeSpan.Zero, //时钟偏差设为0
+                    IssuerSigningKey = jwtKey, //密钥
+                };
+            });
         }
 
         private void AddDbContext(IServiceCollection services)
@@ -103,7 +111,7 @@ namespace Web
             });
         }
 
-        private static void AddFilters(IServiceCollection services)
+        private void AddFilters(IServiceCollection services)
         {
             services.AddMvc(o =>
             {
