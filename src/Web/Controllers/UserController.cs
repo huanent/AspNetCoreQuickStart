@@ -79,7 +79,7 @@ namespace Web.Controllers
                  permission.Controller = permission.Controller.Trim().ToLower();
                  return permission;
              });
-            permissionService.SetUserPermission(userId, permissions);
+            permissionService.ChangeUserPermission(userId, permissions);
         }
     }
 }

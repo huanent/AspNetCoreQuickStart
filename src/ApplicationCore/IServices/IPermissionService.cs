@@ -8,7 +8,7 @@ namespace ApplicationCore.IServices
 {
     public interface IPermissionService
     {
-        void SetUserPermission(Guid userId, IEnumerable<Permission> permissions);
+        void ChangeUserPermission(Guid userId, IEnumerable<Permission> permissions);
         bool ValidPermission(string controller, string action, HttpMethod httpMethod, string userName);
     }
 }

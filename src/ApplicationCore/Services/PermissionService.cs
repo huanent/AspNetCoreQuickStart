@@ -26,7 +26,7 @@ namespace ApplicationCore.Services
             _permissionRepository = permissionRepository;
             _unitOfWork = unitOfWork;
         }
-        public void SetUserPermission(Guid userId, IEnumerable<Permission> permissions)
+        public void ChangeUserPermission(Guid userId, IEnumerable<Permission> permissions)
         {
             bool existsUser = _userRepository.ExistsById(userId);
             if (!existsUser) throw new AppException("要更新权限的用户不存在");
