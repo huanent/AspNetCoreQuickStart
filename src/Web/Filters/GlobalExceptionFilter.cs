@@ -27,8 +27,6 @@ namespace Web.Filters
             {
                 logger.LogWarning(appException.Message);
                 context.Result = new BadRequestObjectResult(appException.Message);
-
-                //  context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
             else
             {
@@ -38,22 +36,22 @@ namespace Web.Filters
 
                 if (_env.IsDevelopment())
                 {
-                    context.Result = new AppErrorResult("未知错误,请重试");
+                    context.Result = new InternalServerErrorResult("未知错误,请重试");
                 }
                 else
                 {
-                    context.Result = new AppErrorResult(context.Exception);
+                    context.Result = new InternalServerErrorResult(context.Exception);
                 }
 
-                //context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
             context.ExceptionHandled = true;
             await Task.CompletedTask;
         }
     }
-    public class AppErrorResult : ObjectResult
+
+    public class InternalServerErrorResult : ObjectResult
     {
-        public AppErrorResult(object value) : base(value)
+        public InternalServerErrorResult(object value) : base(value)
         {
             StatusCode = (int)HttpStatusCode.InternalServerError;
         }

@@ -3,11 +3,12 @@
 namespace ApplicationCore.SharedKernel
 {
 
-    /// <summary>
-    /// 实体基类
-    /// </summary>
-    public abstract class EntityBase
+    public abstract class EntityBase<T> where T : IEquatable<T>
     {
-        public Guid Id { get; set; }
+        public T Id { get; set; }
+    }
+
+    public abstract class EntityBase : EntityBase<Guid>
+    {
     }
 }

@@ -4,5 +4,12 @@
         <name>Web</name>
     </assembly>
     <members>
+        <member name="M:Web.Controllers.DemoController.RunTransaction(ApplicationCore.SharedKernel.IUnitOfWork,ApplicationCore.IRepositories.IDemoRepository)">
+            <summary>
+            运行事务
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="demoRepository"></param>
+        </member>
     </members>
 </doc>

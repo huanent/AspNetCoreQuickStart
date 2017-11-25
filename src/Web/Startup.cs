@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Web.Filters;
 
@@ -41,22 +42,25 @@ namespace Web
             app.UseMvc();
             UseSwagger(app);
             UseCors(app, env);
-            Init(app);
+            Init(app, env);
         }
 
         #region 注册服务
         private void AddAppServices(IServiceCollection services)
         {
+            services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDemoRepository, DemoRepository>();
         }
 
         private static void AddSwagger(IServiceCollection services)
         {
+            var serviceProvider = new DefaultServiceProviderFactory().CreateServiceProvider(services);
+            var env = serviceProvider.GetService<IHostingEnvironment>();
             services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("api", new Info());
-                o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "docs.xml"));
+                o.IncludeXmlComments(Path.Combine(env.ContentRootPath, "docs.xml"));
             });
         }
 
@@ -93,7 +97,7 @@ namespace Web
         #endregion
 
         #region 配置管道
-        private static void Init(IApplicationBuilder app)
+        private static void Init(IApplicationBuilder app, IHostingEnvironment env)
         {
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
@@ -101,8 +105,8 @@ namespace Web
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 db.Database.Migrate();
 
-                //var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<Startup>>();
-                //logger.Warn($"当前运行环境：{env.EnvironmentName}");
+                var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<Startup>>();
+                logger.Warn($"当前运行环境：{env.EnvironmentName}");
             }
         }
 

@@ -15,6 +15,11 @@ namespace Web.Controllers
     [Route("api/Demo")]
     public class DemoController : Controller
     {
+        /// <summary>
+        /// 运行事务
+        /// </summary>
+        /// <param name="unitOfWork"></param>
+        /// <param name="demoRepository"></param>
         [HttpGet(nameof(RunTransaction))]
         public void RunTransaction([FromServices] IUnitOfWork unitOfWork, [FromServices] IDemoRepository demoRepository)
         {
@@ -40,7 +45,6 @@ namespace Web.Controllers
                 }
             });
         }
-
 
     }
 }

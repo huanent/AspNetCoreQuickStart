@@ -1,8 +1,6 @@
 ﻿using ApplicationCore.Entities;
-using ApplicationCore.SharedKernel;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace ApplicationCore.IRepositories
 {
@@ -10,6 +8,6 @@ namespace ApplicationCore.IRepositories
     {
         IEnumerable<Demo> AllDemo();
 
-        System.Threading.Tasks.Task AddDemoAsync(Demo demo);
+        Task AddDemoAsync(Demo demo);
     }
 }
