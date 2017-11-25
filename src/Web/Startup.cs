@@ -34,8 +34,6 @@ namespace Web
             AddAppServices(services);
         }
 
-
-
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
