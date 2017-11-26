@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Web.Filters;
 
@@ -19,11 +18,13 @@ namespace Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
+        readonly IHostingEnvironment _env;
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -35,14 +36,14 @@ namespace Web
             AddAppServices(services);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
 
             app.UseAuthentication();
             app.UseMvc();
             UseSwagger(app);
-            UseCors(app, env);
-            Init(app, env);
+            UseCors(app);
+            Init(app);
         }
 
         #region 注册服务
@@ -53,14 +54,12 @@ namespace Web
             services.AddScoped<IDemoRepository, DemoRepository>();
         }
 
-        private static void AddSwagger(IServiceCollection services)
+        private void AddSwagger(IServiceCollection services)
         {
-            var serviceProvider = new DefaultServiceProviderFactory().CreateServiceProvider(services);
-            var env = serviceProvider.GetService<IHostingEnvironment>();
             services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("api", new Info());
-                o.IncludeXmlComments(Path.Combine(env.ContentRootPath, "docs.xml"));
+                o.IncludeXmlComments(Path.Combine(_env.ContentRootPath, "docs.xml"));
             });
         }
 
@@ -97,7 +96,7 @@ namespace Web
         #endregion
 
         #region 配置管道
-        private static void Init(IApplicationBuilder app, IHostingEnvironment env)
+        private void Init(IApplicationBuilder app)
         {
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
@@ -106,17 +105,17 @@ namespace Web
                 db.Database.Migrate();
 
                 var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<Startup>>();
-                logger.Warn($"当前运行环境：{env.EnvironmentName}");
+                logger.Warn($"当前运行环境：{_env.EnvironmentName}");
             }
         }
 
-        private static void UseCors(IApplicationBuilder app, IHostingEnvironment env)
+        private void UseCors(IApplicationBuilder app)
         {
             app.UseCors(o =>
             {
                 o.AllowAnyHeader();
                 o.AllowAnyMethod();
-                if (env.IsProduction())
+                if (_env.IsProduction())
                 {
                     o.WithOrigins("http://xxx.xxx.com/");
                     throw new Exception("替换上方http://xxx.xxx.com/为你的前端项目部署地址,并删除此异常");
