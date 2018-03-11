@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Data.Common;
 using System.IO;
 using System.Threading.Tasks;
 using Web.Filters;
@@ -21,16 +23,18 @@ namespace Web
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            _settings = configuration.GetSection("App").Get<Settings>();
             _env = env;
         }
 
         readonly IHostingEnvironment _env;
+        readonly Settings _settings;
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             AddFilters(services);
-            AddDbContext(services);
+            AddDataServices(services);
             AddAuth(services);
             AddSwagger(services);
             AddAppServices(services);
@@ -38,7 +42,6 @@ namespace Web
 
         public void Configure(IApplicationBuilder app)
         {
-
             app.UseAuthentication();
             app.UseMvc();
             UseSwagger(app);
@@ -50,7 +53,6 @@ namespace Web
         private void AddAppServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDemoRepository, DemoRepository>();
         }
 
@@ -59,7 +61,7 @@ namespace Web
             services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("api", new Info());
-                o.IncludeXmlComments(Path.Combine(_env.ContentRootPath, "docs.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "web.xml"));
             });
         }
 
@@ -77,12 +79,10 @@ namespace Web
                 });
         }
 
-        private void AddDbContext(IServiceCollection services)
+        private void AddDataServices(IServiceCollection services)
         {
-            services.AddDbContextPool<AppDbContext>(o =>
-            {
-                o.UseSqlServer(Configuration.GetConnectionString("Default"));
-            });
+            string connectionString = Configuration.GetConnectionString("Default");
+            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(connectionString));
         }
 
         private static void AddFilters(IServiceCollection services)
@@ -111,26 +111,21 @@ namespace Web
 
         private void UseCors(IApplicationBuilder app)
         {
-            app.UseCors(o =>
+            if (!_env.IsProduction())
             {
-                o.AllowAnyHeader();
-                o.AllowAnyMethod();
-                if (_env.IsProduction())
+                app.UseCors(o =>
                 {
-                    o.WithOrigins("http://xxx.xxx.com/");
-                    throw new Exception("替换上方http://xxx.xxx.com/为你的前端项目部署地址,并删除此异常");
-                }
-                else
-                {
+                    o.AllowAnyHeader();
+                    o.AllowAnyMethod();
                     o.AllowAnyOrigin();
-                }
-            });
+                });
+            }
         }
 
-        private static void UseSwagger(IApplicationBuilder app)
+        private void UseSwagger(IApplicationBuilder app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", "api"));
+            app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", _settings.AppName));
         }
         #endregion
     }

@@ -1,8 +1,10 @@
 ﻿using ApplicationCore.Exceptions;
+using ApplicationCore.SharedKernel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -12,11 +14,13 @@ namespace Web.Filters
     {
         readonly ILoggerFactory _loggerFactory;
         readonly IHostingEnvironment _env;
+        readonly Settings _settings;
 
-        public GlobalExceptionFilter(ILoggerFactory loggerFactory, IHostingEnvironment env)
+        public GlobalExceptionFilter(ILoggerFactory loggerFactory, IHostingEnvironment env, IOptions<Settings> settings)
         {
             _loggerFactory = loggerFactory;
             _env = env;
+            _settings = settings.Value;
         }
 
         public async Task OnExceptionAsync(ExceptionContext context)
@@ -30,19 +34,13 @@ namespace Web.Filters
             }
             else
             {
-                logger.LogError(new EventId(context.Exception.HResult),
-                context.Exception,
-                context.Exception.Message);
+                logger.LogError(
+                    new EventId(_settings.EventId, _settings.AppName),
+                    context.Exception,
+                    context.Exception.Message);
 
-                if (_env.IsDevelopment())
-                {
-                    context.Result = new InternalServerErrorResult("未知错误,请重试");
-                }
-                else
-                {
-                    context.Result = new InternalServerErrorResult(context.Exception);
-                }
-
+                if (_env.IsProduction()) context.Result = new InternalServerErrorResult("未知错误,请重试");
+                else context.Result = new InternalServerErrorResult(context.Exception);
             }
             context.ExceptionHandled = true;
             await Task.CompletedTask;

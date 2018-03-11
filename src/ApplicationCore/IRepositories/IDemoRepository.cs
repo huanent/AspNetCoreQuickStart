@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.IRepositories
@@ -9,5 +10,8 @@ namespace ApplicationCore.IRepositories
         IEnumerable<Demo> AllDemo();
 
         Task AddDemoAsync(Demo demo);
+
+        IEnumerable<Demo> GetTop10Demo();
+
     }
 }

@@ -8,42 +8,55 @@ using ApplicationCore.SharedKernel;
 using ApplicationCore.IRepositories;
 using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
+using Microsoft.Extensions.Logging;
+using System.Transactions;
 
 namespace Web.Controllers
 {
+    /// <summary>
+    /// 使用演示
+    /// </summary>
     [Produces("application/json")]
     [Route("api/Demo")]
     public class DemoController : Controller
     {
-        /// <summary>
-        /// 运行事务
-        /// </summary>
-        /// <param name="unitOfWork"></param>
-        /// <param name="demoRepository"></param>
-        [HttpGet(nameof(RunTransaction))]
-        public void RunTransaction([FromServices] IUnitOfWork unitOfWork, [FromServices] IDemoRepository demoRepository)
-        {
-            unitOfWork.RunTransaction((c, r) =>
-            {
-                try
-                {
-                    demoRepository.AddDemoAsync(new Demo
-                    {
-                        Name = "张三"
-                    }).Wait();
+        readonly IAppLogger<DemoController> _logger;
 
-                    demoRepository.AddDemoAsync(new Demo
-                    {
-                        Name = "李四"
-                    }).Wait();
-                    c();
-                }
-                catch (Exception e)
-                {
-                    r();
-                    throw e;
-                }
-            });
+        public DemoController(IAppLogger<DemoController> appLogger)
+        {
+            _logger = appLogger;
+        }
+
+        /// <summary>
+        /// 日志输出
+        /// </summary>
+        [HttpGet("Log")]
+        public void Log()
+        {
+            string msg = $"输出测试日志";
+            _logger.Warn(msg);
+        }
+
+        /// <summary>
+        /// 使用EF查询
+        /// </summary>
+        /// <param name="demoRepository"></param>
+        /// <returns></returns>
+        [HttpGet("GetUseEF")]
+        public IEnumerable<Demo> GetUseEF([FromServices]IDemoRepository demoRepository)
+        {
+            return demoRepository.AllDemo();
+        }
+
+        /// <summary>
+        /// 使用Dapper查询
+        /// </summary>
+        /// <param name="demoRepository"></param>
+        /// <returns></returns>
+        [HttpGet("GetUseDapper")]
+        public IEnumerable<Demo> GetUseDapper([FromServices]IDemoRepository demoRepository)
+        {
+            return demoRepository.GetTop10Demo();
         }
 
     }

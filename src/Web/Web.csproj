@@ -5,9 +5,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>docs.xml</DocumentationFile>
-    <OutputPath>bin\Debug\netcoreapp2.0\</OutputPath>
+    <DocumentationFile>bin\Debug\netcoreapp2.0\Web.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.0\Web.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,22 +20,13 @@
 
   <ItemGroup>
     <None Remove="Controllers\.gitkeep" />
-    <None Remove="docs.xml" />
-    <None Remove="logs\.gitkeep" />
-    <None Remove="ViewModels\.gitkeep" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="docs.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Huanent.Logging.File" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Huanent.Logging.File" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,8 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
