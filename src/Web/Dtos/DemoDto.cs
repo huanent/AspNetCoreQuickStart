@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ApplicationCore.Dtos
+namespace Web.Dtos
 {
     public class DemoDto
     {
@@ -15,9 +15,10 @@ namespace ApplicationCore.Dtos
         #endregion
 
 
-        public Demo ToDemo()
+        public Demo ToDemo(Demo demo = null)
         {
-            var demo = new Demo(Name);
+            demo = demo ?? new Demo(Name);
+            demo.Name = Name;
             return demo;
         }
     }

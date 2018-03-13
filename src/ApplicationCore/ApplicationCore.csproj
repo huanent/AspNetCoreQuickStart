@@ -5,15 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Dtos\.gitkeep" />
     <None Remove="Entities\.gitkeep" />
     <None Remove="IRepositories\.gitkeep" />
     <None Remove="IServices\.gitkeep" />
     <None Remove="Services\.gitkeep" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
   </ItemGroup>
 
 </Project>

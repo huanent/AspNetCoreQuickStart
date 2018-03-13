@@ -5,7 +5,7 @@ namespace ApplicationCore.SharedKernel
 
     public abstract class EntityBase<T> where T : IEquatable<T>
     {
-        public T Id { get; set; }
+        public T Id { get; protected set; }
 
     }
 

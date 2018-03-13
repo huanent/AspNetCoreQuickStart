@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Dtos;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
@@ -13,5 +13,11 @@ namespace ApplicationCore.IRepositories
         Task AddAsync(Demo demo);
 
         IEnumerable<Demo> GetTopRecords(int count);
+
+        Demo FindByKey(Guid id);
+
+        void Save(Demo demo);
+
+        void Delete(Guid id);
     }
 }

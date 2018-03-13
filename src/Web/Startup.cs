@@ -34,7 +34,7 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             AddFilters(services);
-            AddDataServices(services);
+            AddDbContext(services);
             AddAuth(services);
             AddSwagger(services);
             AddAppServices(services);
@@ -53,8 +53,8 @@ namespace Web
         private void AddAppServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
-            services.AddScoped<IDemoRepository, DemoRepository>();
             services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
+            services.AddScoped<IDemoRepository, DemoRepository>();
         }
 
         private void AddSwagger(IServiceCollection services)
@@ -80,7 +80,7 @@ namespace Web
                 });
         }
 
-        private void AddDataServices(IServiceCollection services)
+        private void AddDbContext(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("Default");
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(connectionString));

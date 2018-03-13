@@ -13,7 +13,7 @@ namespace FunctionalTests.Controllers
         {
             var client = TestClientFactory.Client();
             var rsp = client.GetAsync("api/Demo/RunTransaction").Result;
-            Assert.Equal(rsp.StatusCode, HttpStatusCode.OK);
+            Assert.Equal(HttpStatusCode.OK, rsp.StatusCode);
         }
     }
 }
