@@ -2,9 +2,13 @@
 using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
 using ApplicationCore.SharedKernel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using Web.Dtos;
 
 namespace Web.Controllers
@@ -19,22 +23,51 @@ namespace Web.Controllers
         readonly IAppLogger<DemoController> _logger;
         readonly IDemoRepository _demoRepository;
 
-        public DemoController(IAppLogger<DemoController> appLogger, IDemoRepository demoRepository)
+        public DemoController(
+            IAppLogger<DemoController> appLogger,
+            IDemoRepository demoRepository)
         {
             _logger = appLogger;
             _demoRepository = demoRepository;
         }
 
+        #region 身份验证
         /// <summary>
-        /// 日志输出
+        /// 测试申请jwt令牌
         /// </summary>
-        [HttpGet("Log")]
-        public void Log()
+        /// <param name="settings"></param>
+        /// <param name="env"></param>
+        /// <returns></returns>
+        [HttpGet(nameof(JwtToken)), Produces(typeof(String))]
+        public string JwtToken(
+            [FromServices] IOptions<Settings> settings,
+            [FromServices]IHostingEnvironment env)
         {
-            string msg = $"输出测试日志";
-            _logger.Warn(msg);
+            if (env.IsProduction()) return "当前为正式环境，此处不提供Token申请";
+            var options = settings.Value;
+
+            string token = JwtHandler.GetToken(
+               options.JwtKey,
+               new Claim[] {
+                    new Claim(ClaimTypes.Name,"testAccount"),
+               }, DateTime.UtcNow.AddDays(1));
+
+            return $"Bearer {token}";
         }
 
+        /// <summary>
+        /// 获取当前身份信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet(nameof(AuthIdentity)), Authorize]
+        public dynamic AuthIdentity([FromServices]IHostingEnvironment env)
+        {
+            if (env.IsProduction()) return "当前为正式环境，不提供此查询";
+            return User.Identity.Name;
+        }
+        #endregion
+
+        #region 查询
         /// <summary>
         /// 使用EF查询
         /// </summary>
@@ -55,7 +88,9 @@ namespace Web.Controllers
         {
             return _demoRepository.GetTopRecords(top);
         }
+        #endregion
 
+        #region 增删改
         /// <summary>
         /// 添加实体示例
         /// </summary>
@@ -73,6 +108,11 @@ namespace Web.Controllers
             _demoRepository.AddAsync(demo).Wait();
         }
 
+        /// <summary>
+        /// 更新实体示例
+        /// </summary>
+        /// <param name="demoDto"></param>
+        /// <param name="id"></param>
         [HttpPut("{id}")]
         public void Put([FromBody] DemoDto demoDto, Guid id)
         {
@@ -85,10 +125,15 @@ namespace Web.Controllers
             _demoRepository.Save(demo);
         }
 
+        /// <summary>
+        /// 删除实体示例
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
             _demoRepository.Delete(id);
         }
+        #endregion
     }
 }

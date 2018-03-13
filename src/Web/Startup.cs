@@ -2,18 +2,16 @@
 using ApplicationCore.SharedKernel;
 using Infrastructure;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Data.Common;
 using System.IO;
-using System.Threading.Tasks;
 using Web.Filters;
 
 namespace Web
@@ -33,12 +31,15 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureOptions(services);
             AddFilters(services);
             AddDbContext(services);
             AddAuth(services);
             AddSwagger(services);
             AddAppServices(services);
         }
+
+
 
         public void Configure(IApplicationBuilder app)
         {
@@ -50,6 +51,10 @@ namespace Web
         }
 
         #region 注册服务
+        private void ConfigureOptions(IServiceCollection services)
+        {
+            services.Configure<Settings>(Configuration.GetSection("App"));
+        }
         private void AddAppServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
@@ -61,23 +66,29 @@ namespace Web
         {
             services.AddSwaggerGen(o =>
             {
+                o.OperationFilter<SwaggerFilter>();
                 o.SwaggerDoc("api", new Info());
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "web.xml"));
             });
         }
 
-        private static void AddAuth(IServiceCollection services)
+        private void AddAuth(IServiceCollection services)
         {
-            services.AddAuthentication(o => o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(o =>
-                {
-                    o.ExpireTimeSpan = new TimeSpan(0, 5, 0);
-                    o.Events.OnRedirectToLogin = (context) =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    };
-                });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(options =>
+           {
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuer = false, //不验证发行方
+                   ValidateAudience = false, //不验证受众方
+                   //ValidateLifetime = false, //不验证过期时间
+                   ClockSkew = TimeSpan.Zero, //时钟偏差设为0
+                   IssuerSigningKey = JwtHandler.GetSecurityKey(_settings.JwtKey), //密钥
+               };
+           });
         }
 
         private void AddDbContext(IServiceCollection services)

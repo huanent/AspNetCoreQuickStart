@@ -8,7 +8,7 @@ namespace Web.Dtos
     /// <summary>
     /// 希望查询分页可继承此Dto
     /// </summary>
-    public class PageDto
+    public class RequestPageDto
     {
         /// <summary>
         /// 当前页数(从1开始)

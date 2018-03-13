@@ -16,5 +16,10 @@ namespace ApplicationCore.SharedKernel
         /// 定义本程序的日志事件Id
         /// </summary>
         public int EventId { get; set; }
+
+        /// <summary>
+        /// jwtToken密钥
+        /// </summary>
+        public string JwtKey { get; set; }
     }
 }
