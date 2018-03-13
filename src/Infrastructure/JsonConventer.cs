@@ -6,38 +6,42 @@ namespace Infrastructure
 {
     public class JsonConventer : IJsonConventer
     {
-        IAppLogger<JsonConventer> _logger;
-        public JsonConventer(IAppLogger<JsonConventer> logger)
+        public JsonConventer()
         {
-            _logger = logger;
         }
 
         public string ToJson(object obj)
         {
-            string json = null;
+            if (obj == null)
+            {
+                throw new ArgumentNullException("null不能进行序列化");
+            }
+
             try
             {
-                json = JsonConvert.SerializeObject(obj);
+                return JsonConvert.SerializeObject(obj);
             }
             catch (Exception e)
             {
-                _logger.Error("对象转Json失败！", e);
+                throw new Exception($"要进行序列化的对象类型为{obj.GetType()}", e);
             }
-            return json;
         }
 
         public T ToObject<T>(string json)
         {
-            var obj = default(T);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                throw new ArgumentException("null或者空字符串无法进行序列化", nameof(json));
+            }
+
             try
             {
-                obj = JsonConvert.DeserializeObject<T>(json);
+                return JsonConvert.DeserializeObject<T>(json);
             }
             catch (Exception e)
             {
-                _logger.Error($"json转对象失败！json详情：{json}", e);
+                throw new Exception($"json转对象失败！json详情：{json}", e);
             }
-            return obj;
         }
     }
 }

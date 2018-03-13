@@ -18,24 +18,30 @@ namespace Infrastructure.Repositories
             _appDbContext = appDbContext;
         }
 
-        public async Task AddDemoAsync(Demo demo)
+        public async Task AddAsync(Demo demo)
         {
             _appDbContext.Add(demo);
             await _appDbContext.SaveChangesAsync();
         }
 
+        public void Update(Demo demo, DbTransaction dbTransaction = null)
+        {
+            using (var connection = _appDbContext.Database.GetDbConnection())
+            {
+                connection.Execute("update Demo set Name=@Name where Id=@Id ", demo, dbTransaction);
+            }
+        }
 
-
-        public IEnumerable<Demo> AllDemo()
+        public IEnumerable<Demo> All()
         {
             return _appDbContext.Demo.ToArray();
         }
 
-        public IEnumerable<Demo> GetTop10Demo()
+        public IEnumerable<Demo> GetTopRecords(int count)
         {
             using (var connection = _appDbContext.Database.GetDbConnection())
             {
-                return connection.Query<Demo>("select top (10) * from Demo");
+                return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count });
             }
         }
     }

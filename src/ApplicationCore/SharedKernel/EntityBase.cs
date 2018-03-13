@@ -10,5 +10,9 @@ namespace ApplicationCore.SharedKernel
 
     public abstract class EntityBase : EntityBase<Guid>
     {
+        public EntityBase()
+        {
+            Id = SequenceGuidGenerator.SqlServerKey();
+        }
     }
 }

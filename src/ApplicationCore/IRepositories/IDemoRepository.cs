@@ -7,11 +7,12 @@ namespace ApplicationCore.IRepositories
 {
     public interface IDemoRepository
     {
-        IEnumerable<Demo> AllDemo();
+        IEnumerable<Demo> All();
 
-        Task AddDemoAsync(Demo demo);
+        Task AddAsync(Demo demo);
 
-        IEnumerable<Demo> GetTop10Demo();
+        IEnumerable<Demo> GetTopRecords(int count);
 
+        void Update(Demo demo, DbTransaction dbTransaction = null);
     }
 }

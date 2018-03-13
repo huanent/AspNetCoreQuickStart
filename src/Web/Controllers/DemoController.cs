@@ -10,6 +10,7 @@ using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Transactions;
+using Infrastructure;
 
 namespace Web.Controllers
 {
@@ -21,10 +22,12 @@ namespace Web.Controllers
     public class DemoController : Controller
     {
         readonly IAppLogger<DemoController> _logger;
+        readonly UnitOfWorkFactory _unitOfWorkFactory;
 
-        public DemoController(IAppLogger<DemoController> appLogger)
+        public DemoController(IAppLogger<DemoController> appLogger, UnitOfWorkFactory unitOfWorkFactory)
         {
             _logger = appLogger;
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         /// <summary>
@@ -45,19 +48,33 @@ namespace Web.Controllers
         [HttpGet("GetUseEF")]
         public IEnumerable<Demo> GetUseEF([FromServices]IDemoRepository demoRepository)
         {
-            return demoRepository.AllDemo();
+            return demoRepository.All();
         }
 
         /// <summary>
         /// 使用Dapper查询
         /// </summary>
         /// <param name="demoRepository"></param>
+        /// <param name="top"></param>
         /// <returns></returns>
-        [HttpGet("GetUseDapper")]
-        public IEnumerable<Demo> GetUseDapper([FromServices]IDemoRepository demoRepository)
+        [HttpGet("GetUseDapper/{top}")]
+        public IEnumerable<Demo> GetUseDapper([FromServices]IDemoRepository demoRepository, int top)
         {
-            return demoRepository.GetTop10Demo();
+            return demoRepository.GetTopRecords(top);
         }
 
+        /// <summary>
+        /// 使用事务
+        /// </summary>
+        /// <param name="demoRepository"></param>
+        [HttpPost("UseTransaction")]
+        public void UseTransaction([FromServices]IDemoRepository demoRepository)
+        {
+            var tran = _unitOfWorkFactory.GetUnitOfWork<AppDbContext>().BeginTransaction();
+            var entity = new Demo("张三");
+            demoRepository.AddAsync(entity).Wait();
+            demoRepository.Update(entity, tran);
+            tran.Commit();
+        }
     }
 }
