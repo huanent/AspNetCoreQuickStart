@@ -54,6 +54,7 @@ namespace Web
         {
             services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
             services.AddScoped<IDemoRepository, DemoRepository>();
+            services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
         }
 
         private void AddSwagger(IServiceCollection services)

@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Entities;
+﻿using ApplicationCore.Dtos;
+using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -22,14 +23,6 @@ namespace Infrastructure.Repositories
         {
             _appDbContext.Add(demo);
             await _appDbContext.SaveChangesAsync();
-        }
-
-        public void Update(Demo demo, DbTransaction dbTransaction = null)
-        {
-            using (var connection = _appDbContext.Database.GetDbConnection())
-            {
-                connection.Execute("update Demo set Name=@Name where Id=@Id ", demo, dbTransaction);
-            }
         }
 
         public IEnumerable<Demo> All()

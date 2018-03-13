@@ -11,6 +11,7 @@ using ApplicationCore.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Transactions;
 using Infrastructure;
+using ApplicationCore.Dtos;
 
 namespace Web.Controllers
 {
@@ -22,12 +23,10 @@ namespace Web.Controllers
     public class DemoController : Controller
     {
         readonly IAppLogger<DemoController> _logger;
-        readonly UnitOfWorkFactory _unitOfWorkFactory;
 
-        public DemoController(IAppLogger<DemoController> appLogger, UnitOfWorkFactory unitOfWorkFactory)
+        public DemoController(IAppLogger<DemoController> appLogger)
         {
             _logger = appLogger;
-            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         /// <summary>
@@ -64,17 +63,22 @@ namespace Web.Controllers
         }
 
         /// <summary>
-        /// 使用事务
+        /// 添加实体示例
         /// </summary>
         /// <param name="demoRepository"></param>
+        /// <param name="sequenceGuidGenerator"></param>
+        /// <param name="demoDto">Demo传输对象</param>
         [HttpPost("UseTransaction")]
-        public void UseTransaction([FromServices]IDemoRepository demoRepository)
+        public void UseTransaction(
+            [FromServices]IDemoRepository demoRepository,
+            [FromServices]ISequenceGuidGenerator sequenceGuidGenerator,
+            [FromBody] DemoDto demoDto)
         {
-            var tran = _unitOfWorkFactory.GetUnitOfWork<AppDbContext>().BeginTransaction();
-            var entity = new Demo("张三");
-            demoRepository.AddAsync(entity).Wait();
-            demoRepository.Update(entity, tran);
-            tran.Commit();
+            var demo = demoDto.ToDemo();
+
+            demo.CreateIdWhenIsEmpty(sequenceGuidGenerator.SqlServerKey());//这个步骤非必需，仅演示用
+
+            demoRepository.AddAsync(demo).Wait();
         }
     }
 }

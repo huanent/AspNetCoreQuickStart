@@ -1,21 +1,33 @@
-﻿using System;
+﻿using ApplicationCore.SharedKernel;
+using System;
 using System.Threading;
 
-namespace ApplicationCore.SharedKernel
+namespace Infrastructure
 {
-    public static class SequenceGuidGenerator
+    public class SequenceGuidGenerator : ISequenceGuidGenerator
     {
+        class SequenceGuid : ISequenceGuid
+        {
+            readonly Guid _id;
 
-        static object _locker = new object();
-        static long _counter = DateTime.UtcNow.Ticks;
+            internal SequenceGuid(Guid guid)
+            {
+                _id = guid;
+            }
+
+            public Guid Id => _id;
+        }
+
+        object _locker = new object();
+        long _counter = DateTime.UtcNow.Ticks;
 
         /// <summary>
         /// 生成SqlServer可排序的guid
         /// </summary>
         /// <returns></returns>
-        public static Guid SqlServerKey()
+        public ISequenceGuid SqlServerKey()
         {
-            var guidBytes = Guid.NewGuid().ToByteArray();
+            byte[] guidBytes = Guid.NewGuid().ToByteArray();
             byte[] counterBytes;
 
             lock (_locker)
@@ -37,7 +49,8 @@ namespace ApplicationCore.SharedKernel
             guidBytes[14] = counterBytes[3];
             guidBytes[15] = counterBytes[2];
 
-            return new Guid(guidBytes);
+            var id = new Guid(guidBytes);
+            return new SequenceGuid(id);
         }
     }
 }
