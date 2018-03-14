@@ -19,5 +19,7 @@ namespace ApplicationCore.IRepositories
         void Save(Demo demo);
 
         void Delete(Guid id);
+
+        IEnumerable<Demo> GetPage(int offset, int pageSize, out int total);
     }
 }

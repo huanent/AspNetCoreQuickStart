@@ -43,6 +43,12 @@ namespace Infrastructure.Repositories
 
         public Demo FindByKey(Guid id) => _appDbContext.Demo.Find(id);
 
+        public IEnumerable<Demo> GetPage(int offset, int pageSize, out int total)
+        {
+            total = _appDbContext.Demo.Count();
+            return _appDbContext.Demo.Skip(offset).Take(pageSize);
+        }
+
         public IEnumerable<Demo> GetTopRecords(int count)
         {
             using (var connection = _appDbContext.Database.GetDbConnection())

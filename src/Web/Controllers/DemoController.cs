@@ -88,6 +88,23 @@ namespace Web.Controllers
         {
             return _demoRepository.GetTopRecords(top);
         }
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="dto">查询参数，如果有而外条件请继承此dto</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ResponsePageDto<Demo> GetPageList(RequestPageDto dto)
+        {
+
+            var list = _demoRepository.GetPage(dto.Offset(), dto.PageSize, out int total);
+            return new ResponsePageDto<Demo>
+            {
+                List = list,
+                Total = total
+            };
+        }
         #endregion
 
         #region 增删改

@@ -22,6 +22,10 @@ namespace Web.Dtos
         [Required, Range(1, int.MaxValue)]
         public int PageSize { get; set; }
 
-        public int Offset => (PageIndex - 1) * PageSize;
+        /// <summary>
+        /// 获取页偏移
+        /// </summary>
+        /// <returns></returns>
+        public int Offset() => (PageIndex - 1) * PageSize;
     }
 }

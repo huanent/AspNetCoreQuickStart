@@ -7,7 +7,7 @@ namespace ApplicationCore.Entities
 {
     public class Demo : EntityBase
     {
-        private Demo()
+        public Demo()
         {
 
         }
