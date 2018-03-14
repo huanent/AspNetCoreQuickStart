@@ -94,7 +94,7 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="dto">查询参数，如果有而外条件请继承此dto</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet(nameof(GetPageList))]
         public ResponsePageDto<Demo> GetPageList(RequestPageDto dto)
         {
 
