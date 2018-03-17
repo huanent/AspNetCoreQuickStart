@@ -1,8 +1,8 @@
 ﻿using ApplicationCore.Entities;
-using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
 using ApplicationCore.SharedKernel;
+using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Web.Utils;
 
 namespace Web.Controllers
 {
@@ -31,7 +32,6 @@ namespace Web.Controllers
             _demoRepository = demoRepository;
         }
 
-
         #region 系统信息
 
         /// <summary>
@@ -42,9 +42,10 @@ namespace Web.Controllers
         [HttpGet]
         public DateTime NowDateTime([FromServices] ISystemDateTime systemDateTime) => systemDateTime.Now;
 
-        #endregion
+        #endregion 系统信息
 
         #region 身份验证
+
         /// <summary>
         /// 测试申请jwt令牌
         /// </summary>
@@ -53,7 +54,7 @@ namespace Web.Controllers
         /// <returns></returns>
         [HttpGet(nameof(JwtToken)), Produces(typeof(String))]
         public string JwtToken(
-            [FromServices] IOptions<Settings> settings,
+            [FromServices] IOptions<AppSettings> settings,
             [FromServices]IHostingEnvironment env)
         {
             if (env.IsProduction()) return "当前为正式环境，此处不提供Token申请";
@@ -78,9 +79,11 @@ namespace Web.Controllers
             if (env.IsProduction()) return "当前为正式环境，不提供此查询";
             return User.Identity.Name;
         }
-        #endregion
+
+        #endregion 身份验证
 
         #region 查询
+
         /// <summary>
         /// 使用EF查询
         /// </summary>
@@ -110,17 +113,13 @@ namespace Web.Controllers
         [HttpGet(nameof(GetPageList))]
         public PageModel<Demo> GetPageList(GetPageModel dto)
         {
-            var list = _demoRepository.GetPage(dto.GetOffset(), dto.PageSize, out int total);
-
-            return new PageModel<Demo>
-            {
-                List = list,
-                Total = total
-            };
+            return _demoRepository.GetPage(dto);
         }
-        #endregion
+
+        #endregion 查询
 
         #region 增删改
+
         /// <summary>
         /// 添加实体示例
         /// </summary>
@@ -150,6 +149,7 @@ namespace Web.Controllers
         {
             _demoRepository.Delete(id);
         }
-        #endregion
+
+        #endregion 增删改
     }
 }

@@ -10,7 +10,7 @@ namespace Infrastructure
         readonly ILogger _logger;
         readonly EventId _eventId;
 
-        public AppLogger(ILoggerFactory factory, IOptions<Settings> settingsOptions)
+        public AppLogger(ILoggerFactory factory, IOptions<AppSettings> settingsOptions)
         {
             _logger = factory.CreateLogger<T>();
             var settings = settingsOptions.Value;

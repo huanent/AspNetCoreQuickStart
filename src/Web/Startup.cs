@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using Web.Filters;
+using Web.Utils;
 
 namespace Web
 {
@@ -21,25 +22,24 @@ namespace Web
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
-            _settings = configuration.GetSection("App").Get<Settings>();
+            _settings = configuration.Get<AppSettings>();
             _env = env;
         }
 
-        readonly IHostingEnvironment _env;
-        readonly Settings _settings;
+        private readonly IHostingEnvironment _env;
+        private readonly AppSettings _settings;
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureOptions(services);
             AddFilters(services);
+            AddCache(services);
             AddDbContext(services);
             AddAuth(services);
             AddSwagger(services);
             AddAppServices(services);
         }
-
-
 
         public void Configure(IApplicationBuilder app)
         {
@@ -51,15 +51,23 @@ namespace Web
         }
 
         #region 注册服务
+
+        private void AddCache(IServiceCollection services)
+        {
+            services.AddMemoryCache();
+        }
+
         private void ConfigureOptions(IServiceCollection services)
         {
-            services.Configure<Settings>(Configuration.GetSection("App"));
+            services.Configure<AppSettings>(Configuration.GetSection("App"));
         }
+
         private void AddAppServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
             services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
             services.AddSingleton<ISystemDateTime, SystemDateTime>();
+            services.AddSingleton<ICache, MemoryCache>();
             services.AddScoped<IDemoRepository, DemoRepository>();
         }
 
@@ -69,7 +77,9 @@ namespace Web
             {
                 o.OperationFilter<SwaggerFilter>();
                 o.SwaggerDoc("api", new Info());
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "web.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Web.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ApplicationCore.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Infrastructure.xml"));
             });
         }
 
@@ -94,8 +104,7 @@ namespace Web
 
         private void AddDbContext(IServiceCollection services)
         {
-            string connectionString = Configuration.GetConnectionString("Default");
-            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_settings.ConnectionStrings.Default));
         }
 
         private static void AddFilters(IServiceCollection services)
@@ -106,16 +115,21 @@ namespace Web
                 o.Filters.Add<GlobalExceptionFilter>();
             });
         }
-        #endregion
+
+        #endregion 注册服务
 
         #region 配置管道
+
         private void Init(IApplicationBuilder app)
         {
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                db.Database.Migrate();
+                if (_env.IsProduction())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    db.Database.Migrate();
+                }
 
                 var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<Startup>>();
                 logger.Warn($"当前运行环境：{_env.EnvironmentName}");
@@ -140,6 +154,7 @@ namespace Web
             app.UseSwagger();
             app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", _settings.AppName));
         }
-        #endregion
+
+        #endregion 配置管道
     }
 }

@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1705</NoWarn>
+    <NoWarn>1701;1702;1705;CS1591</NoWarn>
+    <DocumentationFile>bin\Debug\netstandard2.0\Infrastructure.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Infrastructure.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

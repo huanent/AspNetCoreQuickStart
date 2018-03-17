@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.SharedKernel
+namespace Infrastructure
 {
-    public class Settings
+    public class AppSettings
     {
+        /// <summary>
+        /// 连接字符串
+        /// </summary>
+        public ConnectionStrings ConnectionStrings { get; set; }
+
         /// <summary>
         /// 应用程序名称
         /// </summary>
@@ -21,5 +26,13 @@ namespace ApplicationCore.SharedKernel
         /// jwtToken密钥
         /// </summary>
         public string JwtKey { get; set; }
+    }
+
+    public class ConnectionStrings
+    {
+        /// <summary>
+        /// 默认连接
+        /// </summary>
+        public string Default { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Exceptions;
 using ApplicationCore.SharedKernel;
+using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,9 +15,9 @@ namespace Web.Filters
     {
         readonly ILoggerFactory _loggerFactory;
         readonly IHostingEnvironment _env;
-        readonly Settings _settings;
+        readonly AppSettings _settings;
 
-        public GlobalExceptionFilter(ILoggerFactory loggerFactory, IHostingEnvironment env, IOptions<Settings> settings)
+        public GlobalExceptionFilter(ILoggerFactory loggerFactory, IHostingEnvironment env, IOptions<AppSettings> settings)
         {
             _loggerFactory = loggerFactory;
             _env = env;
@@ -35,7 +36,7 @@ namespace Web.Filters
             else
             {
                 logger.LogError(
-                    new EventId(_settings.EventId, _settings.AppName),
+                    new EventId(_settings.EventId),
                     context.Exception,
                     context.Exception.Message);
 

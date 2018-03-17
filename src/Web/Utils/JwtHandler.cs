@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web
+namespace Web.Utils
 {
     public class JwtHandler
     {
