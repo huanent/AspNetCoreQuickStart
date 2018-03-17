@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -10,13 +11,13 @@ namespace ApplicationCore.IRepositories
     {
         IEnumerable<Demo> All();
 
-        Task AddAsync(Demo demo);
+        Task AddAsync(DemoModel demo);
 
         IEnumerable<Demo> GetTopRecords(int count);
 
         Demo FindByKey(Guid id);
 
-        void Save(Demo demo);
+        void Save(DemoModel model, Guid id);
 
         void Delete(Guid id);
 

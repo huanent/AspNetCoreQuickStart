@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Web.Dtos
+namespace ApplicationCore.Models
 {
-    /// <summary>
-    /// 希望查询分页可继承此Dto
-    /// </summary>
-    public class RequestPageDto
+    public class GetPageModel
     {
         /// <summary>
         /// 当前页数(从1开始)
@@ -26,6 +20,6 @@ namespace Web.Dtos
         /// 获取页偏移
         /// </summary>
         /// <returns></returns>
-        public int Offset() => (PageIndex - 1) * PageSize;
+        public int GetOffset() => (PageIndex - 1) * PageSize;
     }
 }

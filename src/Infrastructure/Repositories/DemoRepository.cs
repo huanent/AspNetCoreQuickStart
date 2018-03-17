@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
+using ApplicationCore.Models;
 using ApplicationCore.SharedKernel;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -15,15 +16,22 @@ namespace Infrastructure.Repositories
     {
         readonly AppDbContext _appDbContext;
         IAppLogger<DemoRepository> _appLogger;
+        ISystemDateTime _systemDateTime;
 
-        public DemoRepository(AppDbContext appDbContext, IAppLogger<DemoRepository> appLogger)
+        public DemoRepository(
+            AppDbContext appDbContext,
+            IAppLogger<DemoRepository> appLogger,
+            ISystemDateTime systemDateTime)
         {
             _appDbContext = appDbContext;
             _appLogger = appLogger;
+            _systemDateTime = systemDateTime;
         }
 
-        public async Task AddAsync(Demo demo)
+        public async Task AddAsync(DemoModel model)
         {
+            var demo = model.ToDemo();
+            demo.UpdateBasicInfo(_systemDateTime); //必须执行此步骤
             _appDbContext.Add(demo);
             await _appDbContext.SaveChangesAsync();
         }
@@ -57,9 +65,13 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public void Save(Demo demo)
+        public void Save(DemoModel model, Guid id)
         {
-            _appDbContext.Update(demo);
+            var entity = FindByKey(id);
+            if (entity == null) throw new AppException("未能找到要删除的对象");
+
+            entity.Update(model.Name);
+            _appDbContext.Update(entity);
             _appDbContext.SaveChanges();
         }
     }

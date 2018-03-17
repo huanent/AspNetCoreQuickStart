@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
+using ApplicationCore.Models;
 using ApplicationCore.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +10,6 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Web.Dtos;
 
 namespace Web.Controllers
 {
@@ -30,6 +30,19 @@ namespace Web.Controllers
             _logger = appLogger;
             _demoRepository = demoRepository;
         }
+
+
+        #region 系统信息
+
+        /// <summary>
+        /// 获取系统当前时间
+        /// </summary>
+        /// <param name="systemDateTime"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public DateTime NowDateTime([FromServices] ISystemDateTime systemDateTime) => systemDateTime.Now;
+
+        #endregion
 
         #region 身份验证
         /// <summary>
@@ -95,11 +108,11 @@ namespace Web.Controllers
         /// <param name="dto">查询参数，如果有而外条件请继承此dto</param>
         /// <returns></returns>
         [HttpGet(nameof(GetPageList))]
-        public ResponsePageDto<Demo> GetPageList(RequestPageDto dto)
+        public PageModel<Demo> GetPageList(GetPageModel dto)
         {
+            var list = _demoRepository.GetPage(dto.GetOffset(), dto.PageSize, out int total);
 
-            var list = _demoRepository.GetPage(dto.Offset(), dto.PageSize, out int total);
-            return new ResponsePageDto<Demo>
+            return new PageModel<Demo>
             {
                 List = list,
                 Total = total
@@ -111,35 +124,21 @@ namespace Web.Controllers
         /// <summary>
         /// 添加实体示例
         /// </summary>
-        /// <param name="sequenceGuidGenerator"></param>
-        /// <param name="demoDto">Demo传输对象</param>
         [HttpPost]
-        public void Post(
-            [FromServices]ISequenceGuidGenerator sequenceGuidGenerator,
-            [FromBody] DemoDto demoDto)
+        public void Post([FromBody] DemoModel model)
         {
-            var demo = demoDto.ToDemo();
-
-            demo.CreateIdWhenIsEmpty(sequenceGuidGenerator.SqlServerKey());//这个步骤非必需，仅演示用
-
-            _demoRepository.AddAsync(demo).Wait();
+            _demoRepository.AddAsync(model).Wait();
         }
 
         /// <summary>
         /// 更新实体示例
         /// </summary>
-        /// <param name="demoDto"></param>
+        /// <param name="model"></param>
         /// <param name="id"></param>
         [HttpPut("{id}")]
-        public void Put([FromBody] DemoDto demoDto, Guid id)
+        public void Put([FromBody] DemoModel model, Guid id)
         {
-            var demo = _demoRepository.FindByKey(id);
-
-            _logger.Warn($"尝试更新Id为{id}的Demo失败，原因为未在数据库找到");
-            if (demo == null) throw new AppException("未能找到指定的Demo");
-
-            demoDto.ToDemo(demo);
-            _demoRepository.Save(demo);
+            _demoRepository.Save(model, id);
         }
 
         /// <summary>

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Web.Dtos
+namespace ApplicationCore.Models
 {
-    public class ResponsePageDto<T> where T : new()
+    public class PageModel<T> where T : class
     {
         /// <summary>
         /// 分页数据

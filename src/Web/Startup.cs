@@ -59,6 +59,7 @@ namespace Web
         {
             services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
             services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
+            services.AddSingleton<ISystemDateTime, SystemDateTime>();
             services.AddScoped<IDemoRepository, DemoRepository>();
         }
 

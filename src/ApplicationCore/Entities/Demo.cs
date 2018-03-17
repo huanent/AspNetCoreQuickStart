@@ -17,7 +17,12 @@ namespace ApplicationCore.Entities
             Name = name;
         }
 
-        public string Name { get; set; }
+        public void Update(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; private set; }
 
     }
 }
