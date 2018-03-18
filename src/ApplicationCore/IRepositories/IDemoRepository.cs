@@ -2,6 +2,7 @@
 using ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace ApplicationCore.IRepositories
 
         Task AddAsync(DemoModel demo);
 
-        IEnumerable<Demo> GetTopRecords(int count);
+        IEnumerable<Demo> GetTopRecords(int count, IDbTransaction dbTransaction = null);
 
         Demo FindByKey(Guid id);
 

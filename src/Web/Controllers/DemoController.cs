@@ -6,6 +6,7 @@ using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -151,5 +152,14 @@ namespace Web.Controllers
         }
 
         #endregion 增删改
+
+        [HttpGet("RunTransaction")]
+        public void RunTransaction([FromServices]IUnitOfWork unitOfWork)
+        {
+            var tran = unitOfWork.BeginTransaction();
+            _demoRepository.AddAsync(new DemoModel { Name = "张三" });
+            var records = _demoRepository.GetTopRecords(10, tran);
+            tran.Commit();
+        }
     }
 }

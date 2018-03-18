@@ -7,6 +7,7 @@ using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -60,12 +61,10 @@ namespace Infrastructure.Repositories
             };
         }
 
-        public IEnumerable<Demo> GetTopRecords(int count)
+        public IEnumerable<Demo> GetTopRecords(int count, IDbTransaction dbTransaction = null)
         {
-            using (var connection = _appDbContext.Database.GetDbConnection())
-            {
-                return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count });
-            }
+            var connection = _appDbContext.Database.GetDbConnection();
+            return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count }, dbTransaction);
         }
 
         public void Save(DemoModel model, Guid id)

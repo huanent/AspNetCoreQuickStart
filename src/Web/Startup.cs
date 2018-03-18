@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Data;
 using System.IO;
 using Web.Filters;
 using Web.Utils;
@@ -35,7 +36,7 @@ namespace Web
             ConfigureOptions(services);
             AddFilters(services);
             AddCache(services);
-            AddDbContext(services);
+            AddDatabase(services);
             AddAuth(services);
             AddSwagger(services);
             AddAppServices(services);
@@ -59,7 +60,8 @@ namespace Web
 
         private void ConfigureOptions(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration.GetSection("App"));
+            services.Configure<AppSettings>(Configuration);
+            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
         }
 
         private void AddAppServices(IServiceCollection services)
@@ -68,6 +70,7 @@ namespace Web
             services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
             services.AddSingleton<ISystemDateTime, SystemDateTime>();
             services.AddSingleton<ICache, MemoryCache>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDemoRepository, DemoRepository>();
         }
 
@@ -102,9 +105,9 @@ namespace Web
            });
         }
 
-        private void AddDbContext(IServiceCollection services)
+        private void AddDatabase(IServiceCollection services)
         {
-            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_settings.ConnectionStrings.Default));
+            services.AddDbContextPool<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
         }
 
         private static void AddFilters(IServiceCollection services)
