@@ -14,7 +14,7 @@ namespace Web.Filters
             {
                 Name = "Authorization",
                 In = "header", //query formData ..
-                Description = "请在此处填写Jwt令牌，令牌通过/api/Demo/JwtToken申请",
+                Description = "请在此处填写Jwt令牌",
                 Required = false,
                 Type = "string"
             });
