@@ -1,4 +1,5 @@
-﻿using ApplicationCore.IRepositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.IRepositories;
 using ApplicationCore.SharedKernel;
 using Infrastructure;
 using Infrastructure.Repositories;
@@ -13,6 +14,8 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using Web.Filters;
 using Web.Utils;
 
@@ -122,7 +125,23 @@ namespace Web
             services.AddSingleton<ISystemDateTime, SystemDateTime>();
             services.AddSingleton<ICache, MemoryCache>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IDemoRepository, DemoRepository>();
+            AutoInjectService(services, "Infrastructure", "Infrastructure.Repositories");
+        }
+
+        /// <summary>
+        /// 自动注入指定程序集的指定命名空间下的服务
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="assemblyName"></param>
+        /// <param name="namespaceStartsWith"></param>
+        private void AutoInjectService(IServiceCollection services, string assemblyName, string namespaceStartsWith)
+        {
+            var types = Assembly.Load(assemblyName).GetTypes().Where(w => !w.IsNested && w.FullName.StartsWith(namespaceStartsWith));
+            foreach (TypeInfo type in types)
+            {
+                var interfaceType = type.ImplementedInterfaces.First();
+                services.AddScoped(interfaceType, type);
+            }
         }
 
         #endregion 注册服务
