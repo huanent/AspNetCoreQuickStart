@@ -136,7 +136,7 @@ namespace Web
         /// <param name="namespaceStartsWith"></param>
         private void AutoInjectService(IServiceCollection services, string assemblyName, string namespaceStartsWith)
         {
-            var types = Assembly.Load(assemblyName).GetTypes().Where(w => !w.IsNested && w.FullName.StartsWith(namespaceStartsWith));
+            var types = Assembly.Load(assemblyName).GetTypes().Where(w => !w.IsNested && !w.IsInterface && w.FullName.StartsWith(namespaceStartsWith));
             foreach (TypeInfo type in types)
             {
                 var interfaceType = type.ImplementedInterfaces.First();
