@@ -1,3 +1,3 @@
-##±¾ÏîÄ¿ÊÇÒ»¸öÔ¤ÅäÖÃµÄasp.net coreÄ£°å£¬Ö¼ÔÚ¿ªÏä¼´ÓÃ¿ìËÙ¿ª·¢
+## æœ¬é¡¹ç›®æ˜¯ä¸€ä¸ªé¢„é…ç½®çš„asp.net coreæ¨¡æ¿ï¼Œæ—¨åœ¨å¼€ç®±å³ç”¨å¿«é€Ÿå¼€å‘
 
-[Ê¹ÓÃÖ¸ÄÏ]()
+[ä½¿ç”¨æŒ‡å—](https://github.com/huanent/AspNetCoreQuickStart/blob/master/docs/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.md)
