@@ -1,1 +1,3 @@
-# AspNetCoreQuickStart
+##本项目是一个预配置的asp.net core模板，旨在开箱即用快速开发
+
+[使用指南]()
