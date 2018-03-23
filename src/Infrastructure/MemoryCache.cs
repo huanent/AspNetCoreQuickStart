@@ -25,5 +25,10 @@ namespace Infrastructure
             if (offset.HasValue) _memoryCache.Set(key, value);
             else _memoryCache.Set(key, value, offset.Value);
         }
+
+        public void Remove(string key)
+        {
+            _memoryCache.Remove(key);
+        }
     }
 }

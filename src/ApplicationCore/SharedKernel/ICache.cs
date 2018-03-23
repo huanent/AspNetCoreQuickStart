@@ -25,5 +25,11 @@ namespace ApplicationCore.SharedKernel
         /// <param name="value">值</param>
         /// <param name="offset">过期时间偏移</param>
         void Set(object key, object value, TimeSpan? offset = null);
+
+        /// <summary>
+        /// 移除指定键的值
+        /// </summary>
+        /// <param name="key"></param>
+        void Remove(string key);
     }
 }
