@@ -1,7 +1,10 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -9,8 +12,11 @@ namespace Infrastructure
     {
         public DbSet<Demo> Demo { get; set; }
 
-        public AppDbContext(DbContextOptions options) : base(options)
+        readonly ISystemDateTime _systemDateTime;
+
+        public AppDbContext(DbContextOptions options, ISystemDateTime systemDateTime) : base(options)
         {
+            _systemDateTime = systemDateTime;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,6 +38,31 @@ namespace Infrastructure
                         dynamic instance = item.FullName;
                         modelBuilder.ApplyConfiguration(assembly.CreateInstance(instance));
                     });
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            UpdateBasicInfo();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            UpdateBasicInfo();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void UpdateBasicInfo()
+        {
+            var entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added);
+
+            foreach (var entry in entries)
+            {
+                if (entry.Entity is EntityBase auditableEntity)
+                {
+                    auditableEntity.UpdateBasicInfo(_systemDateTime);
+                }
+            }
         }
     }
 }

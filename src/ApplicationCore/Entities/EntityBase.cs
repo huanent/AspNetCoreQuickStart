@@ -21,6 +21,7 @@ namespace ApplicationCore.Entities
         /// 修改时间
         /// </summary>
         public DateTime ModifiedDate { get; private set; }
+
         /// <summary>
         /// 如果Id是空的则创建（如果Id为空，EF在进行持久化时会自动创建Id的，所以一般是【不需要】调用此方法，除非你希望提前知道Id）
         /// </summary>
@@ -37,7 +38,6 @@ namespace ApplicationCore.Entities
         /// </summary>
         public void UpdateBasicInfo(ISystemDateTime systemDateTime)
         {
-            //EF2.1会新增实体依赖注入，到时候完善
             if (CreateDate == default(DateTime)) CreateDate = systemDateTime.Now;
             ModifiedDate = systemDateTime.Now;
         }

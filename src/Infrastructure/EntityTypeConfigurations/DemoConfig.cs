@@ -9,7 +9,7 @@ namespace Infrastructure.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<Demo> builder)
         {
-            builder.HasKey(h => h.Id);
+            builder.InitBuildInProperty();
         }
     }
 }

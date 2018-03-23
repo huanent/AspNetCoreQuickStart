@@ -75,7 +75,7 @@ namespace Web
             });
 
             services.AddMemoryCache();
-            services.AddDbContextPool<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
+            services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
         }
 
         public void Configure(IApplicationBuilder app)
