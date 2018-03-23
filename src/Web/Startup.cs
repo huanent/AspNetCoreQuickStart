@@ -126,6 +126,7 @@ namespace Web
             services.AddSingleton<ICache, MemoryCache>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             AutoInjectService(services, "Infrastructure", "Infrastructure.Repositories");
+            AutoInjectService(services, "ApplicationCore", "ApplicationCore.Services");
         }
 
         /// <summary>
