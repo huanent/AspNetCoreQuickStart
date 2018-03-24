@@ -31,12 +31,13 @@ namespace Web
 
         private readonly IHostingEnvironment _env;
         private readonly AppSettings _settings;
-        private readonly string _AppCors;
+        private readonly string _AppCors = string.Empty;
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration);
+
+            ConfigureOptions(services);
             AddSystemService(services);
             AddAppServices(services);
         }
@@ -64,6 +65,11 @@ namespace Web
         }
 
         #region 注册服务
+        private void ConfigureOptions(IServiceCollection services)
+        {
+            services.Configure<AppSettings>(Configuration);
+            services.Configure<Jwt>(Configuration.GetSection("Jwt"));
+        }
 
         private void AddSystemService(IServiceCollection services)
         {
@@ -85,7 +91,7 @@ namespace Web
                     ValidateAudience = false, //不验证受众方
                                               //ValidateLifetime = false, //不验证过期时间
                     ClockSkew = TimeSpan.Zero, //时钟偏差设为0
-                    IssuerSigningKey = JwtHandler.GetSecurityKey(_settings.JwtKey), //密钥
+                    IssuerSigningKey = JwtHandler.GetSecurityKey(_settings.Jwt.Key), //密钥
                 };
             });
 
@@ -101,6 +107,8 @@ namespace Web
             {
                 o.Filters.Add<GlobalActionFilter>();
                 o.Filters.Add<GlobalExceptionFilter>();
+                o.Filters.Add<GlobalResourceFilter>();
+                o.Filters.Add<GlobalResultFilter>();
                 o.Filters.Add(new CorsAuthorizationFilterFactory(nameof(_AppCors)));
             });
 
@@ -115,6 +123,7 @@ namespace Web
             services.AddSingleton<ISystemDateTime, SystemDateTime>();
             services.AddSingleton<ICache, MemoryCache>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICurrentIdentity, CurrentIdentity>();
             services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
             AutoInjectService(services, "Infrastructure", "Infrastructure.Repositories");
             AutoInjectService(services, "ApplicationCore", "ApplicationCore.Services");

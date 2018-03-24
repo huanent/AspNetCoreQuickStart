@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
 using ApplicationCore.ISharedKernel;
 using ApplicationCore.Models;
@@ -48,24 +49,27 @@ namespace Web.Controllers
         /// <summary>
         /// 测试申请jwt令牌
         /// </summary>
-        /// <param name="settings"></param>
+        /// <param name="options"></param>
         /// <param name="env"></param>
         /// <returns></returns>
         [HttpGet(nameof(JwtToken)), Produces(typeof(String))]
-        public string JwtToken(
-            [FromServices] IOptions<AppSettings> settings,
+        public void JwtToken(
+            [FromServices] IOptions<Jwt> options,
             [FromServices]IHostingEnvironment env)
         {
-            if (env.IsProduction()) return "当前为正式环境，此处不提供Token申请";
-            var options = settings.Value;
+            if (env.IsProduction()) throw new AppException("当前环境为生产环境，不提供令牌申请");
+            var settings = options.Value;
 
             string token = JwtHandler.GetToken(
-               options.JwtKey,
+               settings.Key,
                new Claim[] {
-                    new Claim(ClaimTypes.Name,"testAccount"),
-               }, DateTime.UtcNow.AddDays(1));
+                    new Claim(ClaimTypes.Sid,Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Expired,settings.Exp.ToString()),
+                    new Claim(nameof(settings.Refresh),DateTime.UtcNow.Add(settings.Refresh).ToString()),
+               }, DateTime.UtcNow.Add(settings.Exp));
 
-            return $"Bearer {token}";
+            token = $"Bearer {token}";
+            Response.Headers.Add(settings.HeaderName, token);
         }
 
         /// <summary>
@@ -73,10 +77,12 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(nameof(AuthIdentity)), Authorize]
-        public dynamic AuthIdentity([FromServices]IHostingEnvironment env)
+        public dynamic AuthIdentity(
+            [FromServices]IHostingEnvironment env,
+            [FromServices] ICurrentIdentity identity)
         {
             if (env.IsProduction()) return "当前为正式环境，不提供此查询";
-            return User.Identity.Name;
+            return identity.Id;
         }
 
         #endregion 身份验证
