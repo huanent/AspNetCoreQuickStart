@@ -1,6 +1,4 @@
 ﻿using ApplicationCore.Exceptions;
-using ApplicationCore.SharedKernel;
-using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

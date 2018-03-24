@@ -1,12 +1,10 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
+using ApplicationCore.ISharedKernel;
 using ApplicationCore.Models;
-using ApplicationCore.SharedKernel;
-using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;

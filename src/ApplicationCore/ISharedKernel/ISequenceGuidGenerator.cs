@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace ApplicationCore.SharedKernel
+namespace ApplicationCore.ISharedKernel
 {
     /// <summary>
     /// 生成一个可排序的guid，在必要时可以在实体保存前预先生成实体Id

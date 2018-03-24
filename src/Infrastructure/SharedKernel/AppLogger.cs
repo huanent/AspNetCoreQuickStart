@@ -1,20 +1,18 @@
-﻿using ApplicationCore.SharedKernel;
+﻿using ApplicationCore.ISharedKernel;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
 
-namespace Infrastructure
+namespace Infrastructure.SharedKernel
 {
     public class AppLogger<T> : IAppLogger<T>
     {
         readonly ILogger _logger;
         readonly EventId _eventId;
 
-        public AppLogger(ILoggerFactory factory, IOptions<AppSettings> settingsOptions)
+        public AppLogger(ILoggerFactory factory, Func<EventId> eventId)
         {
             _logger = factory.CreateLogger<T>();
-            var settings = settingsOptions.Value;
-            _eventId = new EventId(settings.EventId, settings.AppName);
+            _eventId = eventId();
         }
 
         public void Error(string msg, Exception exception = null)

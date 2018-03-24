@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.SharedKernel
+namespace ApplicationCore.ISharedKernel
 {
     /// <summary>
     /// 缓存访问器

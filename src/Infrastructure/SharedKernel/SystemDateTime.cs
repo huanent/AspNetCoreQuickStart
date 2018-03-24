@@ -1,9 +1,7 @@
-﻿using ApplicationCore.SharedKernel;
+﻿using ApplicationCore.ISharedKernel;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Infrastructure
+namespace Infrastructure.SharedKernel
 {
     public class SystemDateTime : ISystemDateTime
     {

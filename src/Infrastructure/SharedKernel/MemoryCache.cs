@@ -1,10 +1,8 @@
-﻿using ApplicationCore.SharedKernel;
+﻿using ApplicationCore.ISharedKernel;
 using Microsoft.Extensions.Caching.Memory;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Infrastructure
+namespace Infrastructure.SharedKernel
 {
     public class MemoryCache : ICache
     {

@@ -1,8 +1,8 @@
-﻿using ApplicationCore.SharedKernel;
+﻿using ApplicationCore.ISharedKernel;
 using System;
 using System.Threading;
 
-namespace Infrastructure
+namespace Infrastructure.SharedKernel
 {
     public class SequenceGuidGenerator : ISequenceGuidGenerator
     {

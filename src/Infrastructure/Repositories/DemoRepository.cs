@@ -1,9 +1,10 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
+using ApplicationCore.ISharedKernel;
 using ApplicationCore.Models;
-using ApplicationCore.SharedKernel;
 using Dapper;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

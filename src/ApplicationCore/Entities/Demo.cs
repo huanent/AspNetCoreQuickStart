@@ -1,9 +1,4 @@
-﻿using ApplicationCore.SharedKernel;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ApplicationCore.Entities
+﻿namespace ApplicationCore.Entities
 {
     public class Demo : EntityBase
     {

@@ -1,18 +1,17 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.IRepositories;
-using ApplicationCore.SharedKernel;
-using Infrastructure;
-using Infrastructure.Repositories;
+﻿using ApplicationCore.ISharedKernel;
+using Infrastructure.Data;
+using Infrastructure.SharedKernel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,69 +31,23 @@ namespace Web
 
         private readonly IHostingEnvironment _env;
         private readonly AppSettings _settings;
+        private readonly string _AppCors;
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureOptions(services);
+            services.Configure<AppSettings>(Configuration);
             AddSystemService(services);
             AddAppServices(services);
-        }
-
-        private void AddSystemService(IServiceCollection services)
-        {
-            services.AddSwaggerGen(o =>
-            {
-                o.OperationFilter<SwaggerFilter>();
-                o.SwaggerDoc("api", new Info());
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Web.xml"));
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ApplicationCore.xml"));
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Infrastructure.xml"));
-            });
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false, //不验证发行方
-                    ValidateAudience = false, //不验证受众方
-                                              //ValidateLifetime = false, //不验证过期时间
-                    ClockSkew = TimeSpan.Zero, //时钟偏差设为0
-                    IssuerSigningKey = JwtHandler.GetSecurityKey(_settings.JwtKey), //密钥
-                };
-            });
-
-            services.AddMvc(o =>
-            {
-                o.Filters.Add<GlobalActionFilter>();
-                o.Filters.Add<GlobalExceptionFilter>();
-            });
-
-            services.AddMemoryCache();
-            services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseAuthentication();
             app.UseMvc();
-
+            if (!_env.IsProduction()) app.UseCors(nameof(_AppCors));
             app.UseSwagger();
             app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", _settings.AppName));
-
-            if (!_env.IsProduction())
-            {
-                app.UseCors(o =>
-                {
-                    o.AllowAnyHeader();
-                    o.AllowAnyMethod();
-                    o.AllowAnyOrigin();
-                });
-            }
 
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
@@ -112,10 +65,47 @@ namespace Web
 
         #region 注册服务
 
-        private void ConfigureOptions(IServiceCollection services)
+        private void AddSystemService(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration);
-            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
+            services.AddSwaggerGen(o =>
+            {
+                o.OperationFilter<SwaggerFilter>();
+                o.SwaggerDoc("api", new Info());
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Web.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ApplicationCore.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Infrastructure.xml"));
+            });
+
+            services.AddAuthentication(options => options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false, //不验证发行方
+                    ValidateAudience = false, //不验证受众方
+                                              //ValidateLifetime = false, //不验证过期时间
+                    ClockSkew = TimeSpan.Zero, //时钟偏差设为0
+                    IssuerSigningKey = JwtHandler.GetSecurityKey(_settings.JwtKey), //密钥
+                };
+            });
+
+            services.AddCors(options =>
+                options.AddPolicy(nameof(_AppCors), builder =>
+                     builder.AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowAnyOrigin()
+                )
+            );
+
+            services.AddMvc(o =>
+            {
+                o.Filters.Add<GlobalActionFilter>();
+                o.Filters.Add<GlobalExceptionFilter>();
+                o.Filters.Add(new CorsAuthorizationFilterFactory(nameof(_AppCors)));
+            });
+
+            services.AddMemoryCache();
+            services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
         }
 
         private void AddAppServices(IServiceCollection services)
@@ -125,6 +115,7 @@ namespace Web
             services.AddSingleton<ISystemDateTime, SystemDateTime>();
             services.AddSingleton<ICache, MemoryCache>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
             AutoInjectService(services, "Infrastructure", "Infrastructure.Repositories");
             AutoInjectService(services, "ApplicationCore", "ApplicationCore.Services");
         }

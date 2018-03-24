@@ -1,8 +1,8 @@
-﻿using ApplicationCore.SharedKernel;
+﻿using ApplicationCore.ISharedKernel;
 using Newtonsoft.Json;
 using System;
 
-namespace Infrastructure
+namespace Infrastructure.SharedKernel
 {
     public class JsonConventer : IJsonConventer
     {
