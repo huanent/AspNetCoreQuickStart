@@ -21,8 +21,6 @@ namespace Web.Filters
         {
             bool isAuth = context.HttpContext.User.Identity.IsAuthenticated;
             string id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
-
-#warning 此处后续应该添加对Id的有效性认证如果Id不能够在User表中找到，则返回一个401,如果isAuth为false则在User表创建一个匿名用户
             _identity.SetIdentity(isAuth && id != null, id == null ? Guid.Empty : new Guid(id));
             await next();
         }

@@ -36,7 +36,6 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             ConfigureOptions(services);
             AddSystemService(services);
             AddAppServices(services);
@@ -47,18 +46,22 @@ namespace Web
             app.UseAuthentication();
             app.UseMvc();
             if (!_env.IsProduction()) app.UseCors(nameof(_AppCors));
+
+            //swagger
             app.UseSwagger();
             app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", _settings.AppName));
 
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {
+                //auto Migrate
                 if (_env.IsProduction())
                 {
                     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                     db.Database.Migrate();
                 }
 
+                //log currentEnv
                 var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<Startup>>();
                 logger.Warn($"当前运行环境：{_env.EnvironmentName}");
             }
@@ -73,6 +76,7 @@ namespace Web
 
         private void AddSystemService(IServiceCollection services)
         {
+            //swagger
             services.AddSwaggerGen(o =>
             {
                 o.OperationFilter<SwaggerFilter>();
@@ -82,6 +86,7 @@ namespace Web
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Infrastructure.xml"));
             });
 
+            //jwt auth
             services.AddAuthentication(options => options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -95,6 +100,7 @@ namespace Web
                 };
             });
 
+            //cors
             services.AddCors(options =>
                 options.AddPolicy(nameof(_AppCors), builder =>
                      builder.AllowAnyHeader()
@@ -103,6 +109,7 @@ namespace Web
                 )
             );
 
+            //mvc
             services.AddMvc(o =>
             {
                 o.Filters.Add<GlobalActionFilter>();
@@ -130,7 +137,7 @@ namespace Web
         }
 
         /// <summary>
-        /// 自动注入指定程序集的指定命名空间下的服务
+        /// auto inject service
         /// </summary>
         /// <param name="services"></param>
         /// <param name="assemblyName"></param>
