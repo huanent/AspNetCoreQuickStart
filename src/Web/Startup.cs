@@ -44,6 +44,7 @@ namespace Web
         public void Configure(IApplicationBuilder app)
         {
             app.UseAuthentication();
+            app.UseFileServer();
             app.UseMvc();
             if (!_env.IsProduction()) app.UseCors(nameof(_AppCors));
 
