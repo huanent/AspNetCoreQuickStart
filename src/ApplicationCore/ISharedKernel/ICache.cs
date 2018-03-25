@@ -30,6 +30,6 @@ namespace ApplicationCore.ISharedKernel
         /// 移除指定键的值
         /// </summary>
         /// <param name="key"></param>
-        void Remove(string key);
+        void Remove(object key);
     }
 }

@@ -17,17 +17,20 @@ namespace Infrastructure.Repositories
     public class DemoRepository : IDemoRepository
     {
         readonly AppDbContext _appDbContext;
-        IAppLogger<DemoRepository> _appLogger;
-        ISystemDateTime _systemDateTime;
+        readonly IAppLogger<DemoRepository> _appLogger;
+        readonly ISystemDateTime _systemDateTime;
+        readonly ICache _cache;
 
         public DemoRepository(
             AppDbContext appDbContext,
             IAppLogger<DemoRepository> appLogger,
-            ISystemDateTime systemDateTime)
+            ISystemDateTime systemDateTime,
+            ICache cache)
         {
             _appDbContext = appDbContext;
             _appLogger = appLogger;
             _systemDateTime = systemDateTime;
+            _cache = cache;
         }
 
         public async Task AddAsync(DemoModel model)
@@ -49,9 +52,18 @@ namespace Infrastructure.Repositories
 
             _appDbContext.Remove(demo);
             _appDbContext.SaveChanges();
+            _cache.Remove(id);
         }
 
         public Demo FindByKey(Guid id) => _appDbContext.Demo.Find(id);
+
+        public Demo FindByKeyOnCache(Guid id)
+        {
+            if (_cache.Get(id, out Demo value)) return value;
+            var demo = FindByKey(id);
+            _cache.Set(id, demo);
+            return demo;
+        }
 
         public PageModel<Demo> GetPage(GetPageModel model)
         {
@@ -76,6 +88,7 @@ namespace Infrastructure.Repositories
             entity.Update(model.Name);
             _appDbContext.Update(entity);
             _appDbContext.SaveChanges();
+            _cache.Remove(id);
         }
     }
 }

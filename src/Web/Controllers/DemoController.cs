@@ -121,6 +121,16 @@ namespace Web.Controllers
             return _demoRepository.GetPage(dto);
         }
 
+        /// <summary>
+        /// 从缓存读取实体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("FindOnCache/{id}")]
+        public Demo FindOnCache(Guid id)
+        {
+            return _demoRepository.FindByKeyOnCache(id);
+        }
         #endregion 查询
 
         #region 增删改

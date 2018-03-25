@@ -20,11 +20,11 @@ namespace Infrastructure.SharedKernel
 
         public void Set(object key, object value, TimeSpan? offset = null)
         {
-            if (offset.HasValue) _memoryCache.Set(key, value);
-            else _memoryCache.Set(key, value, offset.Value);
+            if (offset.HasValue) _memoryCache.Set(key, value, offset.Value);
+            else _memoryCache.Set(key, value);
         }
 
-        public void Remove(string key)
+        public void Remove(object key)
         {
             _memoryCache.Remove(key);
         }

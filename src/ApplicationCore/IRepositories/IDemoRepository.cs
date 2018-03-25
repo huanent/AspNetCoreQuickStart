@@ -18,6 +18,8 @@ namespace ApplicationCore.IRepositories
 
         Demo FindByKey(Guid id);
 
+        Demo FindByKeyOnCache(Guid id);
+
         void Save(DemoModel model, Guid id);
 
         void Delete(Guid id);
