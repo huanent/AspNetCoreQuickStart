@@ -24,6 +24,6 @@ namespace ApplicationCore.IRepositories
 
         void Delete(Guid id);
 
-        PageModel<Demo> GetPage(GetPageModel dto);
+        PageModel<Demo> GetPage(GetDemoPageModel dto);
     }
 }

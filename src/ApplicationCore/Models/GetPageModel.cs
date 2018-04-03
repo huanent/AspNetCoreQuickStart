@@ -15,11 +15,5 @@ namespace ApplicationCore.Models
         /// </summary>
         [Required, Range(1, int.MaxValue)]
         public int PageSize { get; set; }
-
-        /// <summary>
-        /// 获取页偏移
-        /// </summary>
-        /// <returns></returns>
-        public int GetOffset() => (PageIndex - 1) * PageSize;
     }
 }

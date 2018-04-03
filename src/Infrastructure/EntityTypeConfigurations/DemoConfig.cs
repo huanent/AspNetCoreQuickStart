@@ -10,6 +10,8 @@ namespace Infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Demo> builder)
         {
             builder.InitBuildInProperty();
+            builder.Property(p => p.Name).IsRequired().IsUnicode().HasMaxLength(16);
+            builder.Property(p => p.Age).IsRequired();
         }
     }
 }

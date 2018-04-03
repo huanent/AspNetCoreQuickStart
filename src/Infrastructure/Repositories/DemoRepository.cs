@@ -64,13 +64,16 @@ namespace Infrastructure.Repositories
             return demo;
         }
 
-        public PageModel<Demo> GetPage(GetPageModel model)
+        public PageModel<Demo> GetPage(GetDemoPageModel model)
         {
-            return new PageModel<Demo>
-            {
-                Total = _appDbContext.Demo.Count(),
-                List = _appDbContext.Demo.Skip(model.GetOffset()).Take(model.PageSize)
-            };
+            var data = _appDbContext.Demo.AsNoTracking();
+
+            data.IfNotNull(model.Name, q => q.Where(w => w.Name == model.Name));
+            data.IfHaveValue(model.Age, q => q.Where(w => w.Age == model.Age));
+
+            int total = data.Count();
+            var list = data.GetPage(model);
+            return new PageModel<Demo>(total, list);
         }
 
         public IEnumerable<Demo> GetTopRecords(int count, IDbTransaction dbTransaction = null)
