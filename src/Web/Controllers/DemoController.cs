@@ -1,6 +1,5 @@
 ﻿using ApplicationCore;
 using ApplicationCore.Entities;
-using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -113,7 +112,7 @@ namespace Web.Controllers
         /// <summary>
         /// 分页查询
         /// </summary>
-        /// <param name="dto">查询参数，如果有而外条件请继承此dto</param>
+        /// <param name="model">分页查询模型</param>
         /// <returns></returns>
         [HttpGet(nameof(GetPageList))]
         public PageModel<Demo> GetPageList(GetDemoPageModel model)

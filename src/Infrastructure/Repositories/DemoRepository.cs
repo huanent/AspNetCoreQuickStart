@@ -1,6 +1,5 @@
 ﻿using ApplicationCore;
 using ApplicationCore.Entities;
-using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
 using Dapper;
