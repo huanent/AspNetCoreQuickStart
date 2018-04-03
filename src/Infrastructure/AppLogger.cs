@@ -1,8 +1,8 @@
-﻿using ApplicationCore.ISharedKernel;
+﻿using ApplicationCore;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace Infrastructure.SharedKernel
+namespace Infrastructure
 {
     public class AppLogger<T> : IAppLogger<T>
     {

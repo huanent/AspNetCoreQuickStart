@@ -1,4 +1,4 @@
-﻿using ApplicationCore.ISharedKernel;
+﻿using ApplicationCore;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 

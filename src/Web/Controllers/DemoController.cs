@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Entities;
+﻿using ApplicationCore;
+using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
 using ApplicationCore.IRepositories;
-using ApplicationCore.ISharedKernel;
 using ApplicationCore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;

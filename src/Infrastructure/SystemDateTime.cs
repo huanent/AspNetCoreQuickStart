@@ -1,4 +1,4 @@
-﻿using ApplicationCore.ISharedKernel;
+﻿using ApplicationCore;
 using System;
 
 namespace Infrastructure.SharedKernel

@@ -1,12 +1,12 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.ISharedKernel;
+﻿using ApplicationCore;
+using ApplicationCore.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data
+namespace Infrastructure
 {
     public class AppDbContext : DbContext
     {

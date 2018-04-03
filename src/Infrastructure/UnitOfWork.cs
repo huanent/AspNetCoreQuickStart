@@ -1,5 +1,4 @@
-﻿using ApplicationCore.ISharedKernel;
-using Infrastructure.Data;
+﻿using ApplicationCore;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Data.Common;

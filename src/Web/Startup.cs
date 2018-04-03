@@ -1,5 +1,5 @@
-﻿using ApplicationCore.ISharedKernel;
-using Infrastructure.Data;
+﻿using ApplicationCore;
+using Infrastructure;
 using Infrastructure.SharedKernel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

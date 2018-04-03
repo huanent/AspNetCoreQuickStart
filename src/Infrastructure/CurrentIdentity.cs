@@ -1,7 +1,5 @@
-﻿using ApplicationCore.ISharedKernel;
+﻿using ApplicationCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure.SharedKernel
 {
