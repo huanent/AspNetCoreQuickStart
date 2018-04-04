@@ -37,7 +37,7 @@ namespace Web.Filters
             }
             else if (context.Exception is AppException appException)
             {
-                logger.LogWarning(appException.Message);
+                logger.LogInformation(appException.Message);
                 context.Result = new BadRequestObjectResult(appException.Message);
             }
             else
