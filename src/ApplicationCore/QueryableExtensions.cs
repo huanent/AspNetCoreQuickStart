@@ -45,12 +45,7 @@ namespace ApplicationCore
         /// <returns></returns>
         public static IQueryable<T> IfNotNull<T>(this IQueryable<T> ts, string prop, Func<IQueryable<T>, IQueryable<T>> toDo)
         {
-            if (!string.IsNullOrWhiteSpace(prop))
-            {
-                ts = toDo(ts);
-                return ts;
-            };
-
+            if (!string.IsNullOrWhiteSpace(prop)) ts = toDo(ts);
             return ts;
         }
 
@@ -65,12 +60,7 @@ namespace ApplicationCore
         /// <returns></returns>
         public static IQueryable<T> IfHaveValue<T, TValue>(this IQueryable<T> ts, TValue? prop, Func<IQueryable<T>, IQueryable<T>> toDo) where TValue : struct
         {
-            if (prop.HasValue)
-            {
-                ts = toDo(ts);
-                return ts;
-            };
-
+            if (prop.HasValue) ts = toDo(ts);
             return ts;
         }
     }
