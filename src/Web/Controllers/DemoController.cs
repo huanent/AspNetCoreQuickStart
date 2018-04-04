@@ -59,15 +59,7 @@ namespace Web.Controllers
             if (env.IsProduction()) throw new AppException("当前环境为生产环境，不提供令牌申请");
             var settings = options.Value;
 
-            string token = JwtHandler.GetToken(
-               settings.Key,
-               new Claim[] {
-                    new Claim(ClaimTypes.Sid,Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Expired,settings.Exp.ToString()),
-                    new Claim(nameof(settings.Refresh),DateTime.UtcNow.Add(settings.Refresh).ToString()),
-               }, DateTime.UtcNow.Add(settings.Exp));
-
-            token = $"Bearer {token}";
+            string token = JwtHandler.CreateToken(settings.Key, Guid.NewGuid().ToString(), settings.Exp, settings.Refresh);
             Response.Headers.Add(settings.HeaderName, token);
         }
 

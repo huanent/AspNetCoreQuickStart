@@ -22,20 +22,13 @@ namespace Web.Filters
             var user = context.HttpContext.User;
             if (user.Identity.IsAuthenticated)
             {
-                string refresh = user.FindFirstValue(nameof(_jwt.Refresh));
-                if (refresh != null && DateTime.UtcNow > DateTime.Parse(refresh))
+                string refresh = user.FindFirstValue(JwtHandler.JWT_REF_DATE);
+                string sid = user.FindFirstValue(ClaimTypes.Sid);
+
+                if (refresh != null && sid != null && DateTime.UtcNow > DateTime.Parse(refresh))
                 {
-
-                    string token = JwtHandler.GetToken(
-                                       _jwt.Key,
-                                       new Claim[] {
-                                            new Claim(ClaimTypes.Sid,user.FindFirstValue(ClaimTypes.Sid)),
-                                            new Claim(ClaimTypes.Expired,user.FindFirstValue(ClaimTypes.Expired)),
-                                            new Claim(nameof(_jwt.Refresh),DateTime.UtcNow.Add(_jwt.Refresh).ToString()),
-                                       }, DateTime.UtcNow.Add(TimeSpan.Parse(user.FindFirstValue(ClaimTypes.Expired))));
-
-                    token = $"Bearer {token}";
-                    context.HttpContext.Response.Headers.Add("jwt", token);
+                    string token = JwtHandler.CreateToken(_jwt.Key, sid, _jwt.Exp, _jwt.Refresh);
+                    context.HttpContext.Response.Headers.Add(_jwt.HeaderName, token);
                     _appLogger.Info($"成功刷新Jwt令牌为 {token}");
                 }
             }

@@ -9,15 +9,16 @@ namespace Web.Utils
 {
     public class JwtHandler
     {
+        public const string JWT_REF_DATE = nameof(JWT_REF_DATE);
 
-        public static string GetToken(
-            string key,
-            IEnumerable<Claim> claims = null,
-            DateTime? expires = null,
-            DateTime? notBefore = null,
-            string securityAlgorithms = SecurityAlgorithms.HmacSha256,
-            string audience = null,
-            string issuer = null)
+        static string GetToken(
+           string key,
+           IEnumerable<Claim> claims = null,
+           DateTime? expires = null,
+           DateTime? notBefore = null,
+           string securityAlgorithms = SecurityAlgorithms.HmacSha256,
+           string audience = null,
+           string issuer = null)
         {
             var _signKey = GetSecurityKey(key);
             var header = new JwtHeader(new SigningCredentials(_signKey, securityAlgorithms));
@@ -30,6 +31,20 @@ namespace Web.Utils
         {
             var keyAsBytes = Encoding.ASCII.GetBytes(key);
             return new SymmetricSecurityKey(keyAsBytes);
+        }
+
+        public static string CreateToken(string key, string sid, TimeSpan exp, TimeSpan Refresh)
+        {
+            string token = GetToken(
+               key,
+               new Claim[] {
+                    new Claim(ClaimTypes.Sid,sid),
+                    new Claim(JWT_REF_DATE,DateTime.UtcNow.Add(Refresh).ToString()),
+               }, DateTime.UtcNow.Add(exp));
+
+            token = $"Bearer {token}";
+
+            return token;
         }
     }
 }

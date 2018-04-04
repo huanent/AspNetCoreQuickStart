@@ -3,7 +3,7 @@
 namespace ApplicationCore.Entities
 {
 
-    public abstract class EntityBase<T> where T : IEquatable<T>
+    public abstract class EntityBase<T> where T : struct
     {
         public T Id { get; protected set; }
 
