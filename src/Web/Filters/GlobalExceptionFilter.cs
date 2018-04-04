@@ -26,7 +26,16 @@ namespace Web.Filters
         {
             var logger = _loggerFactory.CreateLogger(context.Exception.TargetSite.ReflectedType);
 
-            if (context.Exception is AppException appException)
+            if (context.Exception is ModelStateException modelStateException)
+            {
+                logger.LogError(
+                   new EventId(_settings.EventId),
+                     modelStateException,
+                     modelStateException.Message);
+
+                context.Result = new BadRequestObjectResult(modelStateException.Message);
+            }
+            else if (context.Exception is AppException appException)
             {
                 logger.LogWarning(appException.Message);
                 context.Result = new BadRequestObjectResult(appException.Message);
@@ -41,6 +50,7 @@ namespace Web.Filters
                 if (_env.IsProduction()) context.Result = new InternalServerErrorResult("未知错误,请重试");
                 else context.Result = new InternalServerErrorResult(context.Exception);
             }
+
             context.ExceptionHandled = true;
             await Task.CompletedTask;
         }

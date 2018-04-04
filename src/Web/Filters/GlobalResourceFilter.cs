@@ -20,7 +20,7 @@ namespace Web.Filters
             bool isAuth = context.HttpContext.User.Identity.IsAuthenticated;
             string id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
             if (isAuth && id == null) throw new AppException("Token缺少关键信息");
-            _identity.SetIdentity(isAuth, new Guid(id));
+            _identity.SetIdentity(isAuth, id == null ? Guid.Empty : new Guid(id));
             await next();
         }
     }
