@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Web.Utils
+namespace Web
 {
     public class JwtHandler
     {
