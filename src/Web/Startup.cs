@@ -106,6 +106,7 @@ namespace Web
                      builder.AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowAnyOrigin()
+                            .WithExposedHeaders(_settings.Jwt.HeaderName)
                 )
             );
 
