@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Web.Controllers
 {
@@ -48,16 +49,18 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="options"></param>
         /// <param name="env"></param>
+        /// <param name="jwtHandler"></param>
         /// <returns></returns>
         [HttpGet(nameof(JwtToken)), Produces(typeof(String))]
         public void JwtToken(
             [FromServices] IOptions<Jwt> options,
-            [FromServices]IHostingEnvironment env)
+            [FromServices]IHostingEnvironment env,
+            [FromServices] JwtHandler jwtHandler)
         {
             if (env.IsProduction()) throw new AppException("当前环境为生产环境，不提供令牌申请");
             var settings = options.Value;
 
-            string token = JwtHandler.CreateToken(settings.Key, Guid.NewGuid().ToString(), settings.Exp, settings.Refresh);
+            string token = jwtHandler.CreateToken(new Claim(ClaimTypes.Sid, Guid.Empty.ToString()));
             Response.Headers.Add(settings.HeaderName, token);
         }
 

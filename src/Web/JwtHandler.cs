@@ -1,7 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -9,42 +11,34 @@ namespace Web
 {
     public class JwtHandler
     {
-        public const string JWT_REF_DATE = nameof(JWT_REF_DATE);
+        readonly Jwt _jwt;
 
-        static string GetToken(
-           string key,
-           IEnumerable<Claim> claims = null,
-           DateTime? expires = null,
-           DateTime? notBefore = null,
-           string securityAlgorithms = SecurityAlgorithms.HmacSha256,
-           string audience = null,
-           string issuer = null)
+        public const string JWT_REFRESH_DATE = nameof(JWT_REFRESH_DATE);
+
+        public JwtHandler(IOptions<Jwt> options)
         {
-            var _signKey = GetSecurityKey(key);
-            var header = new JwtHeader(new SigningCredentials(_signKey, securityAlgorithms));
-            var payload = new JwtPayload(issuer, audience, claims, notBefore, expires);
-            var token = new JwtSecurityToken(header, payload);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            _jwt = options.Value;
         }
 
-        public static SecurityKey GetSecurityKey(string key)
+        public string CreateToken(params Claim[] claims)
         {
-            var keyAsBytes = Encoding.ASCII.GetBytes(key);
-            return new SymmetricSecurityKey(keyAsBytes);
-        }
+            byte[] keyAsBytes = Encoding.ASCII.GetBytes(_jwt.Key);
+            var signKey = new SymmetricSecurityKey(keyAsBytes);
+            var claimsWithRefresh = claims.ToList();
+            string refreshDate = DateTime.UtcNow.Add(_jwt.Refresh).ToBinary().ToString();
+            claimsWithRefresh.Add(new Claim(JWT_REFRESH_DATE, refreshDate));
+            var header = new JwtHeader(new SigningCredentials(signKey, _jwt.SecurityAlgorithm));
 
-        public static string CreateToken(string key, string sid, TimeSpan exp, TimeSpan Refresh)
-        {
-            string token = GetToken(
-               key,
-               new Claim[] {
-                    new Claim(ClaimTypes.Sid,sid),
-                    new Claim(JWT_REF_DATE,DateTime.UtcNow.Add(Refresh).ToString()),
-               }, DateTime.UtcNow.Add(exp));
+            var payload = new JwtPayload(
+                null,
+                null,
+                claimsWithRefresh,
+                DateTime.UtcNow.Add(_jwt.NotBefore),
+                DateTime.UtcNow.Add(_jwt.Exp));
 
-            token = $"Bearer {token}";
-
-            return token;
+            var securityToken = new JwtSecurityToken(header, payload);
+            string token = new JwtSecurityTokenHandler().WriteToken(securityToken);
+            return $"Bearer {token}";
         }
     }
 }

@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Web.Filters;
 
 namespace Web
@@ -90,13 +91,15 @@ namespace Web
             services.AddAuthentication(options => options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
+                byte[] keyAsBytes = Encoding.ASCII.GetBytes(_settings.Jwt.Key);
+                var signKey = new SymmetricSecurityKey(keyAsBytes);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false, //不验证发行方
                     ValidateAudience = false, //不验证受众方
-                                              //ValidateLifetime = false, //不验证过期时间
+                    //ValidateLifetime = false, //不验证过期时间
                     ClockSkew = TimeSpan.Zero, //时钟偏差设为0
-                    IssuerSigningKey = JwtHandler.GetSecurityKey(_settings.Jwt.Key), //密钥
+                    IssuerSigningKey = signKey, //密钥
                 };
             });
 
@@ -122,6 +125,7 @@ namespace Web
 
             services.AddMemoryCache();
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
+            services.AddSingleton<JwtHandler>();
         }
 
         private void AddAppServices(IServiceCollection services)

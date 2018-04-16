@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace Web
 {
@@ -48,6 +49,16 @@ namespace Web
         public string Key { get; set; } = "safjniiioasfjnsklncmijaniwnk";
 
         /// <summary>
+        /// 安全算法
+        /// </summary>
+        public string SecurityAlgorithm { get; set; } = SecurityAlgorithms.HmacSha256;
+
+        /// <summary>
+        /// 在时间之前不可用
+        /// </summary>
+        public TimeSpan NotBefore { get; set; } = TimeSpan.Zero;
+
+        /// <summary>
         /// 过期时间
         /// </summary>
         public TimeSpan Exp { get; set; } = new TimeSpan(24, 0, 0);
@@ -56,5 +67,10 @@ namespace Web
         /// 刷新时间
         /// </summary>
         public TimeSpan Refresh { get; set; } = new TimeSpan(0, 0, 30);
+
+        /// <summary>
+        /// 自动续期（类似cookie方式，如果用户在不停刷新网页，则令牌过期时间始终为最后一次刷新网页时间加Exp时间）
+        /// </summary>
+        public bool AutoRefresh { get; set; } = true;
     }
 }
