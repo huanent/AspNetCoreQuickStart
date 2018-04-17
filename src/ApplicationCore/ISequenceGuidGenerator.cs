@@ -14,6 +14,12 @@ namespace ApplicationCore
         /// </summary>
         /// <returns></returns>
         ISequenceGuid SqlServerKey();
+
+        /// <summary>
+        /// 生成MySql的可排序Guid主键
+        /// </summary>
+        /// <returns></returns>
+        ISequenceGuid MySqlKey(bool oldGuids);
     }
 
     /// <summary>

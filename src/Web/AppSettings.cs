@@ -46,7 +46,7 @@ namespace Web
         /// <summary>
         /// 加密密钥
         /// </summary>
-        public string Key { get; set; } = "safjniiioasfjnsklncmijaniwnk";
+        public string Key { get; set; } = "zasjdncfslxoanaslkx";
 
         /// <summary>
         /// 安全算法
@@ -54,7 +54,7 @@ namespace Web
         public string SecurityAlgorithm { get; set; } = SecurityAlgorithms.HmacSha256;
 
         /// <summary>
-        /// 在时间之前不可用
+        /// 在什么时间之前不可用
         /// </summary>
         public TimeSpan NotBefore { get; set; } = TimeSpan.Zero;
 

@@ -22,6 +22,8 @@ namespace Web
 {
     public class Startup
     {
+        #region ctor
+
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
@@ -29,10 +31,23 @@ namespace Web
             _env = env;
         }
 
-        private readonly IHostingEnvironment _env;
-        private readonly AppSettings _settings;
-        private readonly string _AppCors = string.Empty;
+        #endregion
+
+        #region fields
+
+        readonly IHostingEnvironment _env;
+        readonly AppSettings _settings;
+        const string APP_CORS_POLICY = nameof(APP_CORS_POLICY);
+
+        #endregion
+
+        #region props
+
         public IConfiguration Configuration { get; }
+
+        #endregion
+
+        #region methods
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -46,7 +61,7 @@ namespace Web
             app.UseAuthentication();
             app.UseFileServer();
             app.UseMvc();
-            if (!_env.IsProduction()) app.UseCors(nameof(_AppCors));
+            if (!_env.IsProduction()) app.UseCors(nameof(APP_CORS_POLICY));
 
             //swagger
             app.UseSwagger();
@@ -68,7 +83,6 @@ namespace Web
             }
         }
 
-        #region 注册服务
         private void ConfigureOptions(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration);
@@ -105,7 +119,7 @@ namespace Web
 
             //cors
             services.AddCors(options =>
-                options.AddPolicy(nameof(_AppCors), builder =>
+                options.AddPolicy(nameof(APP_CORS_POLICY), builder =>
                      builder.AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowAnyOrigin()
@@ -120,7 +134,7 @@ namespace Web
                 o.Filters.Add<GlobalExceptionFilter>();
                 o.Filters.Add<GlobalResourceFilter>();
                 o.Filters.Add<GlobalResultFilter>();
-                o.Filters.Add(new CorsAuthorizationFilterFactory(nameof(_AppCors)));
+                o.Filters.Add(new CorsAuthorizationFilterFactory(nameof(APP_CORS_POLICY)));
             });
 
             services.AddMemoryCache();
@@ -157,6 +171,6 @@ namespace Web
             }
         }
 
-        #endregion 注册服务
+        #endregion
     }
 }
