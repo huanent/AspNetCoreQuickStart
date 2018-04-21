@@ -5,16 +5,17 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Web.Application;
 
-namespace Web.Filters
+namespace Web.Auth
 {
-    public class GlobalResultFilter : IAsyncResultFilter
+    public class JwtRefreshFilter : IAsyncResultFilter
     {
         readonly JwtHandler _jwtHandler;
-        readonly IAppLogger<GlobalResultFilter> _appLogger;
+        readonly IAppLogger<JwtRefreshFilter> _appLogger;
         readonly Jwt _jwt;
 
-        public GlobalResultFilter(JwtHandler jwtHandler, IAppLogger<GlobalResultFilter> appLogger, IOptions<Jwt> options)
+        public JwtRefreshFilter(JwtHandler jwtHandler, IAppLogger<JwtRefreshFilter> appLogger, IOptions<Jwt> options)
         {
             _jwtHandler = jwtHandler;
             _appLogger = appLogger;

@@ -7,15 +7,15 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Web.Filters
+namespace Web.Application
 {
-    public class GlobalExceptionFilter : IAsyncExceptionFilter
+    public class GlobalExceptionHandleFilter : IAsyncExceptionFilter
     {
         readonly ILoggerFactory _loggerFactory;
         readonly IHostingEnvironment _env;
         readonly AppSettings _settings;
 
-        public GlobalExceptionFilter(ILoggerFactory loggerFactory, IHostingEnvironment env, IOptions<AppSettings> settings)
+        public GlobalExceptionHandleFilter(ILoggerFactory loggerFactory, IHostingEnvironment env, IOptions<AppSettings> settings)
         {
             _loggerFactory = loggerFactory;
             _env = env;

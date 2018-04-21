@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 
-namespace Web
+namespace Web.Application
 {
     public class AppSettings
     {

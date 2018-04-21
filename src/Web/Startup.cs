@@ -1,22 +1,18 @@
 ﻿using ApplicationCore;
 using Infrastructure;
 using Infrastructure.SharedKernel;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using Web.Filters;
+using Web.Application;
+using Web.Auth;
+using Web.Swagger;
 
 namespace Web
 {
@@ -26,7 +22,7 @@ namespace Web
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
+            _configuration = configuration;
             _settings = configuration.Get<AppSettings>();
             _env = env;
         }
@@ -37,13 +33,7 @@ namespace Web
 
         readonly IHostingEnvironment _env;
         readonly AppSettings _settings;
-        const string APP_CORS_POLICY = nameof(APP_CORS_POLICY);
-
-        #endregion
-
-        #region props
-
-        public IConfiguration Configuration { get; }
+        readonly IConfiguration _configuration;
 
         #endregion
 
@@ -58,15 +48,16 @@ namespace Web
 
         public void Configure(IApplicationBuilder app)
         {
+            if (!_env.IsProduction()) app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseAuthentication();
             app.UseFileServer();
             app.UseMvc();
-            if (!_env.IsProduction()) app.UseCors(nameof(APP_CORS_POLICY));
+            app.UseAppSwagger();
+            PreStart(app);
+        }
 
-            //swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", _settings.AppName));
-
+        private void PreStart(IApplicationBuilder app)
+        {
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {
@@ -85,61 +76,25 @@ namespace Web
 
         private void ConfigureOptions(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration);
-            services.Configure<Jwt>(Configuration.GetSection("Jwt"));
+            services.Configure<AppSettings>(_configuration);
+            services.Configure<Jwt>(_configuration.GetSection("Jwt"));
         }
 
         private void AddSystemService(IServiceCollection services)
         {
-            //swagger
-            services.AddSwaggerGen(o =>
-            {
-                o.OperationFilter<SwaggerFilter>();
-                o.SwaggerDoc("api", new Info());
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Web.xml"));
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ApplicationCore.xml"));
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Infrastructure.xml"));
-            });
-
-            //jwt auth
-            services.AddAuthentication(options => options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                byte[] keyAsBytes = Encoding.ASCII.GetBytes(_settings.Jwt.Key);
-                var signKey = new SymmetricSecurityKey(keyAsBytes);
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false, //不验证发行方
-                    ValidateAudience = false, //不验证受众方
-                    //ValidateLifetime = false, //不验证过期时间
-                    ClockSkew = TimeSpan.Zero, //时钟偏差设为0
-                    IssuerSigningKey = signKey, //密钥
-                };
-            });
-
-            //cors
-            services.AddCors(options =>
-                options.AddPolicy(nameof(APP_CORS_POLICY), builder =>
-                     builder.AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowAnyOrigin()
-                            .WithExposedHeaders(_settings.Jwt.HeaderName)
-                )
-            );
-
-            //mvc
-            services.AddMvc(o =>
-            {
-                o.Filters.Add<GlobalActionFilter>();
-                o.Filters.Add<GlobalExceptionFilter>();
-                o.Filters.Add<GlobalResourceFilter>();
-                o.Filters.Add<GlobalResultFilter>();
-                o.Filters.Add(new CorsAuthorizationFilterFactory(nameof(APP_CORS_POLICY)));
-            });
-
+            services.AddAppSwagger();
+            services.AddAppAuthentication(_settings.Jwt.Key);
+            services.AddAppAuthorization();
             services.AddMemoryCache();
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
-            services.AddSingleton<JwtHandler>();
+
+            services.AddMvc(o =>
+            {
+                o.Filters.Add<ModelStateValidFilter>();
+                o.Filters.Add<GlobalExceptionHandleFilter>();
+                o.Filters.Add<IdentityHandleFilter>();
+                o.Filters.Add<JwtRefreshFilter>();
+            });
         }
 
         private void AddAppServices(IServiceCollection services)

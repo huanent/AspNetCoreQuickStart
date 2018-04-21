@@ -5,12 +5,12 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Web.Filters
+namespace Web.Auth
 {
-    public class GlobalResourceFilter : IAsyncResourceFilter
+    public class IdentityHandleFilter : IAsyncResourceFilter
     {
         CurrentIdentity _identity;
-        public GlobalResourceFilter(ICurrentIdentity identity)
+        public IdentityHandleFilter(ICurrentIdentity identity)
         {
             _identity = (CurrentIdentity)identity;
         }

@@ -1,15 +1,14 @@
-﻿using ApplicationCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Filters
+namespace Web.Application
 {
-    public class GlobalActionFilter : IAsyncActionFilter
+    public class ModelStateValidFilter : IAsyncActionFilter
     {
         readonly IHostingEnvironment _env;
-        public GlobalActionFilter(IHostingEnvironment env)
+        public ModelStateValidFilter(IHostingEnvironment env)
         {
             _env = env;
         }

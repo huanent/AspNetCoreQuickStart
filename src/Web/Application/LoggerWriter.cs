@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace Web
+namespace Web.Application
 {
     public class LoggerWriter : ILoggerWriter
     {

@@ -2,7 +2,7 @@
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 
-namespace Web.Filters
+namespace Web.Swagger
 {
     public class SwaggerFilter : IOperationFilter
     {

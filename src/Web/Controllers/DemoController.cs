@@ -9,6 +9,8 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Web.Application;
+using Web.Auth;
 
 namespace Web.Controllers
 {
@@ -68,7 +70,7 @@ namespace Web.Controllers
         /// 获取当前身份信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet(nameof(AuthIdentity)), Authorize]
+        [HttpGet(nameof(AuthIdentity)), Authorize(AuthDefaults.AuthPolicy)]
         public dynamic AuthIdentity(
             [FromServices]IHostingEnvironment env,
             [FromServices] ICurrentIdentity identity)
