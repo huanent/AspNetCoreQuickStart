@@ -9,7 +9,7 @@ namespace Web.Auth
 {
     public class IdentityHandleFilter : IAsyncResourceFilter
     {
-        CurrentIdentity _identity;
+        readonly CurrentIdentity _identity;
         public IdentityHandleFilter(ICurrentIdentity identity)
         {
             _identity = (CurrentIdentity)identity;
@@ -18,9 +18,15 @@ namespace Web.Auth
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
             bool isAuth = context.HttpContext.User.Identity.IsAuthenticated;
-            string id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
-            if (isAuth && id == null) throw new AppException("Token缺少关键信息");
-            _identity.SetIdentity(isAuth, id == null ? Guid.Empty : new Guid(id));
+
+            if (isAuth)
+            {
+                string id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
+                if (id == null) throw new AppException("Token缺少关键信息Sid,sid为用户唯一识别码，一般为主键id");
+                _identity.SetIdentity(true, new Guid(id));
+            }
+            else _identity.SetIdentity(false, Guid.Empty);
+
             await next();
         }
     }
