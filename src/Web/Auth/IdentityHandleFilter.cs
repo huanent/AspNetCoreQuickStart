@@ -19,15 +19,17 @@ namespace Web.Auth
         {
             bool isAuth = context.HttpContext.User.Identity.IsAuthenticated;
 
-            if (isAuth)
-            {
-                string id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
-                if (id == null) throw new AppException("Token缺少关键信息Sid,sid为用户唯一识别码，一般为主键id");
-                _identity.SetIdentity(true, new Guid(id));
-            }
+            if (isAuth) SetAuthedInfo(context);
             else _identity.SetIdentity(false, Guid.Empty);
 
             await next();
+        }
+
+        private void SetAuthedInfo(ResourceExecutingContext context)
+        {
+            string id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
+            if (id == null) throw new AppException("缺少关键信息Sid,sid为用户唯一识别码，一般为主键id");
+            _identity.SetIdentity(true, new Guid(id));
         }
     }
 }

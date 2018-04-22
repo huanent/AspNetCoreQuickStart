@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,14 @@ namespace Web.Auth
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthDefaults.AuthPolicy, builder =>
+                var schemes = new List<string>
                 {
-                    builder.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-                    builder.RequireClaim(ClaimTypes.Sid);
-                });
+                    JwtBearerDefaults.AuthenticationScheme
+                };
+
+                //if(混合鉴权时)schemes.Add(其他授权scheme)
+
+                options.DefaultPolicy = new AuthorizationPolicy(options.DefaultPolicy.Requirements, schemes);
             });
 
             return services;
