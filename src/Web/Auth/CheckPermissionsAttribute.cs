@@ -12,11 +12,17 @@ using System.Net;
 
 namespace Web.Auth
 {
-    public class PermissionAttribute : AuthorizeAttribute, IAsyncActionFilter
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class CheckPermissionsAttribute : ActionFilterAttribute
     {
-        public string Permission { get; set; }
+        public string Permission { get; private set; }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public CheckPermissionsAttribute(string permission)
+        {
+            Permission = permission;
+        }
+
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             if (!string.IsNullOrWhiteSpace(Permission))
             {

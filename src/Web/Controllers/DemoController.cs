@@ -70,7 +70,7 @@ namespace Web.Controllers
         /// 获取当前身份信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet(nameof(AuthIdentity)), Permission]
+        [HttpGet(nameof(AuthIdentity)), Authorize, CheckPermissions(Permission.SomeBehavior)]
         public dynamic AuthIdentity(
             [FromServices]IHostingEnvironment env,
             [FromServices] ICurrentIdentity identity)
