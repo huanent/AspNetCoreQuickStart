@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -8,7 +9,7 @@ namespace Web.Auth
 {
     public static class AuthenticationExtensions
     {
-        public static IServiceCollection AddAppAuthentication(this IServiceCollection services,string jwtKey)
+        public static IServiceCollection AddAppAuthentication(this IServiceCollection services, string jwtKey)
         {
             services.AddAuthentication()
             .AddJwtBearer(options =>

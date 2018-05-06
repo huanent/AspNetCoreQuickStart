@@ -18,7 +18,6 @@ namespace Web
 {
     public class Startup
     {
-        #region ctor
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -27,17 +26,9 @@ namespace Web
             _env = env;
         }
 
-        #endregion
-
-        #region fields
-
         readonly IHostingEnvironment _env;
         readonly AppSettings _settings;
         readonly IConfiguration _configuration;
-
-        #endregion
-
-        #region methods
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -110,12 +101,6 @@ namespace Web
             AutoInjectService(services, "ApplicationCore", "ApplicationCore.Services");
         }
 
-        /// <summary>
-        /// auto inject service
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="assemblyName"></param>
-        /// <param name="namespaceStartsWith"></param>
         private void AutoInjectService(IServiceCollection services, string assemblyName, string namespaceStartsWith)
         {
             var types = Assembly.Load(assemblyName).GetTypes().Where(w => !w.IsNested && !w.IsInterface && w.FullName.StartsWith(namespaceStartsWith));
@@ -126,6 +111,5 @@ namespace Web
             }
         }
 
-        #endregion
     }
 }

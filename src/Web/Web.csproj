@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.0\Web.xml</DocumentationFile>
+    <DocumentationFile>\bin\Debug\netcoreapp2.0\Web.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
   </PropertyGroup>

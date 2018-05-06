@@ -7,7 +7,7 @@ namespace Infrastructure.SharedKernel
     {
         public void SetIdentity(bool isLogin, Guid id)
         {
-            IsLogin = IsLogin;
+            IsLogin = isLogin;
             Id = id;
         }
 
