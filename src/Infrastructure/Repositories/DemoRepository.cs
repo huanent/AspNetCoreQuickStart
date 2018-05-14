@@ -75,10 +75,10 @@ namespace Infrastructure.Repositories
             return new PageModel<Demo>(total, list);
         }
 
-        public IEnumerable<Demo> GetTopRecords(int count, IDbTransaction dbTransaction = null)
+        public IEnumerable<Demo> GetTopRecords(int count)
         {
             var connection = _appDbContext.Database.GetDbConnection();
-            return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count }, dbTransaction);
+            return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count });
         }
 
         public void Save(DemoModel model, Guid id)

@@ -14,7 +14,7 @@ namespace ApplicationCore.IRepositories
 
         Task AddAsync(DemoModel demo);
 
-        IEnumerable<Demo> GetTopRecords(int count, IDbTransaction dbTransaction = null);
+        IEnumerable<Demo> GetTopRecords(int count);
 
         Demo FindByKey(Guid id);
 

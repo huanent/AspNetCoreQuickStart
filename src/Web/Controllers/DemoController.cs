@@ -160,14 +160,5 @@ namespace Web.Controllers
         }
 
         #endregion 增删改
-
-        [HttpGet("RunTransaction")]
-        public void RunTransaction([FromServices]IUnitOfWork unitOfWork)
-        {
-            var tran = unitOfWork.BeginTransaction();
-            _demoRepository.AddAsync(new DemoModel { Name = "张三" });
-            var records = _demoRepository.GetTopRecords(10, tran);
-            tran.Commit();
-        }
     }
 }

@@ -18,6 +18,9 @@ namespace Web
 {
     public class Startup
     {
+        readonly IHostingEnvironment _env;
+        readonly AppSettings _settings;
+        readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -25,10 +28,6 @@ namespace Web
             _settings = configuration.Get<AppSettings>();
             _env = env;
         }
-
-        readonly IHostingEnvironment _env;
-        readonly AppSettings _settings;
-        readonly IConfiguration _configuration;
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -68,6 +67,7 @@ namespace Web
         private void ConfigureOptions(IServiceCollection services)
         {
             services.Configure<AppSettings>(_configuration);
+            services.Configure<ConnectionStrings>(_configuration.GetSection("ConnectionStrings"));
             services.Configure<Jwt>(_configuration.GetSection("Jwt"));
         }
 
@@ -94,8 +94,8 @@ namespace Web
             services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
             services.AddSingleton<ISystemDateTime, SystemDateTime>();
             services.AddSingleton<ICache, MemoryCache>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICurrentIdentity, CurrentIdentity>();
+            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
             AutoInjectService(services, "Infrastructure", "Infrastructure.Repositories");
             AutoInjectService(services, "ApplicationCore", "ApplicationCore.Services");
