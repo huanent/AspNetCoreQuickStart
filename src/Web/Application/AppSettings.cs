@@ -18,7 +18,7 @@ namespace Web.Application
         /// <summary>
         /// 定义本程序的日志事件Id
         /// </summary>
-        public int EventId { get; set; } = 64490;
+        public int EventId { get; set; }
 
         /// <summary>
         /// jwt身份验证
@@ -41,12 +41,12 @@ namespace Web.Application
         /// <summary>
         /// 返回的http头部名称
         /// </summary>
-        public string HeaderName { get; set; } = "jwt";
+        public string HeaderName { get; set; }
 
         /// <summary>
         /// 加密密钥
         /// </summary>
-        public string Key { get; set; } = "zasjdncfslxoanaslkx";
+        public string Key { get; set; }
 
         /// <summary>
         /// 安全算法
