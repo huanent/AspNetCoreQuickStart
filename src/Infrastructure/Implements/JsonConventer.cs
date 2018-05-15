@@ -1,4 +1,5 @@
 ﻿using ApplicationCore;
+using ApplicationCore.SharedKernel;
 using Newtonsoft.Json;
 using System;
 

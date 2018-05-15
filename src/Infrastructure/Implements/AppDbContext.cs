@@ -1,5 +1,6 @@
 ﻿using ApplicationCore;
 using ApplicationCore.Entities;
+using ApplicationCore.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;

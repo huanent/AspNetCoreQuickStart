@@ -1,4 +1,4 @@
-﻿using ApplicationCore;
+﻿using ApplicationCore.SharedKernel;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using System;

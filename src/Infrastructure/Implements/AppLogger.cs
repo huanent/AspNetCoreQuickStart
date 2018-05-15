@@ -1,4 +1,5 @@
 ﻿using ApplicationCore;
+using ApplicationCore.SharedKernel;
 using Microsoft.Extensions.Logging;
 using System;
 

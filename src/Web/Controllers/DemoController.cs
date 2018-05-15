@@ -2,6 +2,7 @@
 using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
+using ApplicationCore.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

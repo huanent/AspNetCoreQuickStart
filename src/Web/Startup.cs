@@ -1,6 +1,5 @@
-﻿using ApplicationCore;
-using Infrastructure;
-using Infrastructure.SharedKernel;
+﻿using ApplicationCore.SharedKernel;
+using Infrastructure.Implements;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
