@@ -18,17 +18,20 @@ namespace Infrastructure.Repositories
         readonly IAppLogger<DemoRepository> _appLogger;
         readonly ISystemDateTime _systemDateTime;
         readonly ICache _cache;
+        readonly IDbConnectionFactory _connectionFactory;
 
         public DemoRepository(
             AppDbContext appDbContext,
             IAppLogger<DemoRepository> appLogger,
             ISystemDateTime systemDateTime,
-            ICache cache)
+            ICache cache,
+            IDbConnectionFactory connectionFactory)
         {
             _appDbContext = appDbContext;
             _appLogger = appLogger;
             _systemDateTime = systemDateTime;
             _cache = cache;
+            _connectionFactory = connectionFactory;
         }
 
         public async Task AddAsync(DemoModel model)
@@ -77,8 +80,10 @@ namespace Infrastructure.Repositories
 
         public IEnumerable<Demo> GetTopRecords(int count)
         {
-            var connection = _appDbContext.Database.GetDbConnection();
-            return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count });
+            using (var connection = _connectionFactory.DefaultQuery())
+            {
+                return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count });
+            }
         }
 
         public void Save(DemoModel model, Guid id)
