@@ -16,7 +16,8 @@ namespace Infrastructure.Migrations
                     Age = table.Column<int>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ModifiedDate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 16, nullable: false)
+                    Name = table.Column<string>(maxLength: 16, nullable: false),
+                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {

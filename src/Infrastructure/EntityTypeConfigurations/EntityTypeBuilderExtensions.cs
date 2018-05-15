@@ -12,6 +12,7 @@ namespace Infrastructure.EntityTypeConfigurations
         public static void InitBuildInProperty<T>(this EntityTypeBuilder<T> builder, string datebasePrimaryKey = "Id") where T : class
         {
             builder.HasKey("Id");
+
             builder.Property("Id").HasColumnName(datebasePrimaryKey);
 
             builder.Property("CreateDate")
@@ -19,6 +20,9 @@ namespace Infrastructure.EntityTypeConfigurations
 
             builder.Property("ModifiedDate")
                 .IsRequired();
+
+            builder.Property("Timestamp")
+                .IsRowVersion();
         }
     }
 }

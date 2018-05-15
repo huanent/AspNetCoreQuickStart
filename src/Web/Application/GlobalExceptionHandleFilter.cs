@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
@@ -34,6 +35,11 @@ namespace Web.Application
                      modelStateException.Message);
 
                 context.Result = new BadRequestObjectResult(modelStateException.Message);
+            }
+            else if (context.Exception is DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                logger.LogWarning(dbUpdateConcurrencyException, "数据库存在并发问题");
+                context.Result = new BadRequestObjectResult("网络故障,请重试");
             }
             else if (context.Exception is AppException appException)
             {

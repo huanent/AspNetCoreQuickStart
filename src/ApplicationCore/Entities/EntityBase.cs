@@ -22,6 +22,11 @@ namespace ApplicationCore.Entities
         public DateTime ModifiedDate { get; private set; }
 
         /// <summary>
+        /// 时间戳
+        /// </summary>
+        public byte[] Timestamp { get; set; }
+
+        /// <summary>
         /// 如果Id是空的则创建（如果Id为空，EF在进行持久化时会自动创建Id的，所以一般是【不需要】调用此方法，除非你希望提前知道Id）
         /// </summary>
         /// <param name="guid">可排序Guid</param>
