@@ -7,22 +7,28 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Implements
+namespace Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
         public DbSet<Demo> Demo { get; set; }
 
         readonly ISystemDateTime _systemDateTime;
+        readonly IDbConnectionFactory _dbConnectionFactory;
 
-        public AppDbContext(DbContextOptions options, ISystemDateTime systemDateTime) : base(options)
+        public AppDbContext(IDbConnectionFactory dbConnectionFactory, ISystemDateTime systemDateTime)
         {
             _systemDateTime = systemDateTime;
+            _dbConnectionFactory = dbConnectionFactory;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_dbConnectionFactory.Default());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             RegisterEntityTypeConfigurations(modelBuilder);
         }
 

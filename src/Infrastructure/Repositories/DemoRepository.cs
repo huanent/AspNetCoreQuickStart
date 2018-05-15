@@ -3,7 +3,7 @@ using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
 using ApplicationCore.SharedKernel;
 using Dapper;
-using Infrastructure.Implements;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

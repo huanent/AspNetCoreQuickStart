@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Infrastructure.Implements
+namespace Infrastructure.Data
 {
     public interface IDbConnectionFactory
     {
@@ -9,5 +9,11 @@ namespace Infrastructure.Implements
         /// </summary>
         /// <returns></returns>
         DbConnection Default();
+
+        /// <summary>
+        /// 默认查询连接
+        /// </summary>
+        /// <returns></returns>
+        DbConnection DefaultQuery();
     }
 }

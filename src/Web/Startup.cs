@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.SharedKernel;
+using Infrastructure.Data;
 using Infrastructure.Implements;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -76,7 +77,8 @@ namespace Web
             services.AddAppAuthentication(_settings.Jwt.Key);
             services.AddAppAuthorization();
             services.AddMemoryCache();
-            services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
+            services.AddDbContext<AppDbContext>();
+            services.AddDbContext<AppQueryDbContext>();
 
             services.AddMvc(o =>
             {

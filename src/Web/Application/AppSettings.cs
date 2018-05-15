@@ -34,6 +34,11 @@ namespace Web.Application
         /// 默认连接
         /// </summary>
         public string Default { get; set; }
+
+        /// <summary>
+        /// 默认查询连接(读写分离)
+        /// </summary>
+        public string DefaultQuery { get; set; }
     }
 
     public class Jwt

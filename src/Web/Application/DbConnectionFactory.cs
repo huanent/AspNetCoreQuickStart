@@ -1,5 +1,4 @@
-﻿using Infrastructure;
-using Infrastructure.Implements;
+﻿using Infrastructure.Data;
 using Microsoft.Extensions.Options;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -18,6 +17,11 @@ namespace Web.Application
         public DbConnection Default()
         {
             return new SqlConnection(_connectionStrings.Default);
+        }
+
+        public DbConnection DefaultQuery()
+        {
+            return new SqlConnection(_connectionStrings.DefaultQuery);
         }
     }
 }
