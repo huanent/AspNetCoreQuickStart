@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using System;
 
-namespace Infrastructure.SharedKernel
+namespace Infrastructure.Implements
 {
     public class MemoryCache : ICache
     {

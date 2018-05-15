@@ -1,7 +1,7 @@
 ﻿using ApplicationCore;
 using System;
 
-namespace Infrastructure.SharedKernel
+namespace Infrastructure.Implements
 {
     public class CurrentIdentity : ICurrentIdentity
     {

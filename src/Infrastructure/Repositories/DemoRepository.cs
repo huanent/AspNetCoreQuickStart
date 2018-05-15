@@ -1,12 +1,12 @@
-﻿using ApplicationCore;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
+using ApplicationCore.SharedKernel;
 using Dapper;
+using Infrastructure.Implements;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 

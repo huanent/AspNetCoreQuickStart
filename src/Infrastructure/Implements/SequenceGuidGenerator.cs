@@ -3,7 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Threading;
 
-namespace Infrastructure.SharedKernel
+namespace Infrastructure.Implements
 {
     public class SequenceGuidGenerator : ISequenceGuidGenerator
     {

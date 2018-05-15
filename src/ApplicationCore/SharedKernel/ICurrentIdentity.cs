@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore
+namespace ApplicationCore.SharedKernel
 {
     /// <summary>
     /// 当前登陆用户

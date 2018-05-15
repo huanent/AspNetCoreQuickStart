@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApplicationCore.SharedKernel;
+using System;
 
 namespace ApplicationCore.Entities
 {

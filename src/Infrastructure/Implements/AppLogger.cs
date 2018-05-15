@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace Infrastructure
+namespace Infrastructure.Implements
 {
     public class AppLogger<T> : IAppLogger<T>
     {

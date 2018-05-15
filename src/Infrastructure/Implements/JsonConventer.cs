@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace Infrastructure.SharedKernel
+namespace Infrastructure.Implements
 {
     public class JsonConventer : IJsonConventer
     {

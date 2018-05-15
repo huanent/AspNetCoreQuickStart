@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.Implements
 {
     public class AppDbContext : DbContext
     {

@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Infrastructure
+namespace Infrastructure.Implements
 {
     public interface IDbConnectionFactory
     {
