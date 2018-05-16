@@ -2,9 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
-namespace Web.Swagger
+namespace Web.Application
 {
     public static class SwaggerExtensions
     {
@@ -12,7 +13,17 @@ namespace Web.Swagger
         {
             services.AddSwaggerGen(o =>
             {
-                o.OperationFilter<SwaggerFilter>();
+                var security = new Dictionary<string, IEnumerable<string>> { { "Bearer", new string[] { } }, };
+                o.AddSecurityRequirement(security);
+
+                o.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "权限认证(数据将在请求头中进行传输) 参数结构: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
                 o.SwaggerDoc("api", new Info());
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Web.xml"));
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ApplicationCore.xml"));

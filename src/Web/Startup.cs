@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using Web.Application;
 using Web.Auth;
-using Web.Swagger;
 
 namespace Web
 {

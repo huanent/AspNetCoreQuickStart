@@ -15,6 +15,7 @@ namespace Infrastructure.Repositories
     public class DemoRepository : IDemoRepository
     {
         readonly AppDbContext _appDbContext;
+        readonly AppQueryDbContext _appQueryDbContext;
         readonly IAppLogger<DemoRepository> _appLogger;
         readonly ISystemDateTime _systemDateTime;
         readonly ICache _cache;
@@ -22,12 +23,14 @@ namespace Infrastructure.Repositories
 
         public DemoRepository(
             AppDbContext appDbContext,
+            AppQueryDbContext appQueryDbContext,
             IAppLogger<DemoRepository> appLogger,
             ISystemDateTime systemDateTime,
             ICache cache,
             IDbConnectionFactory connectionFactory)
         {
             _appDbContext = appDbContext;
+            _appQueryDbContext = appQueryDbContext;
             _appLogger = appLogger;
             _systemDateTime = systemDateTime;
             _cache = cache;
@@ -42,33 +45,33 @@ namespace Infrastructure.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<Demo> All() => _appDbContext.Demo.ToArray();
+        public IEnumerable<Demo> All() => _appQueryDbContext.Demo.ToArray();
 
         public void Delete(Guid id)
         {
             var demo = _appDbContext.Demo.Find(id);
 
-            _appLogger.Warn($"尝试删除Id为{id}的Demo失败，原因为未在数据库找到");
-            if (demo == null) throw new AppException("未能找到要删除的Demo");
-
-            _appDbContext.Remove(demo);
-            _appDbContext.SaveChanges();
+            if (demo != null)
+            {
+                _appDbContext.Remove(demo);
+                _appDbContext.SaveChanges();
+            }
             _cache.Remove(id);
         }
 
-        public Demo FindByKey(Guid id) => _appDbContext.Demo.Find(id);
+        public Demo FindByKey(Guid id) => _appQueryDbContext.Demo.Find(id);
 
         public Demo FindByKeyOnCache(Guid id)
         {
             if (_cache.Get(id, out Demo value)) return value;
             var demo = FindByKey(id);
-            _cache.Set(id, demo);
+            _cache.Set(id, demo,new TimeSpan(0,3,0));
             return demo;
         }
 
         public PageModel<Demo> GetPage(GetDemoPageModel model)
         {
-            var data = _appDbContext.Demo.AsNoTracking();
+            var data = _appQueryDbContext.Demo.AsNoTracking();
 
             data.IfNotNull(model.Name, q => q.Where(w => w.Name == model.Name));
             data.IfHaveValue(model.Age, q => q.Where(w => w.Age == model.Age));
@@ -88,8 +91,8 @@ namespace Infrastructure.Repositories
 
         public void Save(DemoModel model, Guid id)
         {
-            var entity = FindByKey(id);
-            if (entity == null) throw new AppException("未能找到要删除的对象");
+            var entity = _appDbContext.Demo.Find(id);
+            if (entity == null) throw new AppException("未能找到要修改的对象");
 
             entity.Update(model.Name);
             _appDbContext.Update(entity);
