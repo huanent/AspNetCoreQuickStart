@@ -29,9 +29,15 @@ namespace Web.Auth
             {
                 var identity = context.HttpContext.RequestServices.GetService<ICurrentIdentity>();
 
-                //在此根据identity是否存在Permission指定的权限来鉴定是否有权限,此处默认不鉴定权限，请在开发时更改
-                if (true) await next();
-                else context.Result = new ForbiddenResult("此账户无权限访问此api");
+#warning 在此根据identity是否存在Permission指定的权限来鉴定是否有权限,此处默认不鉴定权限，请在开发时更改
+                //if (true)
+                //{
+                await next();
+                //}
+                //else
+                //{
+                //    context.Result = new ForbiddenResult("此账户无权限访问此api");
+                //}
 
             }
             else await next();

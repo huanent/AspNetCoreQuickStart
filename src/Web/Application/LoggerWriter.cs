@@ -8,7 +8,7 @@ namespace Web.Application
     {
         public void WriteLog(LogLevel level, string message, string name, Exception exception, EventId eventId)
         {
-            //记录日志到你希望保存的地方
+#warning 记录日志到你希望保存的地方
         }
     }
 }
