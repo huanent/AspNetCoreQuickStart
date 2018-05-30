@@ -1,4 +1,6 @@
-﻿namespace ApplicationCore.Entities
+﻿using ApplicationCore.SharedKernel;
+
+namespace ApplicationCore.Entities
 {
     public class Demo : EntityBase
     {

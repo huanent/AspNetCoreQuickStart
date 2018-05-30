@@ -1,7 +1,6 @@
-﻿using ApplicationCore.SharedKernel;
-using System;
+﻿using System;
 
-namespace ApplicationCore.Entities
+namespace ApplicationCore.SharedKernel
 {
 
     public abstract class EntityBase<T> where T : struct
