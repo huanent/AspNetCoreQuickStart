@@ -1,5 +1,4 @@
-﻿using ApplicationCore;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
 using ApplicationCore.SharedKernel;
@@ -113,7 +112,7 @@ namespace Web.Controllers
         /// <param name="model">分页查询模型</param>
         /// <returns></returns>
         [HttpGet(nameof(GetPageList))]
-        public PageModel<Demo> GetPageList(GetDemoPageModel model)
+        public PageModel<Demo> GetPageList([FromQuery]GetDemoPageModel model)
         {
             return _demoRepository.GetPage(model);
         }
