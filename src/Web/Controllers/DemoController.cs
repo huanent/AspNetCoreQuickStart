@@ -39,7 +39,7 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="systemDateTime"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("NowDateTime")]
         [ProducesResponseType(typeof(string), 200)]
         public DateTime NowDateTime([FromServices] ISystemDateTime systemDateTime) => systemDateTime.Now;
 
@@ -112,7 +112,7 @@ namespace Web.Controllers
         /// <param name="model">分页查询模型</param>
         /// <returns></returns>
         [HttpGet(nameof(GetPageList))]
-        public PageModel<Demo> GetPageList([FromQuery]GetDemoPageModel model)
+        public PageModel<Demo> GetPageList(GetDemoPageModel model)
         {
             return _demoRepository.GetPage(model);
         }

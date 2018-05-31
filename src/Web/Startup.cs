@@ -80,12 +80,17 @@ namespace Web
             services.AddDbContext<AppDbContext>();
             services.AddDbContext<AppQueryDbContext>();
 
+            services.Configure<ApiBehaviorOptions>(o =>
+            {
+                o.SuppressInferBindingSourcesForParameters = true;
+            });
+
             services.AddMvc(o =>
             {
                 o.Filters.Add<GlobalExceptionHandleFilter>();
                 o.Filters.Add<IdentityHandleFilter>();
                 o.Filters.Add<JwtRefreshFilter>();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         private void AddAppServices(IServiceCollection services)
