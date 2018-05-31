@@ -18,9 +18,9 @@ namespace Web.Controllers
     /// <summary>
     /// 使用演示
     /// </summary>
-    [Produces("application/json")]
-    [Route("api/Demo")]
-    public class DemoController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DemoController : ControllerBase
     {
         readonly IAppLogger<DemoController> _logger;
         readonly IDemoRepository _demoRepository;
@@ -41,6 +41,7 @@ namespace Web.Controllers
         /// <param name="systemDateTime"></param>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(string), 200)]
         public DateTime NowDateTime([FromServices] ISystemDateTime systemDateTime) => systemDateTime.Now;
 
         #endregion 系统信息
@@ -54,7 +55,7 @@ namespace Web.Controllers
         /// <param name="env"></param>
         /// <param name="jwtHandler"></param>
         /// <returns></returns>
-        [HttpGet(nameof(JwtToken)), Produces(typeof(String))]
+        [HttpGet(nameof(JwtToken))]
         public void JwtToken(
             [FromServices] IOptions<Jwt> options,
             [FromServices]IHostingEnvironment env,
@@ -72,6 +73,7 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(nameof(AuthIdentity)), Authorize]
+        [ProducesResponseType(typeof(string), 200)]
         public dynamic AuthIdentity(
             [FromServices]IHostingEnvironment env,
             [FromServices] ICurrentIdentity identity)

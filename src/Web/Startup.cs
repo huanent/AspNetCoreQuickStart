@@ -3,6 +3,7 @@ using Infrastructure.Data;
 using Infrastructure.Implements;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -81,11 +82,10 @@ namespace Web
 
             services.AddMvc(o =>
             {
-                o.Filters.Add<ModelStateValidFilter>();
                 o.Filters.Add<GlobalExceptionHandleFilter>();
                 o.Filters.Add<IdentityHandleFilter>();
                 o.Filters.Add<JwtRefreshFilter>();
-            });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
         }
 
         private void AddAppServices(IServiceCollection services)

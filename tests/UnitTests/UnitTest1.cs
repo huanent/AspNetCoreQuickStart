@@ -8,7 +8,7 @@ namespace UnitTests
         [Fact]
         public void Test1()
         {
-
+            Console.Write("");
         }
     }
 }
