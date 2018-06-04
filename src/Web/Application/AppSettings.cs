@@ -46,7 +46,7 @@ namespace Web.Application
         /// <summary>
         /// 返回的http头部名称
         /// </summary>
-        public string HeaderName { get; set; }
+        public string HeaderName { get; set; } = "jwt";
 
         /// <summary>
         /// 加密密钥
