@@ -40,6 +40,7 @@ namespace Web
         {
             if (!_env.IsProduction()) app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseAuthentication();
+            app.UseStaticFiles();
             app.UseFileServer();
             app.UseMvc();
             app.UseAppSwagger();
@@ -77,6 +78,7 @@ namespace Web
             services.AddAppAuthentication(_settings.Jwt.Key);
             services.AddAppAuthorization();
             services.AddMemoryCache();
+            services.AddLoggingFileUI();
             services.AddDbContext<AppDbContext>();
             services.AddDbContext<AppQueryDbContext>();
 

@@ -15,6 +15,6 @@ namespace Web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .ConfigureLogging(builder => builder.AddAbstract<LoggerWriter>());
+                .ConfigureLogging(builder => builder.AddFile());
     }
 }

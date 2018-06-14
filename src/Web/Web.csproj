@@ -24,7 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Huanent.Logging.Abstract" Version="1.2.0" />
+    <PackageReference Include="Huanent.Logging.File" Version="2.0.3" />
+    <PackageReference Include="Huanent.Logging.File.UI" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.5.0" />
