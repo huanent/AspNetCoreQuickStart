@@ -28,16 +28,7 @@ namespace Web.Application
         {
             var logger = _loggerFactory.CreateLogger(context.Exception.TargetSite.ReflectedType);
 
-            if (context.Exception is ModelStateException modelStateException)
-            {
-                logger.LogError(
-                   new EventId(_settings.EventId),
-                     modelStateException,
-                     modelStateException.Message);
-
-                context.Result = new BadRequestObjectResult(modelStateException.Message);
-            }
-            else if (context.Exception is DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            if (context.Exception is DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 logger.LogWarning(dbUpdateConcurrencyException, "数据库存在并发问题");
                 context.Result = new BadRequestObjectResult("网络故障,请重试");

@@ -11,20 +11,14 @@ namespace Web.Application
         public ConnectionStrings ConnectionStrings { get; set; }
 
         /// <summary>
-        /// 应用程序名称
-        /// </summary>
-        public string AppName { get; set; }
-
-        /// <summary>
         /// 定义本程序的日志事件Id
         /// </summary>
         public int EventId { get; set; }
 
         /// <summary>
-        /// jwt身份验证
+        /// cookie设置
         /// </summary>
-        public Jwt Jwt { get; set; }
-
+        public Cookie Cookie { get; set; }
 
     }
 
@@ -41,41 +35,16 @@ namespace Web.Application
         public string DefaultQuery { get; set; }
     }
 
-    public class Jwt
+    public class Cookie
     {
         /// <summary>
-        /// 返回的http头部名称
+        /// 名称
         /// </summary>
-        public string HeaderName { get; set; } = "jwt";
-
-        /// <summary>
-        /// 加密密钥
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// 安全算法
-        /// </summary>
-        public string SecurityAlgorithm { get; set; } = SecurityAlgorithms.HmacSha256;
-
-        /// <summary>
-        /// 在什么时间之前不可用
-        /// </summary>
-        public TimeSpan NotBefore { get; set; } = TimeSpan.Zero;
+        public string Name { get; set; }
 
         /// <summary>
         /// 过期时间
         /// </summary>
-        public TimeSpan Exp { get; set; } = new TimeSpan(24, 0, 0);
-
-        /// <summary>
-        /// 刷新时间
-        /// </summary>
-        public TimeSpan Refresh { get; set; } = new TimeSpan(0, 0, 30);
-
-        /// <summary>
-        /// 自动续期（类似cookie方式，如果用户在不停刷新网页，则令牌过期时间始终为最后一次刷新网页时间加Exp时间）
-        /// </summary>
-        public bool AutoRefresh { get; set; } = true;
+        public TimeSpan ExpireTimeSpan { get; set; }
     }
 }

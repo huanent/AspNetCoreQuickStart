@@ -29,7 +29,7 @@ namespace Web.Auth
         {
             string id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
             if (id == null) throw new AppException("缺少关键信息Sid,sid为用户唯一识别码，一般为主键id");
-            _identity.SetIdentity(true, new Guid(id));
+            _identity.SetIdentity(true, Guid.Empty);
         }
     }
 }

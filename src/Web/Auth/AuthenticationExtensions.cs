@@ -4,29 +4,33 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Threading.Tasks;
+using Web.Application;
 
 namespace Web.Auth
 {
     public static class AuthenticationExtensions
     {
-        public static IServiceCollection AddAppAuthentication(this IServiceCollection services, string jwtKey)
+        public static IServiceCollection AddAppAuthentication(this IServiceCollection services, Cookie cookie)
         {
-            services.AddAuthentication()
-            .AddJwtBearer(options =>
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
             {
-                byte[] keyAsBytes = Encoding.ASCII.GetBytes(jwtKey);
-                var signKey = new SymmetricSecurityKey(keyAsBytes);
-                options.TokenValidationParameters = new TokenValidationParameters
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Name = cookie.Name;
+                options.ExpireTimeSpan = cookie.ExpireTimeSpan;
+                options.Events.OnRedirectToLogin = context =>
                 {
-                    ValidateIssuer = false, //不验证发行方
-                    ValidateAudience = false, //不验证受众方
-                    //ValidateLifetime = false, //不验证过期时间
-                    ClockSkew = TimeSpan.Zero, //时钟偏差设为0
-                    IssuerSigningKey = signKey, //密钥
+                    context.Response.StatusCode = 401;
+                    return Task.FromResult(string.Empty);
+                };
+                options.Events.OnRedirectToLogout = context =>
+                {
+                    context.Response.StatusCode = 200;
+                    return Task.FromResult(string.Empty);
                 };
             });
 
-            services.AddSingleton<JwtHandler>();
             return services;
         }
     }

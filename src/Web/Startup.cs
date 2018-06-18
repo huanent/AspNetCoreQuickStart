@@ -69,14 +69,15 @@ namespace Web
         {
             services.Configure<AppSettings>(_configuration);
             services.Configure<ConnectionStrings>(_configuration.GetSection("ConnectionStrings"));
-            services.Configure<Jwt>(_configuration.GetSection("Jwt"));
+            services.Configure<Cookie>(_configuration.GetSection("Cookie"));
         }
 
         private void AddSystemService(IServiceCollection services)
         {
             services.AddAppSwagger();
-            services.AddAppAuthentication(_settings.Jwt.Key);
+            services.AddAppAuthentication(_settings.Cookie);
             services.AddAppAuthorization();
+
             services.AddMemoryCache();
             services.AddLoggingFileUI();
             services.AddDbContext<AppDbContext>();
@@ -91,7 +92,6 @@ namespace Web
             {
                 o.Filters.Add<GlobalExceptionHandleFilter>();
                 o.Filters.Add<IdentityHandleFilter>();
-                o.Filters.Add<JwtRefreshFilter>();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

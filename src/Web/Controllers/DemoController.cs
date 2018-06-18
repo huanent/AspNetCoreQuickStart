@@ -2,15 +2,14 @@
 using ApplicationCore.IRepositories;
 using ApplicationCore.Models;
 using ApplicationCore.SharedKernel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Web.Application;
-using Web.Auth;
 
 namespace Web.Controllers
 {
@@ -48,37 +47,41 @@ namespace Web.Controllers
         #region 身份验证
 
         /// <summary>
-        /// 测试申请jwt令牌
-        /// </summary>
-        /// <param name="options"></param>
-        /// <param name="env"></param>
-        /// <param name="jwtHandler"></param>
-        /// <returns></returns>
-        [HttpGet(nameof(JwtToken))]
-        public void JwtToken(
-            [FromServices] IOptions<Jwt> options,
-            [FromServices]IHostingEnvironment env,
-            [FromServices] JwtHandler jwtHandler)
-        {
-            if (env.IsProduction()) throw new AppException("当前环境为生产环境，不提供令牌申请");
-            var settings = options.Value;
-
-            string token = jwtHandler.CreateToken(new Claim(ClaimTypes.Sid, Guid.Empty.ToString()));
-            Response.Headers.Add(settings.HeaderName, token);
-        }
-
-        /// <summary>
         /// 获取当前身份信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet(nameof(AuthIdentity)), Authorize]
+        [HttpGet("CurrentIdentity"), Authorize]
         [ProducesResponseType(typeof(string), 200)]
-        public dynamic AuthIdentity(
+        public dynamic CurrentIdentity(
             [FromServices]IHostingEnvironment env,
-            [FromServices] ICurrentIdentity identity)
+            [FromServices]ICurrentIdentity identity)
         {
             if (env.IsProduction()) return "当前为正式环境，不提供此查询";
             return identity.Id;
+        }
+
+
+        [HttpPost("Login")]
+        public async System.Threading.Tasks.Task LoginAsync()
+        {
+            var claimsPrincipal = new ClaimsPrincipal();
+            var claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Sid, "huanent"));
+            claimsPrincipal.AddIdentity(claimsIdentity);
+
+            var authenticationProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTime.UtcNow.AddYears(10)
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authenticationProperties);
+        }
+
+        [HttpPost("Logout")]
+        public async System.Threading.Tasks.Task LogoutAsync()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         #endregion 身份验证
