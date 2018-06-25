@@ -4,7 +4,6 @@ using Infrastructure.Implements;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -44,25 +43,7 @@ namespace Web
             app.UseFileServer();
             app.UseMvc();
             app.UseAppSwagger();
-            PreStart(app);
-        }
-
-        private void PreStart(IApplicationBuilder app)
-        {
-            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
-            {
-                //auto Migrate
-                if (_env.IsProduction())
-                {
-                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                    db.Database.Migrate();
-                }
-
-                //log currentEnv
-                var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<Startup>>();
-                logger.Warn($"当前运行环境：{_env.EnvironmentName}");
-            }
+            app.UsePreStart();
         }
 
         private void ConfigureOptions(IServiceCollection services)
