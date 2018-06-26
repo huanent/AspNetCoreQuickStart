@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ApplicationCore.Models
+namespace Web.Models
 {
     public class GetPageModel
     {

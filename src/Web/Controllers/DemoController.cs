@@ -1,6 +1,7 @@
-﻿using ApplicationCore.Entities;
+﻿using ApplicationCore.Dtos;
+using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
-using ApplicationCore.Models;
+using ApplicationCore.IServices;
 using ApplicationCore.SharedKernel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -22,13 +24,16 @@ namespace Web.Controllers
     {
         readonly IAppLogger<DemoController> _logger;
         readonly IDemoRepository _demoRepository;
+        readonly IDemoService _demoService;
 
         public DemoController(
             IAppLogger<DemoController> appLogger,
-            IDemoRepository demoRepository)
+            IDemoRepository demoRepository,
+            IDemoService demoService)
         {
             _logger = appLogger;
             _demoRepository = demoRepository;
+            _demoService = demoService;
         }
 
         #region 系统信息
@@ -93,7 +98,7 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetUseEF")]
-        public IEnumerable<Demo> GetUseEF()
+        public IEnumerable<DemoDto> GetUseEF()
         {
             return _demoRepository.All();
         }
@@ -115,9 +120,9 @@ namespace Web.Controllers
         /// <param name="model">分页查询模型</param>
         /// <returns></returns>
         [HttpGet(nameof(GetPageList))]
-        public PageModel<Demo> GetPageList(GetDemoPageModel model)
+        public PageDto<DemoDto> GetPageList(GetDemoPageModel model)
         {
-            return _demoRepository.GetPage(model);
+            return _demoRepository.GetPage(model.PageIndex, model.PageSize, model.Age, model.Name);
         }
 
         /// <summary>
@@ -138,9 +143,9 @@ namespace Web.Controllers
         /// 添加实体示例
         /// </summary>
         [HttpPost]
-        public void Post([FromBody] DemoModel model)
+        public async System.Threading.Tasks.Task PostAsync([FromBody] DemoModel model)
         {
-            _demoRepository.AddAsync(model).Wait();
+            await _demoService.CreateDemoAsync(model.Name);
         }
 
         /// <summary>
@@ -151,7 +156,7 @@ namespace Web.Controllers
         [HttpPut("{id}")]
         public void Put([FromBody] DemoModel model, Guid id)
         {
-            _demoRepository.Save(model, id);
+            _demoService.UpdateDemo(id, model.Name);
         }
 
         /// <summary>

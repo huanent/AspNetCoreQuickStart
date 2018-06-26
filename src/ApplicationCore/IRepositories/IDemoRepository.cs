@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Models;
+﻿using ApplicationCore.Dtos;
+using ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,9 +10,9 @@ namespace ApplicationCore.IRepositories
 {
     public interface IDemoRepository
     {
-        IEnumerable<Demo> All();
+        IEnumerable<DemoDto> All();
 
-        Task AddAsync(DemoModel demo);
+        Task AddAsync(Demo demo);
 
         IEnumerable<Demo> GetTopRecords(int count);
 
@@ -20,10 +20,9 @@ namespace ApplicationCore.IRepositories
 
         Demo FindByKeyOnCache(Guid id);
 
-        void Save(DemoModel model, Guid id);
+        void Update(Demo entity);
 
         void Delete(Guid id);
-
-        PageModel<Demo> GetPage(GetDemoPageModel dto);
+        PageDto<DemoDto> GetPage(int pageIndex, int pageSize, int? age, string name);
     }
 }

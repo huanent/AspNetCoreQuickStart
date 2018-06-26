@@ -1,6 +1,6 @@
-﻿using ApplicationCore.Entities;
+﻿using ApplicationCore.Dtos;
+using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
-using ApplicationCore.Models;
 using ApplicationCore.SharedKernel;
 using Dapper;
 using Infrastructure.Data;
@@ -37,15 +37,22 @@ namespace Infrastructure.Repositories
             _connectionFactory = connectionFactory;
         }
 
-        public async Task AddAsync(DemoModel model)
+        public async Task AddAsync(Demo entity)
         {
-            var demo = model.ToDemo();
-            demo.UpdateBasicInfo(_systemDateTime); //必须执行此步骤
-            _appDbContext.Add(demo);
+            _appDbContext.Add(entity);
             await _appDbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<Demo> All() => _appQueryDbContext.Demo.ToArray();
+        public IEnumerable<DemoDto> All()
+        {
+            return _appQueryDbContext.Demo
+                    .Select(s => new DemoDto
+                    {
+                        Name = s.Name,
+                        Age = s.Age
+                    })
+                    .ToArray();
+        }
 
         public void Delete(Guid id)
         {
@@ -65,20 +72,25 @@ namespace Infrastructure.Repositories
         {
             if (_cache.Get(id, out Demo value)) return value;
             var demo = FindByKey(id);
-            _cache.Set(id, demo,new TimeSpan(0,3,0));
+            _cache.Set(id, demo, new TimeSpan(0, 3, 0));
             return demo;
         }
 
-        public PageModel<Demo> GetPage(GetDemoPageModel model)
+        public PageDto<DemoDto> GetPage(int pageIndex, int pageSize, int? age, string name)
         {
             var data = _appQueryDbContext.Demo.AsNoTracking();
 
-            data.IfNotNull(model.Name, q => q.Where(w => w.Name == model.Name));
-            data.IfHaveValue(model.Age, q => q.Where(w => w.Age == model.Age));
+            data.IfNotNull(name, q => q.Where(w => w.Name == name));
+            data.IfHaveValue(age, q => q.Where(w => w.Age == age));
 
             int total = data.Count();
-            var list = data.GetPage(model);
-            return new PageModel<Demo>(total, list);
+            var list = data.Select(s => new DemoDto
+            {
+                Age = s.Age,
+                Name = s.Name
+            }).GetPage(pageIndex, pageSize);
+
+            return new PageDto<DemoDto>(total, list);
         }
 
         public IEnumerable<Demo> GetTopRecords(int count)
@@ -89,15 +101,10 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public void Save(DemoModel model, Guid id)
+        public void Update(Demo entity)
         {
-            var entity = _appDbContext.Demo.Find(id);
-            if (entity == null) throw new AppException("未能找到要修改的对象");
-
-            entity.Update(model.Name);
             _appDbContext.Update(entity);
             _appDbContext.SaveChanges();
-            _cache.Remove(id);
         }
     }
 }

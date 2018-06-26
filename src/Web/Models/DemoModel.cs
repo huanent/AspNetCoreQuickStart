@@ -4,16 +4,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ApplicationCore.Models
+namespace Web.Models
 {
+    /// <summary>
+    /// 数据模型，主要职责为数据验证
+    /// </summary>
     public class DemoModel
     {
         [Required]
         public string Name { get; set; }
-
-        public Demo ToDemo()
-        {
-            return new Demo(Name);
-        }
     }
 }

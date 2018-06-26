@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.Models
+namespace Web.Models
 {
     public class GetDemoPageModel : GetPageModel
     {

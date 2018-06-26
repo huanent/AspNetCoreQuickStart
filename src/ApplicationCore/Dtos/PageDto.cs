@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.Models
+namespace ApplicationCore.Dtos
 {
-    public class PageModel<T> where T : class
+    public class PageDto<T> where T : class
     {
-        public PageModel(int total, IEnumerable<T> list)
+        public PageDto(int total, IEnumerable<T> list)
         {
             Total = total;
             List = list ?? throw new ArgumentNullException(nameof(list));

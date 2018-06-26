@@ -1,12 +1,4 @@
-﻿using ApplicationCore.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-
-namespace System.Linq
+﻿namespace System.Linq
 {
     public static class QueryableExtensions
     {
@@ -21,18 +13,6 @@ namespace System.Linq
         public static IQueryable<T> GetPage<T>(this IQueryable<T> ts, int pageIndex, int pageSize)
         {
             return ts.Skip((pageIndex - 1) * pageSize).Take(pageSize);
-        }
-
-        /// <summary>
-        /// 获取分页数据
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="ts"></param>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static IQueryable<T> GetPage<T>(this IQueryable<T> ts, GetPageModel model)
-        {
-            return ts.GetPage(model.PageIndex, model.PageSize);
         }
 
         /// <summary>
