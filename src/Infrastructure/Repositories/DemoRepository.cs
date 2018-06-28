@@ -80,8 +80,8 @@ namespace Infrastructure.Repositories
         {
             var data = _appQueryDbContext.Demo.AsNoTracking();
 
-            data.IfNotNull(name, q => q.Where(w => w.Name == name));
-            data.IfHaveValue(age, q => q.Where(w => w.Age == age));
+            data = data.IfNotNull(name, q => q.Where(w => w.Name == name));
+            data = data.IfHaveValue(age, q => q.Where(w => w.Age == age));
 
             int total = data.Count();
             var list = data.Select(s => new DemoDto
