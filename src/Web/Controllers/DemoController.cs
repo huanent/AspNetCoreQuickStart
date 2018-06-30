@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Dtos;
+using ApplicationCore.Dtos.Common;
 using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
 using ApplicationCore.IServices;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Web.Models;
 
 namespace Web.Controllers
 {
@@ -120,7 +120,7 @@ namespace Web.Controllers
         /// <param name="model">分页查询模型</param>
         /// <returns></returns>
         [HttpGet(nameof(GetPageList))]
-        public PageDto<DemoDto> GetPageList(GetDemoPageModel model)
+        public PageDto<DemoDto> GetPageList(QueryDemoPageDto model)
         {
             return _demoRepository.GetPage(model.PageIndex, model.PageSize, model.Age, model.Name);
         }
@@ -143,7 +143,7 @@ namespace Web.Controllers
         /// 添加实体示例
         /// </summary>
         [HttpPost]
-        public async System.Threading.Tasks.Task PostAsync([FromBody] DemoModel model)
+        public async System.Threading.Tasks.Task PostAsync([FromBody] AddDemoDto model)
         {
             await _demoService.CreateDemoAsync(model.Name);
         }
@@ -154,7 +154,7 @@ namespace Web.Controllers
         /// <param name="model"></param>
         /// <param name="id"></param>
         [HttpPut("{id}")]
-        public void Put([FromBody] DemoModel model, Guid id)
+        public void Put([FromBody] AddDemoDto model, Guid id)
         {
             _demoService.UpdateDemo(id, model.Name);
         }

@@ -1,6 +1,8 @@
 ﻿using ApplicationCore.SharedKernel;
+using FluentValidation.AspNetCore;
 using Infrastructure.Data;
 using Infrastructure.Implements;
+using Infrastructure.ModelValidators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -73,7 +75,13 @@ namespace Web
             {
                 o.Filters.Add<GlobalExceptionHandleFilter>();
                 o.Filters.Add<IdentityHandleFilter>();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddFluentValidation(fv =>
+            {
+                fv.RegisterValidatorsFromAssemblyContaining<RegisterValidators>();
+                fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+            });
         }
 
         private void AddAppServices(IServiceCollection services)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.Dtos
+namespace ApplicationCore.Dtos.Common
 {
     public class PageDto<T> where T : class
     {

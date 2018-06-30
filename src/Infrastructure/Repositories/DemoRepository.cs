@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Dtos;
+using ApplicationCore.Dtos.Common;
 using ApplicationCore.Entities;
 using ApplicationCore.IRepositories;
 using ApplicationCore.SharedKernel;

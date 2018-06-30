@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ApplicationCore.Dtos.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Web.Models
+namespace ApplicationCore.Dtos
 {
-    public class GetDemoPageModel : GetPageModel
+    public class QueryDemoPageDto : QueryPageDto
     {
         /// <summary>
         /// 名称
