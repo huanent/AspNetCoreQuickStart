@@ -1,9 +1,8 @@
-﻿using MyCompany.MyProject.ApplicationCore.Entities;
+﻿using MyCompany.MyProject.ApplicationCore.Dtos;
+using MyCompany.MyProject.ApplicationCore.Entities;
 using MyCompany.MyProject.ApplicationCore.IRepositories;
 using MyCompany.MyProject.ApplicationCore.IServices;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace MyCompany.MyProject.ApplicationCore.Services
 {
@@ -15,16 +14,17 @@ namespace MyCompany.MyProject.ApplicationCore.Services
             _demoRepository = demoRepository;
 
         }
-        public async System.Threading.Tasks.Task CreateDemoAsync(string name)
+
+        public async Task CreateDemoAsync(AddDemoDto dto)
         {
-            var entity = new Demo(name);
+            var entity = new Demo(dto.Name);
             await _demoRepository.AddAsync(entity);
         }
 
-        public void UpdateDemo(Guid id, string name)
+        public void UpdateDemo(EditDemoDto dto)
         {
-            var entity = _demoRepository.FindByKey(id);
-            entity.Update(name);
+            var entity = _demoRepository.FindByKey(dto.Id);
+            entity.Update(dto.Name);
             _demoRepository.Update(entity);
         }
     }

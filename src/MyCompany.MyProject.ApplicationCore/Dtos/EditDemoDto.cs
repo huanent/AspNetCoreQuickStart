@@ -4,10 +4,8 @@ using System.Text;
 
 namespace MyCompany.MyProject.ApplicationCore.Dtos
 {
-    public class DemoDto
+    public class EditDemoDto : AddDemoDto
     {
-        public string Name { get; set; }
-
-        public int Age { get; set; }
+        public Guid Id { get; set; }
     }
 }

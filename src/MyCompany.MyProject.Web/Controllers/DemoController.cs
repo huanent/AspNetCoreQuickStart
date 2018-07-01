@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MyCompany.MyProject.Web.Controllers
 {
@@ -29,8 +30,10 @@ namespace MyCompany.MyProject.Web.Controllers
         public DemoController(
             IAppLogger<DemoController> appLogger,
             IDemoRepository demoRepository,
-            IDemoService demoService)
+            IDemoService demoService,
+            IHostingEnvironment env)
         {
+            if (env.IsProduction()) throw new AppException("当前为正式环境，不提供测试");
             _logger = appLogger;
             _demoRepository = demoRepository;
             _demoService = demoService;
@@ -57,13 +60,7 @@ namespace MyCompany.MyProject.Web.Controllers
         /// <returns></returns>
         [HttpGet("CurrentIdentity"), Authorize]
         [ProducesResponseType(typeof(string), 200)]
-        public dynamic CurrentIdentity(
-            [FromServices]IHostingEnvironment env,
-            [FromServices]ICurrentIdentity identity)
-        {
-            if (env.IsProduction()) return "当前为正式环境，不提供此查询";
-            return identity.Id;
-        }
+        public dynamic CurrentIdentity([FromServices]ICurrentIdentity identity) => identity.Id;
 
 
         [HttpPost("Login")]
@@ -129,11 +126,16 @@ namespace MyCompany.MyProject.Web.Controllers
         /// 从缓存读取实体
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="memoryCache"></param>
         /// <returns></returns>
         [HttpGet("FindOnCache/{id}")]
-        public Demo FindOnCache(Guid id)
+        public Demo FindOnCache(Guid id, [FromServices]IMemoryCache memoryCache)
         {
-            return _demoRepository.FindByKeyOnCache(id);
+            return memoryCache.GetOrCreate(id, c =>
+             {
+                 c.SetAbsoluteExpiration(TimeSpan.FromMinutes(3));
+                 return _demoRepository.FindByKey(id);
+             });
         }
         #endregion 查询
 
@@ -145,18 +147,17 @@ namespace MyCompany.MyProject.Web.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task PostAsync([FromBody] AddDemoDto model)
         {
-            await _demoService.CreateDemoAsync(model.Name);
+            await _demoService.CreateDemoAsync(model);
         }
 
         /// <summary>
         /// 更新实体示例
         /// </summary>
         /// <param name="model"></param>
-        /// <param name="id"></param>
-        [HttpPut("{id}")]
-        public void Put([FromBody] AddDemoDto model, Guid id)
+        [HttpPut]
+        public void Put([FromBody] EditDemoDto model)
         {
-            _demoService.UpdateDemo(id, model.Name);
+            _demoService.UpdateDemo(model);
         }
 
         /// <summary>

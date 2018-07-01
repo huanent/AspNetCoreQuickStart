@@ -17,8 +17,6 @@ namespace MyCompany.MyProject.ApplicationCore.IRepositories
 
         Demo FindByKey(Guid id);
 
-        Demo FindByKeyOnCache(Guid id);
-
         void Update(Demo entity);
 
         void Delete(Guid id);

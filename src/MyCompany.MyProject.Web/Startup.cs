@@ -89,7 +89,6 @@ namespace MyCompany.MyProject.Web
             services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
             services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
             services.AddSingleton<ISystemDateTime, SystemDateTime>();
-            services.AddSingleton<ICache, MemoryCache>();
             services.AddScoped<ICurrentIdentity, CurrentIdentity>();
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));

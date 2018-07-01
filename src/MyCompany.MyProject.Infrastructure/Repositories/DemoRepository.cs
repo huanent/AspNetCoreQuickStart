@@ -19,7 +19,6 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
         readonly AppQueryDbContext _appQueryDbContext;
         readonly IAppLogger<DemoRepository> _appLogger;
         readonly ISystemDateTime _systemDateTime;
-        readonly ICache _cache;
         readonly IDbConnectionFactory _connectionFactory;
 
         public DemoRepository(
@@ -27,14 +26,12 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
             AppQueryDbContext appQueryDbContext,
             IAppLogger<DemoRepository> appLogger,
             ISystemDateTime systemDateTime,
-            ICache cache,
             IDbConnectionFactory connectionFactory)
         {
             _appDbContext = appDbContext;
             _appQueryDbContext = appQueryDbContext;
             _appLogger = appLogger;
             _systemDateTime = systemDateTime;
-            _cache = cache;
             _connectionFactory = connectionFactory;
         }
 
@@ -64,18 +61,9 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
                 _appDbContext.Remove(demo);
                 _appDbContext.SaveChanges();
             }
-            _cache.Remove(id);
         }
 
         public Demo FindByKey(Guid id) => _appQueryDbContext.Demo.Find(id);
-
-        public Demo FindByKeyOnCache(Guid id)
-        {
-            if (_cache.Get(id, out Demo value)) return value;
-            var demo = FindByKey(id);
-            _cache.Set(id, demo, new TimeSpan(0, 3, 0));
-            return demo;
-        }
 
         public PageDto<DemoDto> GetPage(int pageIndex, int pageSize, int? age, string name)
         {
