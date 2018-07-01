@@ -1,7 +1,4 @@
-﻿using MyCompany.MyProject.ApplicationCore.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MyCompany.MyProject.ApplicationCore.Dtos.Demo;
 
 namespace MyCompany.MyProject.ApplicationCore.IServices
 {

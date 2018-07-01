@@ -1,4 +1,4 @@
-﻿using MyCompany.MyProject.ApplicationCore.Dtos;
+﻿using MyCompany.MyProject.ApplicationCore.Dtos.Demo;
 using MyCompany.MyProject.ApplicationCore.Entities;
 using MyCompany.MyProject.ApplicationCore.IRepositories;
 using MyCompany.MyProject.ApplicationCore.IServices;

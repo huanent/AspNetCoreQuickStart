@@ -1,11 +1,11 @@
-﻿using MyCompany.MyProject.ApplicationCore.Dtos;
-using MyCompany.MyProject.ApplicationCore.Dtos.Common;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
+using MyCompany.MyProject.ApplicationCore.Dtos.Demo;
+using MyCompany.MyProject.ApplicationCore.Dtos.Page;
 using MyCompany.MyProject.ApplicationCore.Entities;
 using MyCompany.MyProject.ApplicationCore.IRepositories;
 using MyCompany.MyProject.ApplicationCore.SharedKernel;
-using Dapper;
 using MyCompany.MyProject.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

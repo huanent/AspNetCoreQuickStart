@@ -1,6 +1,6 @@
-﻿using MyCompany.MyProject.ApplicationCore.Dtos;
-using FluentValidation;
-using MyCompany.MyProject.Infrastructure.ModelValidators.Common;
+﻿using FluentValidation;
+using MyCompany.MyProject.ApplicationCore.Dtos.Demo;
+using MyCompany.MyProject.Infrastructure.ModelValidators.Page;
 
 namespace MyCompany.MyProject.Infrastructure.ModelValidators
 {

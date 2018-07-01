@@ -1,4 +1,4 @@
-﻿namespace MyCompany.MyProject.ApplicationCore.Dtos.Common
+﻿namespace MyCompany.MyProject.ApplicationCore.Dtos.Page
 {
     public class QueryPageDto
     {

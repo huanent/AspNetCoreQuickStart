@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace MyCompany.MyProject.Infrastructure.EntityTypeConfigurations
 {
-    public class DemoConfig : IEntityTypeConfiguration<Demo>
+    public class DemoConfiguration : IEntityTypeConfiguration<Demo>
     {
         public void Configure(EntityTypeBuilder<Demo> builder)
         {

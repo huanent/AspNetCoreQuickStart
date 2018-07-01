@@ -1,5 +1,5 @@
-﻿using MyCompany.MyProject.ApplicationCore.Dtos;
-using MyCompany.MyProject.ApplicationCore.Dtos.Common;
+﻿using MyCompany.MyProject.ApplicationCore.Dtos.Demo;
+using MyCompany.MyProject.ApplicationCore.Dtos.Page;
 using MyCompany.MyProject.ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;

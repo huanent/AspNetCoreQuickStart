@@ -1,18 +1,18 @@
-﻿using MyCompany.MyProject.ApplicationCore.Dtos;
-using MyCompany.MyProject.ApplicationCore.Dtos.Common;
-using MyCompany.MyProject.ApplicationCore.Entities;
-using MyCompany.MyProject.ApplicationCore.IRepositories;
-using MyCompany.MyProject.ApplicationCore.IServices;
-using MyCompany.MyProject.ApplicationCore.SharedKernel;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using MyCompany.MyProject.ApplicationCore.Dtos.Demo;
+using MyCompany.MyProject.ApplicationCore.Dtos.Page;
+using MyCompany.MyProject.ApplicationCore.Entities;
+using MyCompany.MyProject.ApplicationCore.IRepositories;
+using MyCompany.MyProject.ApplicationCore.IServices;
+using MyCompany.MyProject.ApplicationCore.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace MyCompany.MyProject.Web.Controllers
 {

@@ -1,8 +1,8 @@
 ﻿using MyCompany.MyProject.ApplicationCore.Dtos;
-using MyCompany.MyProject.ApplicationCore.Dtos.Common;
+using MyCompany.MyProject.ApplicationCore.Dtos.Page;
 using FluentValidation;
 
-namespace MyCompany.MyProject.Infrastructure.ModelValidators.Common
+namespace MyCompany.MyProject.Infrastructure.ModelValidators.Page
 {
     public class QueryPageDtoValidator<T> : AbstractValidator<T> where T : QueryPageDto
     {
