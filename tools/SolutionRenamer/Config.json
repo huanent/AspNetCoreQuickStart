@@ -1,3 +1,4 @@
 ﻿{
-  "FileExtension": ".cs,.cshtml,.js,.csproj,.sln,.xml,.config"
+  "FileExtension": ".cs,.cshtml,.js,.csproj,.sln,.xml,.config",
+  "RootPath": "./"
 }

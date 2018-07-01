@@ -1,3 +1,0 @@
-dotnet SolutionRenamer.dll
-
-pause

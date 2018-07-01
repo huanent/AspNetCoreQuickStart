@@ -47,7 +47,8 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
                     .Select(s => new DemoDto
                     {
                         Name = s.Name,
-                        Age = s.Age
+                        Age = s.Age,
+                        Info = s.DemoInfo
                     })
                     .ToArray();
         }

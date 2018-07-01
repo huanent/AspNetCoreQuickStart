@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MyCompany.MyProject.ApplicationCore.Dtos.Common
+﻿namespace MyCompany.MyProject.ApplicationCore.Dtos.Common
 {
     public class QueryPageDto
     {

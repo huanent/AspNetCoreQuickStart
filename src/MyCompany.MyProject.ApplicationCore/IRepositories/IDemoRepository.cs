@@ -20,6 +20,7 @@ namespace MyCompany.MyProject.ApplicationCore.IRepositories
         void Update(Demo entity);
 
         void Delete(Guid id);
+
         PageDto<DemoDto> GetPage(int pageIndex, int pageSize, int? age, string name);
     }
 }
