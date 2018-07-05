@@ -62,7 +62,10 @@ namespace MyCompany.MyProject.Web.Controllers
         [ProducesResponseType(typeof(string), 200)]
         public dynamic CurrentIdentity([FromServices]ICurrentIdentity identity) => identity.Id;
 
-
+        /// <summary>
+        /// 模拟登录
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("Login")]
         public async System.Threading.Tasks.Task LoginAsync()
         {
@@ -80,6 +83,10 @@ namespace MyCompany.MyProject.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authenticationProperties);
         }
 
+        /// <summary>
+        /// 模拟退出
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("Logout")]
         public async System.Threading.Tasks.Task LogoutAsync()
         {

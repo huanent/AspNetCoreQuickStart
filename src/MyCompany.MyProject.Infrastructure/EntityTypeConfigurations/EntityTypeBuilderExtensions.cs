@@ -20,9 +20,6 @@ namespace MyCompany.MyProject.Infrastructure.EntityTypeConfigurations
 
             builder.Property("ModifiedDate")
                 .IsRequired();
-
-            builder.Property("Timestamp")
-                .IsRowVersion();
         }
     }
 }

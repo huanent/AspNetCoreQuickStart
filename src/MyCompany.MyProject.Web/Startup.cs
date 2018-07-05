@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using MyCompany.MyProject.Web.Application;
 using MyCompany.MyProject.Web.Auth;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyCompany.MyProject.Web
 {
@@ -63,8 +64,13 @@ namespace MyCompany.MyProject.Web
 
             services.AddMemoryCache();
             services.AddLoggingFileUI();
-            services.AddDbContext<AppDbContext>();
-            services.AddDbContext<AppQueryDbContext>();
+
+            services.AddDbContext<AppDbContext>(builder => builder.UseSqlServer(_settings.ConnectionStrings.Default));
+
+            services.AddQueryDbContext<AppQueryDbContext, AppDbContext>(builder =>
+            {
+                builder.UseSqlServer(_settings.ConnectionStrings.DefaultQuery);
+            });
 
             services.Configure<ApiBehaviorOptions>(o =>
             {

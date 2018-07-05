@@ -8,16 +8,8 @@ namespace MyCompany.MyProject.Infrastructure.Data
 {
     public class AppQueryDbContext : AppDbContext
     {
-        readonly IDbConnectionFactory _dbConnectionFactory;
-
-        public AppQueryDbContext(IDbConnectionFactory dbConnectionFactory, ISystemDateTime systemDateTime) : base(dbConnectionFactory, systemDateTime)
+        public AppQueryDbContext(QueryDbContextOptions<AppDbContext> options, ISystemDateTime systemDateTime) : base(options.Value, systemDateTime)
         {
-            _dbConnectionFactory = dbConnectionFactory;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_dbConnectionFactory.DefaultQuery());
         }
     }
 }

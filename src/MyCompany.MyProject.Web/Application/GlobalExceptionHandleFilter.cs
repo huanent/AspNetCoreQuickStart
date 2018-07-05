@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Threading.Tasks;
+using System;
 
 namespace MyCompany.MyProject.Web.Application
 {
@@ -31,12 +32,12 @@ namespace MyCompany.MyProject.Web.Application
             if (context.Exception is DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 logger.LogWarning(dbUpdateConcurrencyException, "数据库存在并发问题");
-                context.Result = new BadRequestObjectResult("网络故障,请重试");
+                context.Result = new BadRequestObjectResult(new BadRequestObject("网络故障,请重试", dbUpdateConcurrencyException));
             }
             else if (context.Exception is AppException appException)
             {
                 logger.LogInformation(appException.Message);
-                context.Result = new BadRequestObjectResult(appException.Message);
+                context.Result = new BadRequestObjectResult(new BadRequestObject(appException.Message, appException.InnerException));
             }
             else
             {
@@ -60,5 +61,18 @@ namespace MyCompany.MyProject.Web.Application
         {
             StatusCode = (int)HttpStatusCode.InternalServerError;
         }
+    }
+
+    public class BadRequestObject
+    {
+        public BadRequestObject(string massage, Exception exception = null)
+        {
+            Massage = massage;
+            Exception = exception;
+        }
+
+        public string Massage { get; private set; }
+
+        public Exception Exception { get; private set; }
     }
 }

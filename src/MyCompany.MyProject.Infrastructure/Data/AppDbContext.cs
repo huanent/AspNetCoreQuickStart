@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace MyCompany.MyProject.Infrastructure.Data
 {
@@ -14,17 +15,10 @@ namespace MyCompany.MyProject.Infrastructure.Data
         public DbSet<Demo> Demo { get; set; }
 
         readonly ISystemDateTime _systemDateTime;
-        readonly IDbConnectionFactory _dbConnectionFactory;
 
-        public AppDbContext(IDbConnectionFactory dbConnectionFactory, ISystemDateTime systemDateTime)
+        public AppDbContext(DbContextOptions<AppDbContext> options, ISystemDateTime systemDateTime) :  base(options)
         {
             _systemDateTime = systemDateTime;
-            _dbConnectionFactory = dbConnectionFactory;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_dbConnectionFactory.Default());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
