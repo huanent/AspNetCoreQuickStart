@@ -20,22 +20,15 @@ namespace MyCompany.MyProject.Web
 {
     public class Startup
     {
-        readonly IHostingEnvironment _env;
-        readonly AppSettings _settings;
-        readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _env;
+        private readonly AppSettings _settings;
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             _configuration = configuration;
             _settings = configuration.Get<AppSettings>();
             _env = env;
-        }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            ConfigureOptions(services);
-            AddSystemService(services);
-            AddAppServices(services);
         }
 
         public void Configure(IApplicationBuilder app)
@@ -49,11 +42,23 @@ namespace MyCompany.MyProject.Web
             app.UsePreStart();
         }
 
-        private void ConfigureOptions(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AppSettings>(_configuration);
-            services.Configure<ConnectionStrings>(_configuration.GetSection("ConnectionStrings"));
-            services.Configure<Cookie>(_configuration.GetSection("Cookie"));
+            ConfigureOptions(services);
+            AddSystemService(services);
+            AddAppServices(services);
+        }
+
+        private void AddAppServices(IServiceCollection services)
+        {
+            services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
+            services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
+            services.AddSingleton<ISystemDateTime, SystemDateTime>();
+            services.AddScoped<ICurrentIdentity, CurrentIdentity>();
+            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
+            AutoInjectService(services, "MyCompany.MyProject.Infrastructure", "MyCompany.MyProject.Infrastructure.Repositories");
+            AutoInjectService(services, "MyCompany.MyProject.ApplicationCore", "MyCompany.MyProject.ApplicationCore.Services");
         }
 
         private void AddSystemService(IServiceCollection services)
@@ -90,18 +95,6 @@ namespace MyCompany.MyProject.Web
             });
         }
 
-        private void AddAppServices(IServiceCollection services)
-        {
-            services.AddTransient(typeof(IAppLogger<>), typeof(AppLogger<>));
-            services.AddSingleton<ISequenceGuidGenerator, SequenceGuidGenerator>();
-            services.AddSingleton<ISystemDateTime, SystemDateTime>();
-            services.AddScoped<ICurrentIdentity, CurrentIdentity>();
-            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
-            services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
-            AutoInjectService(services, "MyCompany.MyProject.Infrastructure", "MyCompany.MyProject.Infrastructure.Repositories");
-            AutoInjectService(services, "MyCompany.MyProject.ApplicationCore", "MyCompany.MyProject.ApplicationCore.Services");
-        }
-
         private void AutoInjectService(IServiceCollection services, string assemblyName, string namespaceStartsWith)
         {
             var types = Assembly.Load(assemblyName).GetTypes().Where(w => !w.IsNested && !w.IsInterface && w.FullName.StartsWith(namespaceStartsWith));
@@ -112,5 +105,11 @@ namespace MyCompany.MyProject.Web
             }
         }
 
+        private void ConfigureOptions(IServiceCollection services)
+        {
+            services.Configure<AppSettings>(_configuration);
+            services.Configure<ConnectionStrings>(_configuration.GetSection("ConnectionStrings"));
+            services.Configure<Cookie>(_configuration.GetSection("Cookie"));
+        }
     }
 }

@@ -14,15 +14,15 @@ namespace MyCompany.MyProject.Web.Application
 {
     public class GlobalExceptionHandleFilter : IAsyncExceptionFilter
     {
-        readonly ILoggerFactory _loggerFactory;
-        readonly IHostingEnvironment _env;
-        readonly AppSettings _settings;
+        private readonly IHostingEnvironment _env;
+        private readonly EventId _eventId;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public GlobalExceptionHandleFilter(ILoggerFactory loggerFactory, IHostingEnvironment env, IOptions<AppSettings> settings)
+        public GlobalExceptionHandleFilter(ILoggerFactory loggerFactory, IHostingEnvironment env, Func<EventId> eventId)
         {
             _loggerFactory = loggerFactory;
             _env = env;
-            _settings = settings.Value;
+            _eventId = eventId();
         }
 
         public async Task OnExceptionAsync(ExceptionContext context)
@@ -32,22 +32,21 @@ namespace MyCompany.MyProject.Web.Application
             if (context.Exception is DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 logger.LogWarning(dbUpdateConcurrencyException, "数据库存在并发问题");
-                context.Result = new BadRequestObjectResult(new BadRequestObject("网络故障,请重试", dbUpdateConcurrencyException));
+                context.Result = new BadRequestObjectResult("网络故障,请重试");
             }
             else if (context.Exception is AppException appException)
             {
                 logger.LogInformation(appException.Message);
-                context.Result = new BadRequestObjectResult(new BadRequestObject(appException.Message, appException.InnerException));
+                context.Result = new BadRequestObjectResult(appException.Message);
             }
             else
             {
                 logger.LogError(
-                    new EventId(_settings.EventId),
+                    _eventId,
                     context.Exception,
                     context.Exception.Message);
 
-                if (_env.IsProduction()) context.Result = new InternalServerErrorResult("未知错误,请重试");
-                else context.Result = new InternalServerErrorResult(context.Exception);
+                context.Result = new InternalServerErrorResult("未知错误,请重试");
             }
 
             context.ExceptionHandled = true;
@@ -59,20 +58,7 @@ namespace MyCompany.MyProject.Web.Application
     {
         public InternalServerErrorResult(object value) : base(value)
         {
-            StatusCode = (int)HttpStatusCode.InternalServerError;
+            StatusCode = 500;
         }
-    }
-
-    public class BadRequestObject
-    {
-        public BadRequestObject(string massage, Exception exception = null)
-        {
-            Massage = massage;
-            Exception = exception;
-        }
-
-        public string Massage { get; private set; }
-
-        public Exception Exception { get; private set; }
     }
 }

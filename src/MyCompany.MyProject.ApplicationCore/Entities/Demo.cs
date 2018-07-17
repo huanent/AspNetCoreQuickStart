@@ -1,4 +1,5 @@
 ﻿using MyCompany.MyProject.ApplicationCore.SharedKernel;
+using System.ComponentModel;
 
 namespace MyCompany.MyProject.ApplicationCore.Entities
 {

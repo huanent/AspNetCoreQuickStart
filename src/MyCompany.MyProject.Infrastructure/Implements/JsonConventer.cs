@@ -9,6 +9,15 @@ namespace MyCompany.MyProject.Infrastructure.Implements
     {
         public JsonConventer()
         {
+            JsonConvert.DefaultSettings = () =>
+            {
+                var setting = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
+
+                return setting;
+            };
         }
 
         public string ToJson(object obj)

@@ -23,9 +23,9 @@ namespace MyCompany.MyProject.Web.Controllers
     [ApiController]
     public class DemoController : ControllerBase
     {
-        readonly IAppLogger<DemoController> _logger;
-        readonly IDemoRepository _demoRepository;
-        readonly IDemoService _demoService;
+        private readonly IDemoRepository _demoRepository;
+        private readonly IDemoService _demoService;
+        private readonly IAppLogger<DemoController> _logger;
 
         public DemoController(
             IAppLogger<DemoController> appLogger,
@@ -98,38 +98,6 @@ namespace MyCompany.MyProject.Web.Controllers
         #region 查询
 
         /// <summary>
-        /// 使用EF查询
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetUseEF")]
-        public IEnumerable<DemoDto> GetUseEF()
-        {
-            return _demoRepository.All();
-        }
-
-        /// <summary>
-        /// 使用Dapper查询
-        /// </summary>
-        /// <param name="top"></param>
-        /// <returns></returns>
-        [HttpGet("GetUseDapper/{top}")]
-        public IEnumerable<Demo> GetUseDapper(int top)
-        {
-            return _demoRepository.GetTopRecords(top);
-        }
-
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        /// <param name="model">分页查询模型</param>
-        /// <returns></returns>
-        [HttpGet(nameof(GetPageList))]
-        public PageDto<DemoDto> GetPageList(QueryDemoPageDto model)
-        {
-            return _demoRepository.GetPage(model.PageIndex, model.PageSize, model.Age, model.Name);
-        }
-
-        /// <summary>
         /// 从缓存读取实体
         /// </summary>
         /// <param name="id"></param>
@@ -144,9 +112,52 @@ namespace MyCompany.MyProject.Web.Controllers
                  return _demoRepository.FindByKey(id);
              });
         }
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="model">分页查询模型</param>
+        /// <returns></returns>
+        [HttpGet(nameof(GetPageList))]
+        public PageDto<DemoDto> GetPageList(QueryDemoPageDto model)
+        {
+            return _demoRepository.GetPage(model.PageIndex, model.PageSize, model.Age, model.Name);
+        }
+
+        /// <summary>
+        /// 使用Dapper查询
+        /// </summary>
+        /// <param name="top"></param>
+        /// <returns></returns>
+        [HttpGet("GetUseDapper/{top}")]
+        public IEnumerable<Demo> GetUseDapper(int top)
+        {
+            return _demoRepository.GetTopRecords(top);
+        }
+
+        /// <summary>
+        /// 使用EF查询
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetUseEF")]
+        public IEnumerable<DemoDto> GetUseEF()
+        {
+            return _demoRepository.All();
+        }
+
         #endregion 查询
 
         #region 增删改
+
+        /// <summary>
+        /// 删除实体示例
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpDelete("{id}")]
+        public void Delete(Guid id)
+        {
+            _demoRepository.Delete(id);
+        }
 
         /// <summary>
         /// 添加实体示例
@@ -165,16 +176,6 @@ namespace MyCompany.MyProject.Web.Controllers
         public void Put([FromBody] EditDemoDto model)
         {
             _demoService.UpdateDemo(model);
-        }
-
-        /// <summary>
-        /// 删除实体示例
-        /// </summary>
-        /// <param name="id"></param>
-        [HttpDelete("{id}")]
-        public void Delete(Guid id)
-        {
-            _demoRepository.Delete(id);
         }
 
         #endregion 增删改
