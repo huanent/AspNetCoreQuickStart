@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.6.104" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.6.105" />
     <PackageReference Include="Huanent.Logging.File" Version="2.0.4" />
-    <PackageReference Include="Huanent.Logging.File.UI" Version="1.0.2" />
+    <PackageReference Include="Huanent.Logging.File.UI" Version="1.0.3" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="0.8.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
