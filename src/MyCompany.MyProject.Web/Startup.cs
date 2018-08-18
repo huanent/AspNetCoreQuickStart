@@ -1,20 +1,17 @@
-﻿using MyCompany.MyProject.ApplicationCore.SharedKernel;
-using FluentValidation.AspNetCore;
-using MyCompany.MyProject.Infrastructure.Data;
-using MyCompany.MyProject.Infrastructure.Implements;
-using MyCompany.MyProject.Infrastructure.ModelValidators;
+﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Reflection;
+using MyCompany.MyProject.ApplicationCore.SharedKernel;
+using MyCompany.MyProject.Infrastructure.Data;
+using MyCompany.MyProject.Infrastructure.Implements;
+using MyCompany.MyProject.Infrastructure.ModelValidators;
 using MyCompany.MyProject.Web.Application;
-using MyCompany.MyProject.Web.Auth;
-using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace MyCompany.MyProject.Web
 {
@@ -36,7 +33,7 @@ namespace MyCompany.MyProject.Web
             if (!_env.IsProduction()) app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseAuthentication();
             app.UseStaticFiles();
-            app.UseFileServer();
+            app.UseDefaultFiles();
             app.UseMvc();
             app.UseAppSwagger();
             app.UsePreStart();
@@ -57,8 +54,8 @@ namespace MyCompany.MyProject.Web
             services.AddScoped<ICurrentIdentity, CurrentIdentity>();
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
-            AutoInjectService(services, "MyCompany.MyProject.Infrastructure", "MyCompany.MyProject.Infrastructure.Repositories");
-            AutoInjectService(services, "MyCompany.MyProject.ApplicationCore", "MyCompany.MyProject.ApplicationCore.Services");
+            services.AutoInject("MyCompany.MyProject.Infrastructure", "MyCompany.MyProject.Infrastructure.Repositories");
+            services.AutoInject("MyCompany.MyProject.ApplicationCore", "MyCompany.MyProject.ApplicationCore.Services");
         }
 
         private void AddSystemService(IServiceCollection services)
@@ -93,16 +90,6 @@ namespace MyCompany.MyProject.Web
                 fv.RegisterValidatorsFromAssemblyContaining<RegisterValidators>();
                 fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
             });
-        }
-
-        private void AutoInjectService(IServiceCollection services, string assemblyName, string namespaceStartsWith)
-        {
-            var types = Assembly.Load(assemblyName).GetTypes().Where(w => !w.IsNested && !w.IsInterface && w.FullName.StartsWith(namespaceStartsWith));
-            foreach (TypeInfo type in types)
-            {
-                var interfaceType = type.ImplementedInterfaces.First();
-                services.AddScoped(interfaceType, type);
-            }
         }
 
         private void ConfigureOptions(IServiceCollection services)

@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Text;
 using System.Threading.Tasks;
-using MyCompany.MyProject.Web.Application;
 
-namespace MyCompany.MyProject.Web.Auth
+namespace MyCompany.MyProject.Web.Application
 {
     public static class AuthenticationExtensions
     {

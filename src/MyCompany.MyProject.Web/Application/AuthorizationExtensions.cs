@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
-namespace MyCompany.MyProject.Web.Auth
+namespace MyCompany.MyProject.Web.Application
 {
     public static class AuthorizationExtensions
     {

@@ -5,11 +5,12 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MyCompany.MyProject.Web.Auth
+namespace MyCompany.MyProject.Web.Application
 {
     public class IdentityHandleFilter : IAsyncResourceFilter
     {
-        readonly CurrentIdentity _identity;
+        private readonly CurrentIdentity _identity;
+
         public IdentityHandleFilter(ICurrentIdentity identity)
         {
             _identity = (CurrentIdentity)identity;
