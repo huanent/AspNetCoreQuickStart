@@ -2,11 +2,9 @@
 
 namespace MyCompany.MyProject.ApplicationCore.SharedKernel
 {
-
     public abstract class EntityBase<T> where T : struct
     {
         public T Id { get; protected set; }
-
     }
 
     public abstract class EntityBase : EntityBase<Guid>

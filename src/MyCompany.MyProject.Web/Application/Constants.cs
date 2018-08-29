@@ -7,5 +7,6 @@ namespace MyCompany.MyProject.Web.Application
 {
     public class Constants
     {
+        public const string DataPath = "data";
     }
 }

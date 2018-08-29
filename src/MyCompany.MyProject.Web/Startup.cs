@@ -30,7 +30,11 @@ namespace MyCompany.MyProject.Web
 
         public void Configure(IApplicationBuilder app)
         {
-            if (!_env.IsProduction()) app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            if (!_env.IsProduction())
+            {
+                app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            }
+
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseDefaultFiles();
