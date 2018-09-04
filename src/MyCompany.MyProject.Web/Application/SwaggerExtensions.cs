@@ -18,6 +18,7 @@ namespace MyCompany.MyProject.Web.Application
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.ApplicationCore.xml"));
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Infrastructure.xml"));
                 o.AddFluentValidationRules();
+                o.OperationFilter<SwaggerFileUploadFilter>();
             });
 
             return services;
