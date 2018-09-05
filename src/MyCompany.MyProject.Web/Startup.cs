@@ -12,6 +12,7 @@ using MyCompany.MyProject.Infrastructure.Implements;
 using MyCompany.MyProject.Infrastructure.ModelValidators;
 using MyCompany.MyProject.Web.Application;
 using System;
+using System.IO;
 
 namespace MyCompany.MyProject.Web
 {
@@ -67,9 +68,12 @@ namespace MyCompany.MyProject.Web
             services.AddAppSwagger();
             services.AddAppAuthentication(_settings.Cookie);
             services.AddAppAuthorization();
-
             services.AddMemoryCache();
-            services.AddLoggingFileUI();
+
+            services.AddLoggingFileUI(options =>
+            {
+                options.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs");
+            });
 
             services.AddDbContext<AppDbContext>(builder => builder.UseSqlServer(_settings.ConnectionStrings.Default));
 
