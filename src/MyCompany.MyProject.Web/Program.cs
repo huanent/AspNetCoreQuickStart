@@ -13,13 +13,7 @@ namespace MyCompany.MyProject.Web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .ConfigureLogging(builder => builder.AddFile())
-                .ConfigureAppConfiguration(builder =>
-                {
-                    string path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath);
-                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-                    builder.SetBasePath(path);
-                });
+                .ConfigureLogging(builder => builder.AddFile());
 
         public static void Main(string[] args)
         {
