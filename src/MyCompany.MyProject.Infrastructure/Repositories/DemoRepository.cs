@@ -15,11 +15,11 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
 {
     public class DemoRepository : IDemoRepository
     {
-        readonly AppDbContext _appDbContext;
-        readonly AppQueryDbContext _appQueryDbContext;
-        readonly IAppLogger<DemoRepository> _appLogger;
-        readonly ISystemDateTime _systemDateTime;
-        readonly IDbConnectionFactory _connectionFactory;
+        private readonly AppDbContext _appDbContext;
+        private readonly IAppLogger<DemoRepository> _appLogger;
+        private readonly AppQueryDbContext _appQueryDbContext;
+        private readonly IDbConnectionFactory _connectionFactory;
+        private readonly ISystemDateTime _systemDateTime;
 
         public DemoRepository(
             AppDbContext appDbContext,
@@ -66,19 +66,19 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
 
         public Demo FindByKey(Guid id) => _appQueryDbContext.Demo.Find(id);
 
-        public PageDto<DemoDto> GetPage(int pageIndex, int pageSize, int? age, string name)
+        public PageDto<DemoDto> GetPage(QueryDemoPageDto dto)
         {
             var data = _appQueryDbContext.Demo.AsNoTracking();
 
-            data = data.IfNotNull(name, q => q.Where(w => w.Name == name));
-            data = data.IfHaveValue(age, q => q.Where(w => w.Age == age));
+            data = data.IfNotNull(dto.Name, q => q.Where(w => w.Name == dto.Name));
+            data = data.IfHaveValue(dto.Age, q => q.Where(w => w.Age == dto.Age));
 
             int total = data.Count();
             var list = data.Select(s => new DemoDto
             {
                 Age = s.Age,
                 Name = s.Name
-            }).GetPage(pageIndex, pageSize);
+            }).GetPage(dto.PageIndex, dto.PageSize);
 
             return new PageDto<DemoDto>(total, list);
         }

@@ -9,18 +9,18 @@ namespace MyCompany.MyProject.ApplicationCore.IRepositories
 {
     public interface IDemoRepository
     {
-        IEnumerable<DemoDto> All();
-
         Task AddAsync(Demo demo);
 
-        IEnumerable<Demo> GetTopRecords(int count);
-
-        Demo FindByKey(Guid id);
-
-        void Update(Demo entity);
+        IEnumerable<DemoDto> All();
 
         void Delete(Guid id);
 
-        PageDto<DemoDto> GetPage(int pageIndex, int pageSize, int? age, string name);
+        Demo FindByKey(Guid id);
+
+        PageDto<DemoDto> GetPage(QueryDemoPageDto dto);
+
+        IEnumerable<Demo> GetTopRecords(int count);
+
+        void Update(Demo entity);
     }
 }

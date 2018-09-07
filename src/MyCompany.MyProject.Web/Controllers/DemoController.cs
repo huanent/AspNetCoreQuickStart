@@ -13,6 +13,7 @@ using MyCompany.MyProject.ApplicationCore.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MyCompany.MyProject.Web.Controllers
 {
@@ -116,12 +117,12 @@ namespace MyCompany.MyProject.Web.Controllers
         /// <summary>
         /// 分页查询
         /// </summary>
-        /// <param name="model">分页查询模型</param>
+        /// <param name="dto">分页查询模型</param>
         /// <returns></returns>
         [HttpGet(nameof(GetPageList))]
-        public PageDto<DemoDto> GetPageList(QueryDemoPageDto model)
+        public PageDto<DemoDto> GetPageList(QueryDemoPageDto dto)
         {
-            return _demoRepository.GetPage(model.PageIndex, model.PageSize, model.Age, model.Name);
+            return _demoRepository.GetPage(dto);
         }
 
         /// <summary>
@@ -163,19 +164,19 @@ namespace MyCompany.MyProject.Web.Controllers
         /// 添加实体示例
         /// </summary>
         [HttpPost]
-        public async System.Threading.Tasks.Task PostAsync([FromBody] AddDemoDto model)
+        public async Task PostAsync([FromBody] AddDemoDto dto)
         {
-            await _demoService.CreateDemoAsync(model);
+            await _demoService.CreateDemoAsync(dto);
         }
 
         /// <summary>
         /// 更新实体示例
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="dto"></param>
         [HttpPut]
-        public void Put([FromBody] EditDemoDto model)
+        public void Put([FromBody] EditDemoDto dto)
         {
-            _demoService.UpdateDemo(model);
+            _demoService.UpdateDemo(dto);
         }
 
         #endregion 增删改
