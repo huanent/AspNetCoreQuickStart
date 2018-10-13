@@ -7,7 +7,7 @@ namespace MyCompany.MyProject.Web.Application
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {
-        readonly ConnectionStrings _connectionStrings;
+        private readonly ConnectionStrings _connectionStrings;
 
         public DbConnectionFactory(IOptions<ConnectionStrings> options)
         {
@@ -17,11 +17,6 @@ namespace MyCompany.MyProject.Web.Application
         public DbConnection Default()
         {
             return new SqlConnection(_connectionStrings.Default);
-        }
-
-        public DbConnection DefaultQuery()
-        {
-            return new SqlConnection(_connectionStrings.DefaultQuery);
         }
     }
 }

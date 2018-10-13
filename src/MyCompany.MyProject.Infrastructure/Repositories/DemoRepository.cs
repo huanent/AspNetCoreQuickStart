@@ -17,19 +17,16 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
     {
         private readonly AppDbContext _appDbContext;
         private readonly IAppLogger<DemoRepository> _appLogger;
-        private readonly AppQueryDbContext _appQueryDbContext;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ISystemDateTime _systemDateTime;
 
         public DemoRepository(
             AppDbContext appDbContext,
-            AppQueryDbContext appQueryDbContext,
             IAppLogger<DemoRepository> appLogger,
             ISystemDateTime systemDateTime,
             IDbConnectionFactory connectionFactory)
         {
             _appDbContext = appDbContext;
-            _appQueryDbContext = appQueryDbContext;
             _appLogger = appLogger;
             _systemDateTime = systemDateTime;
             _connectionFactory = connectionFactory;
@@ -43,7 +40,7 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
 
         public IEnumerable<DemoDto> All()
         {
-            return _appQueryDbContext.Demo
+            return _appDbContext.Demo
                     .Select(s => new DemoDto
                     {
                         Name = s.Name,
@@ -64,11 +61,11 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
             }
         }
 
-        public Demo FindByKey(Guid id) => _appQueryDbContext.Demo.Find(id);
+        public Demo FindByKey(Guid id) => _appDbContext.Demo.Find(id);
 
         public PageDto<DemoDto> GetPage(QueryDemoPageDto dto)
         {
-            var data = _appQueryDbContext.Demo.AsNoTracking();
+            var data = _appDbContext.Demo.AsNoTracking();
 
             data = data.IfNotNull(dto.Name, q => q.Where(w => w.Name == dto.Name));
             data = data.IfHaveValue(dto.Age, q => q.Where(w => w.Age == dto.Age));
@@ -85,7 +82,7 @@ namespace MyCompany.MyProject.Infrastructure.Repositories
 
         public IEnumerable<Demo> GetTopRecords(int count)
         {
-            using (var connection = _connectionFactory.DefaultQuery())
+            using (var connection = _connectionFactory.Default())
             {
                 return connection.Query<Demo>("select top (@Count) * from Demo", new { Count = count });
             }

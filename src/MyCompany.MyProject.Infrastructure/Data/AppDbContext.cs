@@ -1,32 +1,37 @@
-﻿using MyCompany.MyProject.ApplicationCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MyCompany.MyProject.ApplicationCore.Entities;
 using MyCompany.MyProject.ApplicationCore.SharedKernel;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace MyCompany.MyProject.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Demo> Demo { get; set; }
+        private readonly ISystemDateTime _systemDateTime;
 
-        readonly ISystemDateTime _systemDateTime;
-
-        public AppDbContext(DbContextOptions<AppDbContext> options, ISystemDateTime systemDateTime) :  base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options, ISystemDateTime systemDateTime) : base(options)
         {
             _systemDateTime = systemDateTime;
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public DbSet<Demo> Demo { get; set; }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            RegisterEntityTypeConfigurations(modelBuilder);
+            UpdateBasicInfo();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
-        private static void RegisterEntityTypeConfigurations(ModelBuilder modelBuilder)
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            UpdateBasicInfo();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             string typeName = typeof(IEntityTypeConfiguration<>).Name;
             var assembly = Assembly.GetExecutingAssembly();
@@ -41,29 +46,17 @@ namespace MyCompany.MyProject.Infrastructure.Data
                     });
         }
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            UpdateBasicInfo();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
-
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            UpdateBasicInfo();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
-
         private void UpdateBasicInfo()
         {
             var entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added);
 
-            foreach (var entry in entries)
+            Parallel.ForEach(entries, entry =>
             {
                 if (entry.Entity is EntityBase auditableEntity)
                 {
                     auditableEntity.UpdateBasicInfo(_systemDateTime);
                 }
-            }
+            });
         }
     }
 }

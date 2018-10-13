@@ -19,6 +19,7 @@ namespace MyCompany.MyProject.Web.Application
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Infrastructure.xml"));
                 o.AddFluentValidationRules();
                 o.OperationFilter<SwaggerFileUploadFilter>();
+                o.IgnoreObsoleteActions();
             });
 
             return services;
@@ -27,8 +28,11 @@ namespace MyCompany.MyProject.Web.Application
         public static IApplicationBuilder UseAppSwagger(this IApplicationBuilder app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/api/swagger.json", "api"));
-
+            app.UseSwaggerUI(o =>
+            {
+                o.SwaggerEndpoint("/swagger/api/swagger.json", "api");
+                o.DocExpansion(DocExpansion.None);
+            });
             return app;
         }
     }

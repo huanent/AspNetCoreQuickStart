@@ -36,12 +36,24 @@ namespace MyCompany.MyProject.Web
                 app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             }
 
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var env = app.ApplicationServices.GetService<IHostingEnvironment>();
+
+                //auto Migrate
+                if (env.IsProduction())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    db.Database.Migrate();
+                }
+            }
+
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseDefaultFiles();
             app.UseMvc();
             app.UseAppSwagger();
-            app.UsePreStart();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -76,11 +88,6 @@ namespace MyCompany.MyProject.Web
             });
 
             services.AddDbContext<AppDbContext>(builder => builder.UseSqlServer(_settings.ConnectionStrings.Default));
-
-            services.AddQueryDbContext<AppQueryDbContext, AppDbContext>(builder =>
-            {
-                builder.UseSqlServer(_settings.ConnectionStrings.DefaultQuery);
-            });
 
             services.Configure<ApiBehaviorOptions>(o =>
             {
