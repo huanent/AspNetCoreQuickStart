@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>\bin\Debug\netcoreapp2.1\MyCompany.MyProject.Web.xml</DocumentationFile>
+    <DocumentationFile>./MyCompany.MyProject.Web.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>\bin\Release\netcoreapp2.1\MyCompany.MyProject.Web.xml</DocumentationFile>
+    <DocumentationFile>./MyCompany.MyProject.Web.xml</DocumentationFile>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
   </PropertyGroup>
 
@@ -21,21 +21,26 @@
 
   <ItemGroup>
     <None Remove="Controllers\.gitkeep" />
+    <None Remove="MyCompany.MyProject.Web.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.0.100" />
     <PackageReference Include="Huanent.Logging.File" Version="2.1.0" />
     <PackageReference Include="Huanent.Logging.File.UI" Version="1.1.2" />
-    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="0.8.2" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyCompany.MyProject.ApplicationCore\MyCompany.MyProject.ApplicationCore.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Infrastructure\MyCompany.MyProject.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Commands\MyCompany.MyProject.Commands.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Common\MyCompany.MyProject.Common.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Data\MyCompany.MyProject.Data.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Dtos\MyCompany.MyProject.Dtos.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Entities\MyCompany.MyProject.Entities.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Handlers\MyCompany.MyProject.Handlers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

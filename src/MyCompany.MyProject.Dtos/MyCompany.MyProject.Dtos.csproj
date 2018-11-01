@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>./MyCompany.MyProject.Dtos.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>./MyCompany.MyProject.Dtos.xml</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MyCompany.MyProject.Dtos.xml" />
+  </ItemGroup>
+
+</Project>

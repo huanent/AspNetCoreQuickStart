@@ -1,19 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using MyCompany.MyProject.ApplicationCore.Dtos.Demo;
-using MyCompany.MyProject.ApplicationCore.Dtos.Page;
-using MyCompany.MyProject.ApplicationCore.Entities;
-using MyCompany.MyProject.ApplicationCore.IRepositories;
-using MyCompany.MyProject.ApplicationCore.IServices;
-using MyCompany.MyProject.ApplicationCore.SharedKernel;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using MyCompany.MyProject.Commands.Demo;
+using MyCompany.MyProject.Dto.Demo;
 
 namespace MyCompany.MyProject.Web.Controllers
 {
@@ -24,161 +14,33 @@ namespace MyCompany.MyProject.Web.Controllers
     [ApiController]
     public class DemoController : ControllerBase
     {
-        private readonly IDemoRepository _demoRepository;
-        private readonly IDemoService _demoService;
-        private readonly IAppLogger<DemoController> _logger;
+        private readonly IMediator _mediator;
 
-        public DemoController(
-            IAppLogger<DemoController> appLogger,
-            IDemoRepository demoRepository,
-            IDemoService demoService,
-            IHostingEnvironment env)
+        public DemoController(IMediator mediator)
         {
-            if (env.IsProduction()) throw new AppException("当前为正式环境，不提供测试");
-            _logger = appLogger;
-            _demoRepository = demoRepository;
-            _demoService = demoService;
+            _mediator = mediator;
         }
 
-        #region 系统信息
-
         /// <summary>
-        /// 获取系统当前时间
+        /// 获取所有Demo实体
         /// </summary>
-        /// <param name="systemDateTime"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        [HttpGet("NowDateTime")]
-        [ProducesResponseType(typeof(string), 200)]
-        public DateTime NowDateTime([FromServices] ISystemDateTime systemDateTime) => systemDateTime.Now;
-
-        #endregion 系统信息
-
-        #region 身份验证
+        [HttpGet]
+        public async Task<IEnumerable<DemoDto>> GetAsync()
+        {
+            return await _mediator.Send(new GetDemosRequest());
+        }
 
         /// <summary>
-        /// 获取当前身份信息
+        /// 根据Id查新Demo实体
         /// </summary>
+        /// <param name="request"></param>
         /// <returns></returns>
-        [HttpGet("CurrentIdentity"), Authorize]
-        [ProducesResponseType(typeof(string), 200)]
-        public dynamic CurrentIdentity([FromServices]ICurrentIdentity identity) => identity.Id;
-
-        /// <summary>
-        /// 模拟登录
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("Login")]
-        public async System.Threading.Tasks.Task LoginAsync()
+        [HttpGet("{id}")]
+        public async Task<DemoDto> GetByIdAsync([FromRoute]FindDemoByIdRequest request)
         {
-            var claimsPrincipal = new ClaimsPrincipal();
-            var claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            claimsIdentity.AddClaim(new Claim(ClaimTypes.Sid, "huanent"));
-            claimsPrincipal.AddIdentity(claimsIdentity);
-
-            var authenticationProperties = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTime.UtcNow.AddYears(10)
-            };
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authenticationProperties);
+            return await _mediator.Send(request);
         }
-
-        /// <summary>
-        /// 模拟退出
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("Logout")]
-        public async System.Threading.Tasks.Task LogoutAsync()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        }
-
-        #endregion 身份验证
-
-        #region 查询
-
-        /// <summary>
-        /// 从缓存读取实体
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="memoryCache"></param>
-        /// <returns></returns>
-        [HttpGet("FindOnCache/{id}")]
-        public Demo FindOnCache(Guid id, [FromServices]IMemoryCache memoryCache)
-        {
-            return memoryCache.GetOrCreate(id, c =>
-             {
-                 c.SetAbsoluteExpiration(TimeSpan.FromMinutes(3));
-                 return _demoRepository.FindByKey(id);
-             });
-        }
-
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        /// <param name="dto">分页查询模型</param>
-        /// <returns></returns>
-        [HttpGet(nameof(GetPageList))]
-        public PageDto<DemoDto> GetPageList(QueryDemoPageDto dto)
-        {
-            return _demoRepository.GetPage(dto);
-        }
-
-        /// <summary>
-        /// 使用Dapper查询
-        /// </summary>
-        /// <param name="top"></param>
-        /// <returns></returns>
-        [HttpGet("GetUseDapper/{top}")]
-        public IEnumerable<Demo> GetUseDapper(int top)
-        {
-            return _demoRepository.GetTopRecords(top);
-        }
-
-        /// <summary>
-        /// 使用EF查询
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetUseEF")]
-        public IEnumerable<DemoDto> GetUseEF()
-        {
-            return _demoRepository.All();
-        }
-
-        #endregion 查询
-
-        #region 增删改
-
-        /// <summary>
-        /// 删除实体示例
-        /// </summary>
-        /// <param name="id"></param>
-        [HttpDelete("{id}")]
-        public void Delete(Guid id)
-        {
-            _demoRepository.Delete(id);
-        }
-
-        /// <summary>
-        /// 添加实体示例
-        /// </summary>
-        [HttpPost]
-        public async Task PostAsync([FromBody] AddDemoDto dto)
-        {
-            await _demoService.CreateDemoAsync(dto);
-        }
-
-        /// <summary>
-        /// 更新实体示例
-        /// </summary>
-        /// <param name="dto"></param>
-        [HttpPut]
-        public void Put([FromBody] EditDemoDto dto)
-        {
-            _demoService.UpdateDemo(dto);
-        }
-
-        #endregion 增删改
     }
 }

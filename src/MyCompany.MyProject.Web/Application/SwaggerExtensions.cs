@@ -15,9 +15,8 @@ namespace MyCompany.MyProject.Web.Application
             {
                 o.SwaggerDoc("api", new Info());
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Web.xml"));
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.ApplicationCore.xml"));
-                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Infrastructure.xml"));
-                o.AddFluentValidationRules();
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Dtos.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Entities.xml"));
                 o.OperationFilter<SwaggerFileUploadFilter>();
                 o.IgnoreObsoleteActions();
             });

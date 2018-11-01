@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyCompany.MyProject.Commands\MyCompany.MyProject.Commands.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Data\MyCompany.MyProject.Data.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Dtos\MyCompany.MyProject.Dtos.csproj" />
+  </ItemGroup>
+
+</Project>

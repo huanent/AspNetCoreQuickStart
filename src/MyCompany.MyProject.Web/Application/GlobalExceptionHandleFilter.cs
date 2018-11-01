@@ -1,14 +1,10 @@
-﻿using MyCompany.MyProject.ApplicationCore;
-using MyCompany.MyProject.ApplicationCore.SharedKernel;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.Net;
-using System.Threading.Tasks;
-using System;
 
 namespace MyCompany.MyProject.Web.Application
 {
