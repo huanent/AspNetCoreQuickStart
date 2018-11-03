@@ -22,6 +22,13 @@ namespace MyCompany.MyProject.Web.Controllers
         }
 
         /// <summary>
+        /// 删除Demo
+        /// </summary>
+        /// <param name="request"></param>
+        [HttpDelete("{id}")]
+        public void Delete([FromRoute] DeleteDemoRequest request) => _mediator.Send(request);
+
+        /// <summary>
         /// 获取所有Demo实体
         /// </summary>
         /// <returns></returns>

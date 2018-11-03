@@ -2,9 +2,10 @@
 {
     public class Demo : EntityBase
     {
-        public Demo(string name, int Age = 10)
+        public Demo(string name, int age = 10)
         {
             Name = name;
+            Age = age;
         }
 
         private Demo()

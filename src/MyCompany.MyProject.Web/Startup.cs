@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -61,8 +62,8 @@ namespace MyCompany.MyProject.Web
         {
             services.AddMediatR(new[] {
                 Assembly.GetAssembly(typeof(Startup)),
-                Assembly.GetAssembly(typeof(CommandsRegister)),
-                Assembly.GetAssembly(typeof(HandlersRegister)),
+                Assembly.Load("MyCompany.MyProject.Handlers"),
+                Assembly.Load("MyCompany.MyProject.Commands"),
             });
 
             services.AddDbContextPool<AppDbContext>(builder =>
