@@ -17,9 +17,9 @@
 
         public string Name { get; private set; }
 
-        public void Update(string name)
+        public void Update(int age)
         {
-            Name = name;
+            Age = age;
         }
     }
 }

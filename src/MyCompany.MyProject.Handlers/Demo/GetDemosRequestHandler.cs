@@ -26,8 +26,10 @@ namespace MyCompany.MyProject.Handlers.Demo
                 .Select(s => new DemoDto
                 {
                     Id = s.Id,
-                    Name = s.Name
+                    Name = s.Name,
+                    Age = s.Age
                 })
+                .ToArray()
                 .AsEnumerable();
 
             return Task.FromResult(demos);

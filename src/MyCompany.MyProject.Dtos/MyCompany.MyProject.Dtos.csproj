@@ -5,11 +5,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>./MyCompany.MyProject.Dtos.xml</DocumentationFile>
+    <DocumentationFile>./bin/MyCompany.MyProject.Dtos.xml</DocumentationFile>
+    <NoWarn>1701;1702;CS1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>./MyCompany.MyProject.Dtos.xml</OutputPath>
+    <OutputPath></OutputPath>
+    <NoWarn>1701;1702;CS1591</NoWarn>
+    <DocumentationFile>./bin/MyCompany.MyProject.Dtos.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

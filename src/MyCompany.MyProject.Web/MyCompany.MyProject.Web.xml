@@ -9,7 +9,7 @@
             使用演示
             </summary>
         </member>
-        <member name="M:MyCompany.MyProject.Web.Controllers.DemoController.GetAsync(MyCompany.MyProject.Commands.Demo.GetDemosRequest)">
+        <member name="M:MyCompany.MyProject.Web.Controllers.DemoController.GetAsync">
             <summary>
             获取所有Demo实体
             </summary>

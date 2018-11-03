@@ -24,13 +24,9 @@ namespace MyCompany.MyProject.Web.Controllers
         /// <summary>
         /// 获取所有Demo实体
         /// </summary>
-        /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<DemoDto>> GetAsync()
-        {
-            return await _mediator.Send(new GetDemosRequest());
-        }
+        public async Task<IEnumerable<DemoDto>> GetAsync() => await _mediator.Send(new GetDemosRequest());
 
         /// <summary>
         /// 根据Id查新Demo实体
@@ -38,9 +34,20 @@ namespace MyCompany.MyProject.Web.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DemoDto> GetByIdAsync([FromRoute]FindDemoByIdRequest request)
-        {
-            return await _mediator.Send(request);
-        }
+        public async Task<DemoDto> GetByIdAsync([FromRoute]FindDemoByIdRequest request) => await _mediator.Send(request);
+
+        /// <summary>
+        /// 创建Demo
+        /// </summary>
+        /// <param name="request"></param>
+        [HttpPost]
+        public void Post([FromBody] CreateDemoRequest request) => _mediator.Send(request);
+
+        /// <summary>
+        /// 修改Demo
+        /// </summary>
+        /// <param name="request"></param>
+        [HttpPut]
+        public void Put([FromBody]ModifyDemoRequest request) => _mediator.Send(request);
     }
 }

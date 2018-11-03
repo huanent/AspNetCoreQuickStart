@@ -65,7 +65,11 @@ namespace MyCompany.MyProject.Web
                 Assembly.GetAssembly(typeof(HandlersRegister)),
             });
 
-            services.AddDbContextPool<AppDbContext>(builder => builder.UseSqlServer(_settings.ConnectionStrings.Default));
+            services.AddDbContextPool<AppDbContext>(builder =>
+            {
+                builder.UseSqlServer(_settings.ConnectionStrings.Default);
+            });
+
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
             services.AddAppSwagger();
@@ -80,6 +84,7 @@ namespace MyCompany.MyProject.Web
             services.AddMvc(o =>
             {
                 o.Filters.Add<GlobalExceptionHandleFilter>();
+                o.ModelMetadataDetailsProviders.Add(new RequiredBindingMetadataProvider());
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
