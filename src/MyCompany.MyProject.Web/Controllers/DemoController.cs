@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MyCompany.MyProject.Commands.Demo;
 using MyCompany.MyProject.Dto.Demo;
+using MyCompany.MyProject.Dtos;
 
 namespace MyCompany.MyProject.Web.Controllers
 {
@@ -29,11 +29,12 @@ namespace MyCompany.MyProject.Web.Controllers
         public void Delete([FromRoute] DeleteDemoRequest request) => _mediator.Send(request);
 
         /// <summary>
-        /// 获取所有Demo实体
+        /// 分页查询Demo实体
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<DemoDto>> GetAsync() => await _mediator.Send(new GetDemosRequest());
+        public async Task<PageDto<DemoDto>> GetAsync([FromQuery]GetDemosPageRequest request) =>
+            await _mediator.Send(request);
 
         /// <summary>
         /// 根据Id查新Demo实体

@@ -1,6 +1,8 @@
-﻿namespace MyCompany.MyProject.Dtos.Page
+﻿using MediatR;
+
+namespace MyCompany.MyProject.Commands
 {
-    public class QueryPageDto
+    public class PageRequest<T> : IRequest<T>
     {
         /// <summary>
         /// 当前页数(从1开始)

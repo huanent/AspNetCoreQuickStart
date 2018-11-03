@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyCompany.MyProject.Dtos.Page
+namespace MyCompany.MyProject.Dtos
 {
     public class PageDto<T> where T : class
     {

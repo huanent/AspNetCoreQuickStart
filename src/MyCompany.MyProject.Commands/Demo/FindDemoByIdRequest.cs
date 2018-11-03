@@ -7,7 +7,6 @@ namespace MyCompany.MyProject.Commands.Demo
 {
     public class FindDemoByIdRequest : IRequest<DemoDto>
     {
-        [Required(AllowEmptyStrings = false)]
         public Guid Id { get; set; }
     }
 }

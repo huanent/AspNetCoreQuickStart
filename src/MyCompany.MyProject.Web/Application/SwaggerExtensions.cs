@@ -13,11 +13,16 @@ namespace MyCompany.MyProject.Web.Application
         {
             services.AddSwaggerGen(o =>
             {
-                o.SwaggerDoc("api", new Info());
+                o.SwaggerDoc("MyCompany.MyProject", new Info());
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Web.xml"));
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Dtos.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Data.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Handlers.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Commands.xml"));
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Common.xml"));
                 o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyCompany.MyProject.Entities.xml"));
                 o.OperationFilter<SwaggerFileUploadFilter>();
+                o.IgnoreObsoleteProperties();
                 o.IgnoreObsoleteActions();
             });
 
@@ -29,7 +34,7 @@ namespace MyCompany.MyProject.Web.Application
             app.UseSwagger();
             app.UseSwaggerUI(o =>
             {
-                o.SwaggerEndpoint("/swagger/api/swagger.json", "api");
+                o.SwaggerEndpoint("/swagger/MyCompany.MyProject/swagger.json", "MyCompany.MyProject");
                 o.DocExpansion(DocExpansion.None);
             });
             return app;
