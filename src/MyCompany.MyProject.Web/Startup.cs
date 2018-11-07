@@ -62,6 +62,7 @@ namespace MyCompany.MyProject.Web
             services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();
+
             services.AddDbContextPool<AppDbContext>(builder =>
             {
                 builder.UseSqlServer(_settings.ConnectionStrings.Default);

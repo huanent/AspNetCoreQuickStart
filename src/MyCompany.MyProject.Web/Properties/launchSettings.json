@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Web": {
+    "Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -25,7 +25,7 @@
       },
       "applicationUrl": "http://localhost:64490/"
     },
-    "prod": {
+    "Production": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
