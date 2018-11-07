@@ -35,11 +35,9 @@ namespace MyCompany.MyProject.Web
                 else b.AllowAnyOrigin();
             });
 
-            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
+            using (var scope = app.ApplicationServices.CreateScope())
             {
-                var env = app.ApplicationServices.GetService<IHostingEnvironment>();
-                if (env.IsProduction())
+                if (!_env.IsProduction())
                 {
                     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                     db.Database.Migrate();
@@ -62,16 +60,8 @@ namespace MyCompany.MyProject.Web
             services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();
-
-            services.AddDbContextPool<AppDbContext>(builder =>
-            {
-                builder.UseSqlServer(_settings.ConnectionStrings.Default);
-            });
-
-            services.AddLoggingFileUI(options =>
-            {
-                options.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs");
-            });
+            services.AddDbContextPool<AppDbContext>(b => b.UseSqlServer(_settings.ConnectionStrings.Default));
+            services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
 
             services.AddMvc(o =>
             {
