@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.Collections.Generic;
-using System.IO;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace MyCompany.MyProject.Web.Application
 {
@@ -36,6 +36,7 @@ namespace MyCompany.MyProject.Web.Application
             {
                 o.SwaggerEndpoint("/swagger/MyCompany.MyProject/swagger.json", "MyCompany.MyProject");
                 o.DocExpansion(DocExpansion.None);
+                o.DocumentTitle = "MyCompany.MyProject";
             });
             return app;
         }
