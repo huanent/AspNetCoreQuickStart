@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MyCompany.MyProject.Web.Application
+﻿namespace MyCompany.MyProject.Web.Application
 {
     public class Constants
     {
+        public const string AppName = "MyCompany.MyProject";
         public const string DataPath = "data";
     }
 }

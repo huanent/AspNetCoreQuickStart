@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyCompany.MyProject.Common
+﻿namespace MyCompany.MyProject.Common
 {
     public class AppSettings
     {
@@ -8,11 +6,6 @@ namespace MyCompany.MyProject.Common
         /// 连接字符串
         /// </summary>
         public ConnectionStrings ConnectionStrings { get; set; }
-
-        /// <summary>
-        /// cookie设置
-        /// </summary>
-        public Cookie Cookie { get; set; }
 
         public string[] CorsOrigins { get; set; }
 
@@ -28,18 +21,5 @@ namespace MyCompany.MyProject.Common
         /// 默认连接
         /// </summary>
         public string Default { get; set; }
-    }
-
-    public class Cookie
-    {
-        /// <summary>
-        /// 过期时间
-        /// </summary>
-        public TimeSpan ExpireTimeSpan { get; set; }
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,10 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MyCompany.MyProject.Commands;
 using MyCompany.MyProject.Common;
 using MyCompany.MyProject.Data;
-using MyCompany.MyProject.Handlers;
 using MyCompany.MyProject.Web.Application;
 
 namespace MyCompany.MyProject.Web
@@ -42,8 +39,6 @@ namespace MyCompany.MyProject.Web
             using (var scope = scopeFactory.CreateScope())
             {
                 var env = app.ApplicationServices.GetService<IHostingEnvironment>();
-
-                //auto Migrate
                 if (env.IsProduction())
                 {
                     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -60,22 +55,17 @@ namespace MyCompany.MyProject.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(new[] {
-                Assembly.GetAssembly(typeof(Startup)),
-                Assembly.Load("MyCompany.MyProject.Handlers"),
-                Assembly.Load("MyCompany.MyProject.Commands"),
-            });
-
+            var appAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(w => w.FullName.StartsWith(Constants.AppName));
+            services.AddMediatR(appAssemblies);
+            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
+            services.AddAppSwagger();
+            services.AddAppAuthentication();
+            services.AddAppAuthorization();
             services.AddDbContextPool<AppDbContext>(builder =>
             {
                 builder.UseSqlServer(_settings.ConnectionStrings.Default);
             });
-
-            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
-            services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
-            services.AddAppSwagger();
-            services.AddAppAuthentication(_settings.Cookie);
-            services.AddAppAuthorization();
 
             services.AddLoggingFileUI(options =>
             {
