@@ -1,6 +1,6 @@
 $OutputEncoding = New-Object -typename System.Text.UTF8Encoding
 
-$fileExtension = @(".cs" , ".cshtml", ".js", ".csproj", ".sln", ".xml", ".config")
+$fileExtension = @(".cs" , ".cshtml", ".js", ".csproj", ".sln", ".xml", ".config","Dockerfile")
 
 [System.Console]::WriteLine("input old company name,default value is 'MyCompany'")
 $oldCompany = [System.Console]::ReadLine()
