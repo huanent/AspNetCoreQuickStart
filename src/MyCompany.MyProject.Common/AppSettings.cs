@@ -8,11 +8,6 @@
         public ConnectionStrings ConnectionStrings { get; set; }
 
         public string[] CorsOrigins { get; set; }
-
-        /// <summary>
-        /// 定义本程序的日志事件Id
-        /// </summary>
-        public int EventId { get; set; }
     }
 
     public class ConnectionStrings

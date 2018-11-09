@@ -20,7 +20,7 @@ namespace MyCompany.MyProject.Web
         private readonly IHostingEnvironment _env;
         private readonly AppSettings _settings;
 
-        public Startup(IOptions<AppSettings> options, IHostingEnvironment env)
+        public Startup(IOptions<AppSettings> options, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             _env = env;
             _settings = options.Value;
@@ -56,7 +56,6 @@ namespace MyCompany.MyProject.Web
             var appAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(w => w.FullName.StartsWith(Constants.AppName));
             services.AddMediatR(appAssemblies);
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
-            services.AddSingleton<Func<EventId>>(() => new EventId(_settings.EventId));
             services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();
