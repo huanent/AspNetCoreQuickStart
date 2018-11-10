@@ -18,7 +18,7 @@ namespace MyCompany.MyProject.Handlers.Demo
         public Task<Unit> Handle(ModifyDemoRequest request, CancellationToken cancellationToken)
         {
             var demo = _appDbContext.Demo.Find(request.Id);
-            if (demo == null) throw new AppException("未能找到要修改的数据");
+            if (demo == null) throw new BadRequestException("未能找到要修改的数据");
             demo.Update(request.Age);
             _appDbContext.SaveChangesAsync(cancellationToken);
             return Unit.Task;

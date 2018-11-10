@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using MediatR;
 using MyCompany.MyProject.Commands.Demo;
 using MyCompany.MyProject.Data;
-using Dapper;
 
 namespace MyCompany.MyProject.Handlers.Demo
 {
@@ -25,7 +23,7 @@ namespace MyCompany.MyProject.Handlers.Demo
             var result = await conn.ExecuteAsync(@"
 delete from Demo where Id=@Id
 ", new { request.Id });
-            if (result == 0) throw new AppException("未能找到要删除的数据");
+            if (result == 0) throw new BadRequestException("未能找到要删除的数据");
             return Unit.Value;
         }
     }

@@ -18,9 +18,9 @@ namespace MyCompany.MyProject.Web
     public class Startup
     {
         private readonly IHostingEnvironment _env;
-        private readonly AppSettings _settings;
+        private readonly Settings _settings;
 
-        public Startup(IOptions<AppSettings> options, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public Startup(IOptions<Settings> options, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             _env = env;
             _settings = options.Value;

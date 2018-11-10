@@ -23,7 +23,7 @@ namespace MyCompany.MyProject.Web
 #if DEBUG
                 .ConfigureAppConfiguration(b => b.AddUserSecrets<Startup>())
 #endif
-                .ConfigureServices((ctx, services) => services.Configure<AppSettings>(ctx.Configuration))
+                .ConfigureServices((ctx, services) => services.Configure<Settings>(ctx.Configuration))
                 .ConfigureLogging(b =>
                     b.AddFile(options =>
                         options.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs")
