@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyCompany.MyProject.Common;
-using MyCompany.MyProject.Data;
+using MyCompany.MyProject.Persistence;
 using MyCompany.MyProject.Web.Application;
 
 namespace MyCompany.MyProject.Web

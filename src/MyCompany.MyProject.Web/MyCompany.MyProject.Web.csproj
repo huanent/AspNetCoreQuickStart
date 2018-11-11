@@ -36,12 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyCompany.MyProject.Commands\MyCompany.MyProject.Commands.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Application\MyCompany.MyProject.Application.csproj" />
     <ProjectReference Include="..\MyCompany.MyProject.Common\MyCompany.MyProject.Common.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Data\MyCompany.MyProject.Data.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Dtos\MyCompany.MyProject.Dtos.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Entities\MyCompany.MyProject.Entities.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Handlers\MyCompany.MyProject.Handlers.csproj" />
   </ItemGroup>
 
   <ItemGroup>
