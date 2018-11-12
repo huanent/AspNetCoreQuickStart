@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace MyCompany.MyProject.Commands.Demo
+namespace MyCompany.MyProject.Application.Demo.Commands
 {
     public class ModifyDemoCommand : IRequest
     {

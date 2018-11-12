@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MyCompany.MyProject.Common;
 using MyCompany.MyProject.Persistence;
+using MyCompany.MyProject.Persistence.Internal;
 using MyCompany.MyProject.Web.Application;
 
 namespace MyCompany.MyProject.Web
@@ -56,6 +56,7 @@ namespace MyCompany.MyProject.Web
             var appAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(w => w.FullName.StartsWith(Constants.AppName));
             services.AddMediatR(appAssemblies);
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddSingleton<ISequentialGuidGenerator, SequentialGuidGenerator>();
             services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();

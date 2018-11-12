@@ -1,4 +1,4 @@
-﻿namespace MyCompany.MyProject.Common
+﻿namespace MyCompany.MyProject
 {
     public class ConnectionStrings
     {

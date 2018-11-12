@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyCompany.MyProject.Application.Demo.Commands;
 using MyCompany.MyProject.Application.Demo.Models;
 using MyCompany.MyProject.Application.Demo.Queries;
-using MyCompany.MyProject.Commands.Demo;
 
 namespace MyCompany.MyProject.Web.Controllers
 {
@@ -18,8 +18,8 @@ namespace MyCompany.MyProject.Web.Controllers
         /// 删除Demo
         /// </summary>
         /// <param name="command"></param>
-        [HttpDelete("{id}")]
-        public void Delete([FromRoute] DeleteDemoCommand command)
+        [HttpDelete]
+        public void Delete([FromQuery] DeleteDemoCommand command)
         {
             this.Mediator().Send(command);
         }
@@ -29,8 +29,8 @@ namespace MyCompany.MyProject.Web.Controllers
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
-        public async Task<DemoModel> GetByIdAsync([FromRoute] GetDemoByIdQuery query)
+        [HttpGet]
+        public async Task<DemoModel> GetByIdAsync([FromQuery]GetDemoByIdQuery query)
         {
             return await this.Mediator().Send(query);
         }

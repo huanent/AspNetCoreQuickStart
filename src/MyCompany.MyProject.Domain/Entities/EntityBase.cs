@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCompany.MyProject.Domain
+namespace MyCompany.MyProject.Domain.Entities
 {
     public abstract class EntityBase<T> where T : struct
     {

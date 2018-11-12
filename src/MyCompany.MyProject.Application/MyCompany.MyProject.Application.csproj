@@ -2,16 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;CS1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;CS1591</NoWarn>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyCompany.MyProject.Common\MyCompany.MyProject.Common.csproj" />
+    <ProjectReference Include="..\MyCompany.MyProject.Core\MyCompany.MyProject.Core.csproj" />
     <ProjectReference Include="..\MyCompany.MyProject.Domain\MyCompany.MyProject.Domain.csproj" />
     <ProjectReference Include="..\MyCompany.MyProject.Persistence\MyCompany.MyProject.Persistence.csproj" />
   </ItemGroup>

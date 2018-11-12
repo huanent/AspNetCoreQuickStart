@@ -4,8 +4,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MyCompany.MyProject.Common;
-using MyCompany.MyProject.Web.Application;
 
 #if DEBUG
 

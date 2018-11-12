@@ -1,4 +1,4 @@
-﻿namespace MyCompany.MyProject.Web.Application
+﻿namespace MyCompany.MyProject
 {
     public class Constants
     {
