@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MyCompany.MyProject.Web.Application
+namespace MyCompany.MyProject.Web.Internal
 {
     public static class AuthenticationExtensions
     {

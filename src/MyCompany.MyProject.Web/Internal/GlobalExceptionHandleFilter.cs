@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-namespace MyCompany.MyProject.Web.Application
+namespace MyCompany.MyProject.Web.Internal
 {
     public class GlobalExceptionHandleFilter : IAsyncExceptionFilter
     {

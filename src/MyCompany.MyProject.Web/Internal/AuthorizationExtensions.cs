@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 
-namespace MyCompany.MyProject.Web.Application
+namespace MyCompany.MyProject.Web.Internal
 {
     public static class AuthorizationExtensions
     {

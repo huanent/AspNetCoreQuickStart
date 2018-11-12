@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 
 namespace MyCompany.MyProject
 {
@@ -23,6 +22,12 @@ namespace MyCompany.MyProject
         /// </summary>
         [Description("数据库错误！")]
         DbError,
+
+        /// <summary>
+        /// 身份验证错误！
+        /// </summary>
+        [Description("数据库错误！")]
+        IdentityError
     }
 
     /// <summary>
