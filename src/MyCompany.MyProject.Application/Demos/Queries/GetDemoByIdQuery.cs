@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using MediatR;
-using MyCompany.MyProject.Application.Demo.Models;
+using MyCompany.MyProject.Application.Demos.Models;
 
-namespace MyCompany.MyProject.Application.Demo.Queries
+namespace MyCompany.MyProject.Application.Demos.Queries
 {
     public class GetDemoByIdQuery : IRequest<DemoModel>
     {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using MyCompany.MyProject.Persistence;
 
-namespace MyCompany.MyProject.Application.Demo.Commands
+namespace MyCompany.MyProject.Application.Demos.Commands
 {
     public class DeleteDemoCommandHandler : IRequestHandler<DeleteDemoCommand>
     {

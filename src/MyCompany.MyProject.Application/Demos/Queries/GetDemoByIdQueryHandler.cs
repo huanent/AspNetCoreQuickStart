@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MyCompany.MyProject.Application.Demo.Models;
+using MyCompany.MyProject.Application.Demos.Models;
 using MyCompany.MyProject.Persistence;
 
-namespace MyCompany.MyProject.Application.Demo.Queries
+namespace MyCompany.MyProject.Application.Demos.Queries
 {
     public class GetDemoByIdQueryHandler : IRequestHandler<GetDemoByIdQuery, DemoModel>
     {

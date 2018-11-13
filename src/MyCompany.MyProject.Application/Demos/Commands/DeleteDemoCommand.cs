@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using MediatR;
 
-namespace MyCompany.MyProject.Application.Demo.Commands
+namespace MyCompany.MyProject.Application.Demos.Commands
 {
     public class DeleteDemoCommand : IRequest
     {

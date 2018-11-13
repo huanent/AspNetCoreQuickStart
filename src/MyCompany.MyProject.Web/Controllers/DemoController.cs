@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MyCompany.MyProject.Application.Demo.Commands;
-using MyCompany.MyProject.Application.Demo.Models;
-using MyCompany.MyProject.Application.Demo.Queries;
+using MyCompany.MyProject.Application.Demos.Commands;
+using MyCompany.MyProject.Application.Demos.Models;
+using MyCompany.MyProject.Application.Demos.Queries;
 
 namespace MyCompany.MyProject.Web.Controllers
 {

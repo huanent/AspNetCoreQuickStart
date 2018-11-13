@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,22 +30,8 @@ namespace MyCompany.MyProject.Web
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseCors(b =>
-            {
-                b.AllowAnyHeader().AllowAnyMethod();
-                if (_env.IsProduction()) b.WithOrigins(_settings.CorsOrigins);
-                else b.AllowAnyOrigin();
-            });
-
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                if (!_env.IsProduction())
-                {
-                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                    db.Database.Migrate();
-                }
-            }
-
+            UseCors(app);
+            AutoMigrate(app);
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseDefaultFiles();
@@ -55,8 +41,7 @@ namespace MyCompany.MyProject.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var appAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(w => w.FullName.StartsWith(Constants.AppName));
-            services.AddMediatR(appAssemblies);
+            services.AddMediatR(Assembly.Load("MyCompany.MyProject.Application"));
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<ISequentialGuidGenerator, SequentialGuidGenerator>();
             services.AddAppSwagger();
@@ -65,14 +50,40 @@ namespace MyCompany.MyProject.Web
             services.AddDbContextPool<AppDbContext>(b => b.UseSqlServer(_settings.ConnectionStrings.Default));
             services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
             services.AddScoped<ICurrentIdentity, CurrentIdentity>();
+            AddMvc(services);
+        }
 
+        private static void AddMvc(IServiceCollection services)
+        {
             services.AddMvc(o =>
             {
                 o.Filters.Add<GlobalExceptionHandleFilter>();
                 o.Filters.Add<HandlerIdentityFilter>();
                 o.ModelMetadataDetailsProviders.Add(new RequiredBindingMetadataProvider());
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                        .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        private void AutoMigrate(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                if (!_env.IsProduction())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    db.Database.Migrate();
+                }
+            }
+        }
+
+        private void UseCors(IApplicationBuilder app)
+        {
+            app.UseCors(b =>
+            {
+                b.AllowAnyHeader().AllowAnyMethod();
+                if (_env.IsProduction()) b.WithOrigins(_settings.CorsOrigins);
+                else b.AllowAnyOrigin();
+            });
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace MyCompany.MyProject.Application
 {
-    public class PageDto<T> where T : class
+    public class PageModel<T> where T : class
     {
-        public PageDto(int total, IEnumerable<T> list)
+        public PageModel(int total, IEnumerable<T> list)
         {
             Total = total;
             List = list ?? throw new ArgumentNullException(nameof(list));

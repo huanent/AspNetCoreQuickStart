@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCompany.MyProject.Application.Demo.Models
+namespace MyCompany.MyProject.Application.Demos.Models
 {
     public class DemoModel
     {
