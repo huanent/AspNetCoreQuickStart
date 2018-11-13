@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCompany.MyProject.Core
+namespace MyCompany.MyProject
 {
     public interface ICurrentIdentity<T> where T : struct
     {
