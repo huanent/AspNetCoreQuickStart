@@ -18,7 +18,7 @@ namespace MyCompany.MyProject.Application.Demos.Commands
         {
             var demo = _appDbContext.Demo.Find(request.Id);
             if (demo == null) throw new BadRequestException("未能找到要修改的数据");
-            demo.Update(request.Age);
+            demo.Update(request.Name);
             _appDbContext.SaveChangesAsync(cancellationToken);
             return Unit.Task;
         }

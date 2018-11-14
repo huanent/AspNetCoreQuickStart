@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyCompany.MyProject.Domain.Entities;
+using MyCompany.MyProject.Domain;
 
-namespace MyCompany.MyProject.Persistence.EntityTypeConfigurations
+namespace MyCompany.MyProject.Persistence
 {
     public static class EntityTypeBuilderExtensions
     {

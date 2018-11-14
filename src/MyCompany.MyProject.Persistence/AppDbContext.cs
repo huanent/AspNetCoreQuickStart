@@ -3,7 +3,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MyCompany.MyProject.Domain.Entities;
+using MyCompany.MyProject.Domain;
+using MyCompany.MyProject.Domain.DemoAggregate;
 
 namespace MyCompany.MyProject.Persistence
 {
