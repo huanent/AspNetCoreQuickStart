@@ -1,13 +1,9 @@
-﻿namespace MyCompany.MyProject
-{
-    public class ConnectionStrings
-    {
-        /// <summary>
-        /// 默认连接
-        /// </summary>
-        public string Default { get; set; }
-    }
+﻿using System;
+using System.IO;
+using MyCompany.MyProject.Core.Configurations;
 
+namespace MyCompany.MyProject
+{
     public class Settings
     {
         /// <summary>
@@ -16,5 +12,7 @@
         public ConnectionStrings ConnectionStrings { get; set; }
 
         public string[] CorsOrigins { get; set; }
+
+        public string LogPath { get; set; } = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs");
     }
 }

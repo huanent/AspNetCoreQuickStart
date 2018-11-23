@@ -1,4 +1,7 @@
-﻿namespace MyCompany.MyProject
+﻿using System;
+using System.IO;
+
+namespace MyCompany.MyProject
 {
     public class Constants
     {

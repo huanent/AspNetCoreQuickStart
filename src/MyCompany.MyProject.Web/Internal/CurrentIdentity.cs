@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCompany.MyProject.Core.Internal
+namespace MyCompany.MyProject.Web.Internal
 {
     public class CurrentIdentity : ICurrentIdentity
     {

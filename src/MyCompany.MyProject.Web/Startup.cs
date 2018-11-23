@@ -9,8 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MyCompany.MyProject.Core;
-using MyCompany.MyProject.Core.Internal;
+using MyCompany.MyProject.Application;
 using MyCompany.MyProject.Persistence;
 using MyCompany.MyProject.Persistence.Internal;
 using MyCompany.MyProject.Web.Internal;
@@ -41,14 +40,14 @@ namespace MyCompany.MyProject.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(Assembly.Load("MyCompany.MyProject.Application"));
+            services.AddMediatR(typeof(QueryPageCommand<>));
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<ISequentialGuidGenerator, SequentialGuidGenerator>();
             services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();
             services.AddDbContextPool<AppDbContext>(b => b.UseSqlServer(_settings.ConnectionStrings.Default));
-            services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
+            services.AddLoggingFileUI(o => o.Path = _settings.LogPath);
             services.AddScoped<ICurrentIdentity, CurrentIdentity>();
             AddMvc(services);
         }
