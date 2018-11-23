@@ -11,8 +11,14 @@ namespace MyCompany.MyProject
         /// </summary>
         public ConnectionStrings ConnectionStrings { get; set; }
 
+        /// <summary>
+        /// 跨域放行站点
+        /// </summary>
         public string[] CorsOrigins { get; set; }
 
+        /// <summary>
+        /// 日志路径
+        /// </summary>
         public string LogPath { get; set; } = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs");
     }
 }
