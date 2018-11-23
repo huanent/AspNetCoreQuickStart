@@ -16,6 +16,18 @@
         }
 
         /// <summary>
+        /// 获取分页数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ts"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static IQueryable<T> GetPage<T>(this IQueryable<T> ts, (int index, int size) page)
+        {
+            return GetPage(ts, page.index, page.size);
+        }
+
+        /// <summary>
         /// 如果给定字段有值则执行
         /// </summary>
         /// <typeparam name="T"></typeparam>

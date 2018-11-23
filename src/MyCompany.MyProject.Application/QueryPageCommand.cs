@@ -12,6 +12,11 @@ namespace MyCompany.MyProject.Application
         public int Index { get; set; }
 
         /// <summary>
+        /// 分页信息元组
+        /// </summary>
+        public (int index, int size) Page => (Index, Size);
+
+        /// <summary>
         /// 分页条数
         /// </summary>
         [Range(1, int.MaxValue)]
