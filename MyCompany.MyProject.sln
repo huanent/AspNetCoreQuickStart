@@ -9,8 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5AA628AB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{A51334C8-B056-4CAC-AA20-EA71361D836C}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-		docs\使用指南.md = docs\使用指南.md
+		docs\rename.md = docs\rename.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{1B672A4B-DD44-4CDB-B18C-4DD5C5B83ADE}"
@@ -21,7 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{1B672A
 		Dockerfile = Dockerfile
 		nuget.config = nuget.config
 		README.md = README.md
-		SolutionRename.ps1 = SolutionRename.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCompany.MyProject.Web", "src\MyCompany.MyProject.Web\MyCompany.MyProject.Web.csproj", "{3CF5321A-EB36-410A-AE34-24559C120D8A}"
