@@ -48,7 +48,8 @@ namespace MyCompany.MyProject.Web
             services.AddAppAuthorization();
             services.AddDbContextPool<AppDbContext>(b => b.UseSqlServer(_settings.ConnectionStrings.Default));
             services.AddLoggingFileUI(o => o.Path = _settings.LogPath);
-            services.AddScoped<ICurrentIdentity, CurrentIdentity>();
+            services.AddScoped<IIdentity, Identity>();
+            services.AddSingleton<IDatetime, Datetime>();
             AddMvc(services);
         }
 

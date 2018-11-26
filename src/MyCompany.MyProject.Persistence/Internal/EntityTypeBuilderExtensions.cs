@@ -4,9 +4,9 @@ using MyCompany.MyProject.Domain;
 
 namespace MyCompany.MyProject.Persistence
 {
-    public static class EntityTypeBuilderExtensions
+    internal static class EntityTypeBuilderExtensions
     {
-        public static void InitBuildInProperty<T>(this EntityTypeBuilder<T> builder, string datebasePrimaryKey = "Id") where T : EntityBase
+        internal static void InitBuildInProperty<T>(this EntityTypeBuilder<T> builder, string datebasePrimaryKey = "Id") where T : EntityBase
         {
             builder.HasKey("Id");
 

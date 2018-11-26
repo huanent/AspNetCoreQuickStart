@@ -12,7 +12,7 @@ namespace MyCompany.MyProject.Web.Internal
         {
             if (context.HttpContext.User.Identity.IsAuthenticated)
             {
-                var identity = context.HttpContext.RequestServices.GetService<ICurrentIdentity>() as CurrentIdentity;
+                var identity = context.HttpContext.RequestServices.GetService<IIdentity>() as Identity;
                 var id = context.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
                 if (!Guid.TryParse(id, out var gId)) throw new BadRequestException(Message.IdentityError);
                 identity.SetClaims(gId);

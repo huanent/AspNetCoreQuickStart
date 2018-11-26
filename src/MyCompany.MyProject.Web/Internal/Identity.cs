@@ -2,7 +2,7 @@
 
 namespace MyCompany.MyProject.Web.Internal
 {
-    public class CurrentIdentity : ICurrentIdentity
+    public class Identity : IIdentity
     {
         public Guid Id { get; private set; }
 

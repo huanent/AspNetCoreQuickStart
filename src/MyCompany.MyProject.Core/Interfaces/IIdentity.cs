@@ -2,7 +2,7 @@
 
 namespace MyCompany.MyProject
 {
-    public interface ICurrentIdentity<T> where T : struct
+    public interface IIdentity<T> where T : struct
     {
         /// <summary>
         /// 用户Id
@@ -15,7 +15,7 @@ namespace MyCompany.MyProject
         bool IsAuth { get; }
     }
 
-    public interface ICurrentIdentity : ICurrentIdentity<Guid>
+    public interface IIdentity : IIdentity<Guid>
     {
     }
 }
