@@ -8,9 +8,9 @@ namespace MyCompany.MyProject.Application.Demos.Commands
 {
     public class CreateDemoCommandHandler : IRequestHandler<CreateDemoCommand>
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly DefaultDbContext _appDbContext;
 
-        public CreateDemoCommandHandler(AppDbContext appDbContext)
+        public CreateDemoCommandHandler(DefaultDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

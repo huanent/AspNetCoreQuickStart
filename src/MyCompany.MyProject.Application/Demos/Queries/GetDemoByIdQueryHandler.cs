@@ -9,9 +9,9 @@ namespace MyCompany.MyProject.Application.Demos.Queries
 {
     public class GetDemoByIdQueryHandler : IRequestHandler<GetDemoByIdQuery, DemoModel>
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly DefaultDbContext _appDbContext;
 
-        public GetDemoByIdQueryHandler(AppDbContext appDbContext)
+        public GetDemoByIdQueryHandler(DefaultDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

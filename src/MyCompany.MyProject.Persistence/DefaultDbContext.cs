@@ -9,12 +9,12 @@ using MyCompany.MyProject.Domain.DemoAggregate;
 
 namespace MyCompany.MyProject.Persistence
 {
-    public class AppDbContext : DbContext
+    public class DefaultDbContext : DbContext
     {
         private readonly IDatetime _datetime;
         private readonly Settings _settings;
 
-        public AppDbContext(IDatetime datetime, IOptions<Settings> options)
+        public DefaultDbContext(IDatetime datetime, IOptions<Settings> options)
         {
             _datetime = datetime;
             _settings = options.Value;

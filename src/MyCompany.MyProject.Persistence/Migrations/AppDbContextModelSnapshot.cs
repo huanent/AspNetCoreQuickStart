@@ -8,7 +8,7 @@ using MyCompany.MyProject.Persistence;
 
 namespace MyCompany.MyProject.Persistence.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(DefaultDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

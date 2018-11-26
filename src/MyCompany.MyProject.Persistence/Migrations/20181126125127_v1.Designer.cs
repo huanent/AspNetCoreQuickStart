@@ -9,7 +9,7 @@ using MyCompany.MyProject.Persistence;
 
 namespace MyCompany.MyProject.Persistence.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(DefaultDbContext))]
     [Migration("20181126125127_v1")]
     partial class v1
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +44,7 @@ namespace MyCompany.MyProject.Web
             services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();
-            services.AddDbContext<AppDbContext>();
+            services.AddDbContext<DefaultDbContext>();
             services.AddLoggingFileUI(o => o.Path = _settings.LogPath);
             services.AddScoped<IIdentity, Identity>();
             services.AddSingleton<IDatetime, Datetime>();
@@ -68,9 +66,9 @@ namespace MyCompany.MyProject.Web
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
-                if (!_env.IsProduction())
+                if (_env.IsProduction())
                 {
-                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    var db = scope.ServiceProvider.GetRequiredService<DefaultDbContext>();
                     db.Database.Migrate();
                 }
             }

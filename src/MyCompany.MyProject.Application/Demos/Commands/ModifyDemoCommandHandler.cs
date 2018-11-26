@@ -7,9 +7,9 @@ namespace MyCompany.MyProject.Application.Demos.Commands
 {
     internal class ModifyDemoCommandHandler : IRequestHandler<ModifyDemoCommand>
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly DefaultDbContext _appDbContext;
 
-        public ModifyDemoCommandHandler(AppDbContext appDbContext)
+        public ModifyDemoCommandHandler(DefaultDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

@@ -5,9 +5,9 @@ namespace MyCompany.MyProject.Persistence.Internal
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly DefaultDbContext _appDbContext;
 
-        public DbConnectionFactory(AppDbContext appDbContext)
+        public DbConnectionFactory(DefaultDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
