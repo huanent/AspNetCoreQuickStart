@@ -10,7 +10,7 @@ using MyCompany.MyProject.Persistence;
 namespace MyCompany.MyProject.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20181114012011_v1")]
+    [Migration("20181126125127_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

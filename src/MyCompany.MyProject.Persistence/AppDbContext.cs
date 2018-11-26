@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MyCompany.MyProject.Domain;
 using MyCompany.MyProject.Domain.DemoAggregate;
 
@@ -10,8 +11,13 @@ namespace MyCompany.MyProject.Persistence
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        private readonly IDatetime _datetime;
+        private readonly Settings _settings;
+
+        public AppDbContext(IDatetime datetime, IOptions<Settings> options)
         {
+            _datetime = datetime;
+            _settings = options.Value;
         }
 
         public DbSet<Demo> Demo { get; set; }
@@ -26,6 +32,12 @@ namespace MyCompany.MyProject.Persistence
         {
             UpdateBasicInfo();
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_settings.ConnectionStrings.Default);
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,7 +63,7 @@ namespace MyCompany.MyProject.Persistence
             {
                 if (entry.Entity is EntityBase auditableEntity)
                 {
-                    auditableEntity.UpdateBasicInfo();
+                    auditableEntity.UpdateBasicInfo(_datetime);
                 }
             });
         }

@@ -46,7 +46,7 @@ namespace MyCompany.MyProject.Web
             services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();
-            services.AddDbContextPool<AppDbContext>(b => b.UseSqlServer(_settings.ConnectionStrings.Default));
+            services.AddDbContext<AppDbContext>();
             services.AddLoggingFileUI(o => o.Path = _settings.LogPath);
             services.AddScoped<IIdentity, Identity>();
             services.AddSingleton<IDatetime, Datetime>();

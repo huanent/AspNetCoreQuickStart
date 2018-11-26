@@ -4,7 +4,7 @@ namespace MyCompany.MyProject.Domain
 {
     public abstract class EntityBase<T> where T : struct
     {
-        public T Id { get; protected set; }
+        public T Id { get; set; }
     }
 
     public abstract class EntityBase : EntityBase<Guid>
@@ -22,10 +22,10 @@ namespace MyCompany.MyProject.Domain
         /// <summary>
         /// 在进行实体持久化时，请显示调用此方法
         /// </summary>
-        public void UpdateBasicInfo()
+        public void UpdateBasicInfo(IDatetime datetime)
         {
-            if (CreateDate == default(DateTime)) CreateDate = DateTime.Now;
-            ModifiedDate = DateTime.Now;
+            if (CreateDate == default(DateTime)) CreateDate = datetime.Now;
+            ModifiedDate = datetime.Now;
         }
     }
 }
