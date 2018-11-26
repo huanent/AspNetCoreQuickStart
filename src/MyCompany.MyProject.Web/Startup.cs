@@ -39,7 +39,7 @@ namespace MyCompany.MyProject.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(typeof(PageQuery<>));
-            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<ISequentialGuidGenerator, SequentialGuidGenerator>();
             services.AddAppSwagger();
             services.AddAppAuthentication();
