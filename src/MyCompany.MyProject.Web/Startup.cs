@@ -40,7 +40,7 @@ namespace MyCompany.MyProject.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(QueryPageCommand<>));
+            services.AddMediatR(typeof(PageQuery<>));
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<ISequentialGuidGenerator, SequentialGuidGenerator>();
             services.AddAppSwagger();

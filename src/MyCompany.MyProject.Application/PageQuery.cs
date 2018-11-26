@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MyCompany.MyProject.Application
 {
-    public class QueryPageCommand<T> : IRequest<T>
+    public class PageQuery<T> : IRequest<T>
     {
         /// <summary>
         /// 当前页数(从1开始)
