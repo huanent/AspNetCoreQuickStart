@@ -20,7 +20,7 @@ namespace MyCompany.MyProject.Web.Controllers
         [HttpDelete]
         public void Delete([FromQuery] DeleteDemoCommand command)
         {
-            this.Mediator().Send(command);
+            this.Mediator().Send(command, HttpContext.RequestAborted);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace MyCompany.MyProject.Web.Controllers
         [HttpGet]
         public async Task<DemoModel> GetByIdAsync([FromQuery]GetDemoByIdQuery query)
         {
-            return await this.Mediator().Send(query);
+            return await this.Mediator().Send(query, HttpContext.RequestAborted);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace MyCompany.MyProject.Web.Controllers
         [HttpPost]
         public void Post([FromBody] CreateDemoCommand command)
         {
-            this.Mediator().Send(command);
+            this.Mediator().Send(command, HttpContext.RequestAborted);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace MyCompany.MyProject.Web.Controllers
         [HttpPut]
         public void Put([FromBody] ModifyDemoCommand command)
         {
-            this.Mediator().Send(command);
+            this.Mediator().Send(command, HttpContext.RequestAborted);
         }
     }
 }

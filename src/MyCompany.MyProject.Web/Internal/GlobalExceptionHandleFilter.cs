@@ -26,6 +26,10 @@ namespace MyCompany.MyProject.Web.Internal
                 logger.LogInformation(appException.Message);
                 context.Result = new BadRequestObjectResult(appException.Message);
             }
+            else if (context.Exception is TaskCanceledException taskCanceledException)
+            {
+                context.Result = new BadRequestObjectResult("请求已取消");
+            }
             else
             {
                 logger.LogError(context.Exception, context.Exception.Message);

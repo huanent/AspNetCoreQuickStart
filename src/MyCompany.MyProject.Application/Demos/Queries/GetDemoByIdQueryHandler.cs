@@ -18,14 +18,12 @@ namespace MyCompany.MyProject.Application.Demos.Queries
 
         public Task<DemoModel> Handle(GetDemoByIdQuery request, CancellationToken cancellationToken)
         {
-            var resylt = _appDbContext.Demo
+            return Task.Run(() => _appDbContext.Demo
                 .Select(s => new DemoModel
                 {
                     Id = s.Id,
                     Name = s.Name
-                }).FirstOrDefault();
-
-            return Task.FromResult(resylt);
+                }).FirstOrDefault());
         }
     }
 }
