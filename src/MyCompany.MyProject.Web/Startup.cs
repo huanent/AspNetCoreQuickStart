@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,8 +31,9 @@ namespace MyCompany.MyProject.Web
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseDefaultFiles();
+            app.UseSwagger();
+            app.UseSwaggerUi3();
             app.UseMvc();
-            app.UseAppSwagger();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -41,13 +41,13 @@ namespace MyCompany.MyProject.Web
             services.AddMediatR(typeof(PageQuery<>));
             services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<ISequentialGuidGenerator, SequentialGuidGenerator>();
-            services.AddAppSwagger();
             services.AddAppAuthentication();
             services.AddAppAuthorization();
             services.AddDbContext<DefaultDbContext>();
             services.AddLoggingFileUI(o => o.Path = _settings.LogPath);
             services.AddScoped<IIdentity, Identity>();
             services.AddSingleton<IDatetime, Datetime>();
+            services.AddSwaggerDocument(s => s.DocumentProcessors.Add(new SwaggerDocumentProcessor()));
             AddMvc(services);
         }
 

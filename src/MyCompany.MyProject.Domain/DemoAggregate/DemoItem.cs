@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MyCompany.MyProject.Domain.DemoAggregate
 {
@@ -19,5 +20,11 @@ namespace MyCompany.MyProject.Domain.DemoAggregate
         public string Name { get; private set; }
 
         public int Sort { get; private set; }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Name;
+            yield return Sort;
+        }
     }
 }
