@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyCompany.MyProject.Domain;
 
-namespace MyCompany.MyProject.Persistence
+namespace MyCompany.MyProject.Persistence.EntityTypeConfigurations
 {
     internal static class EntityTypeBuilderExtensions
     {

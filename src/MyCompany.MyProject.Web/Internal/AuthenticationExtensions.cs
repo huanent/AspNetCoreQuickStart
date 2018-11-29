@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
+using MyCompany.MyProject.Application;
 
 namespace MyCompany.MyProject.Web.Internal
 {

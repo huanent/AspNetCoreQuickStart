@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using MyCompany.MyProject.Infrastructure;
 
 namespace MyCompany.MyProject.Web.Internal
 {

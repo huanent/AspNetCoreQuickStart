@@ -1,7 +1,8 @@
 ﻿using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using MyCompany.MyProject.Persistence;
 
-namespace MyCompany.MyProject.Persistence.Internal
+namespace MyCompany.MyProject.Infrastructure
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {

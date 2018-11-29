@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
+using MyCompany.MyProject.Persistence;
 
-namespace MyCompany.MyProject.Persistence.Internal
+namespace MyCompany.MyProject.Infrastructure
 {
     public class SequentialGuidGenerator : ISequentialGuidGenerator
     {

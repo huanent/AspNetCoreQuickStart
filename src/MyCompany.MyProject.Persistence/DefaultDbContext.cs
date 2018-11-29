@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MyCompany.MyProject.Domain;
@@ -12,12 +13,10 @@ namespace MyCompany.MyProject.Persistence
     public class DefaultDbContext : DbContext
     {
         private readonly IDatetime _datetime;
-        private readonly Settings _settings;
 
-        public DefaultDbContext(IDatetime datetime, IOptions<Settings> options)
+        public DefaultDbContext(DbContextOptions options, IDatetime datetime) : base(options)
         {
             _datetime = datetime;
-            _settings = options.Value;
         }
 
         public DbSet<Demo> Demo { get; set; }
@@ -32,12 +31,6 @@ namespace MyCompany.MyProject.Persistence
         {
             UpdateBasicInfo();
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_settings.ConnectionStrings.Default);
-            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

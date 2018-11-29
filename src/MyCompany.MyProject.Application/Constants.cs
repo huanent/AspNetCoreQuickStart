@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace MyCompany.MyProject
+namespace MyCompany.MyProject.Application
 {
     public class Constants
     {

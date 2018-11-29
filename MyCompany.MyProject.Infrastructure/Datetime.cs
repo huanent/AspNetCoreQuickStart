@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyCompany.MyProject.Web.Internal
+namespace MyCompany.MyProject.Infrastructure
 {
     public class Datetime : IDatetime
     {

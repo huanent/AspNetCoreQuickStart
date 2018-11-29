@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System;
+using System.IO;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyCompany.MyProject.Application;
+using MyCompany.MyProject.Infrastructure;
 using MyCompany.MyProject.Persistence;
-using MyCompany.MyProject.Persistence.Internal;
 using MyCompany.MyProject.Web.Internal;
 
 namespace MyCompany.MyProject.Web
@@ -16,9 +18,9 @@ namespace MyCompany.MyProject.Web
     public class Startup
     {
         private readonly IHostingEnvironment _env;
-        private readonly Settings _settings;
+        private readonly AppSettings _settings;
 
-        public Startup(IOptions<Settings> options, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public Startup(IOptions<AppSettings> options, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             _env = env;
             _settings = options.Value;
@@ -44,9 +46,11 @@ namespace MyCompany.MyProject.Web
             services.AddAppAuthentication();
             services.AddAppAuthorization();
             services.AddDbContext<DefaultDbContext>();
-            services.AddLoggingFileUI(o => o.Path = _settings.LogPath);
+            services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
             services.AddScoped<IIdentity, Identity>();
             services.AddSingleton<IDatetime, Datetime>();
+            services.AddSingleton<IJson, Json>();
+            services.AddSingleton<ICache, Cache>();
             services.AddSwaggerDocument(s => s.DocumentProcessors.Add(new SwaggerDocumentProcessor()));
             AddMvc(services);
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCompany.MyProject.Web.Internal
+namespace MyCompany.MyProject.Infrastructure
 {
     public class Identity : IIdentity
     {

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MyCompany.MyProject.Web.Internal;
+using MyCompany.MyProject.Application;
 
 #if DEBUG
 
@@ -21,7 +23,7 @@ namespace MyCompany.MyProject.Web
 #if DEBUG
                 .ConfigureAppConfiguration(b => b.AddUserSecrets<Startup>())
 #endif
-                .ConfigureServices((ctx, services) => services.Configure<Settings>(ctx.Configuration))
+                .ConfigureServices((ctx, services) => services.Configure<AppSettings>(ctx.Configuration))
                 .ConfigureLogging(b =>
                     b.AddFile(options =>
                         options.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs")
