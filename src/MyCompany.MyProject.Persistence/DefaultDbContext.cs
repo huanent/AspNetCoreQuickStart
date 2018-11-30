@@ -2,9 +2,7 @@
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using MyCompany.MyProject.Domain;
 using MyCompany.MyProject.Domain.DemoAggregate;
 
