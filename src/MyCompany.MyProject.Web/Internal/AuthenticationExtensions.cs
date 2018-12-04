@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using MyCompany.MyProject.Application;
 
@@ -7,13 +9,14 @@ namespace MyCompany.MyProject.Web.Internal
 {
     public static class AuthenticationExtensions
     {
-        public static IServiceCollection AddAppAuthentication(this IServiceCollection services)
+        public static IServiceCollection AddAppAuthentication(this IServiceCollection services, IHostingEnvironment env)
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Name = Constants.AppName;
+                options.Cookie.SameSite = env.IsProduction() ? SameSiteMode.Lax : SameSiteMode.None;
                 options.Events.OnRedirectToLogin = context =>
                 {
                     context.Response.StatusCode = 401;
