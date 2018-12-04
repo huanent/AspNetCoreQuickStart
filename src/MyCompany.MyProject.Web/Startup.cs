@@ -82,7 +82,7 @@ namespace MyCompany.MyProject.Web
         {
             app.UseCors(b =>
             {
-                b.AllowAnyHeader().AllowAnyMethod();
+                b.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 if (_env.IsProduction()) b.WithOrigins(_settings.CorsOrigins);
                 else b.AllowAnyOrigin();
             });
