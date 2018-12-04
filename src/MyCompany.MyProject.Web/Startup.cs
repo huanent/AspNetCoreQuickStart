@@ -43,7 +43,7 @@ namespace MyCompany.MyProject.Web
             services.AddMediatR(typeof(PageQuery<>));
             services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
             services.AddSingleton<ISequentialGuidGenerator, SequentialGuidGenerator>();
-            services.AddAppAuthentication();
+            services.AddAppAuthentication(_env);
             services.AddAppAuthorization();
             services.AddDbContext<DefaultDbContext>();
             services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
