@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MyCompany.MyProject.Application.Demos.Commands;
-using MyCompany.MyProject.Application.Demos.Models;
-using MyCompany.MyProject.Application.Demos.Queries;
+using MyCompany.MyProject.Application.Dtos.Demo;
+using MyCompany.MyProject.Application.Interfaces;
 
 namespace MyCompany.MyProject.Web.Controllers
 {
@@ -13,45 +12,21 @@ namespace MyCompany.MyProject.Web.Controllers
     [ApiController]
     public class DemoController : ControllerBase
     {
-        /// <summary>
-        /// 删除Demo
-        /// </summary>
-        /// <param name="command"></param>
-        [HttpDelete]
-        public async Task DeleteAsync([FromQuery] DeleteDemoCommand command)
-        {
-            await this.SendAsync(command);
-        }
+        private readonly IDemoService _demoService;
 
-        /// <summary>
-        /// 根据Id查新Demo实体
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<DemoModel> GetByIdAsync([FromQuery]GetDemoByIdQuery query)
+        public DemoController(IDemoService demoService)
         {
-            return await this.SendAsync(query);
+            _demoService = demoService;
         }
 
         /// <summary>
         /// 创建Demo
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="addDemoDto"></param>
         [HttpPost]
-        public async Task PostAsync([FromBody] CreateDemoCommand command)
+        public async Task PostAsync(AddDemoDto addDemoDto)
         {
-            await this.SendAsync(command);
-        }
-
-        /// <summary>
-        /// 修改Demo
-        /// </summary>
-        /// <param name="command"></param>
-        [HttpPut]
-        public async Task PutAsync([FromBody] ModifyDemoCommand command)
-        {
-            await this.SendAsync(command);
+            await _demoService.AddDemoAsync(addDemoDto);
         }
     }
 }

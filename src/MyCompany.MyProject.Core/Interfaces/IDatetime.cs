@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyCompany.MyProject
 {
-    public interface IDatetime
+    public interface IDateTime
     {
         DateTime Now { get; }
     }

@@ -10,19 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Huanent.Logging.File" Version="2.1.0" />
     <PackageReference Include="Huanent.Logging.File.UI" Version="1.1.2" />
-    <PackageReference Include="MediatR" Version="5.1.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
-    <PackageReference Include="NSwag.AspNetCore" Version="12.0.3" />
+    <PackageReference Include="NSwag.AspNetCore" Version="12.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyCompany.MyProject.Application\MyCompany.MyProject.Application.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Core\MyCompany.MyProject.Core.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Domain\MyCompany.MyProject.Domain.csproj" />
     <ProjectReference Include="..\MyCompany.MyProject.Infrastructure\MyCompany.MyProject.Infrastructure.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Persistence\MyCompany.MyProject.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>

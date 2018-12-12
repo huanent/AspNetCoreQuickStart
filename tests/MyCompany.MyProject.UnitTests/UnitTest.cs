@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using Xunit;
 
 namespace UnitTests
@@ -8,7 +8,7 @@ namespace UnitTests
         [Fact]
         public void Test1()
         {
-            Console.Write("µ¥Ôª²âÊÔ");
+            Console.Write("å•å…ƒæµ‹è¯•");
         }
     }
 }

@@ -1,26 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1701;1702;CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="1.50.5" />
-    <PackageReference Include="MediatR" Version="5.1.0" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MyCompany.MyProject.Core\MyCompany.MyProject.Core.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Domain\MyCompany.MyProject.Domain.csproj" />
-    <ProjectReference Include="..\MyCompany.MyProject.Persistence\MyCompany.MyProject.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

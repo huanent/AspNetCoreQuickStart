@@ -5,13 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyCompany.MyProject.Web.Internal;
-using MyCompany.MyProject.Application;
-
-#if DEBUG
-
 using Microsoft.Extensions.Configuration;
-
-#endif
+using System.Reflection;
+using System.Diagnostics;
 
 namespace MyCompany.MyProject.Web
 {
@@ -20,9 +16,11 @@ namespace MyCompany.MyProject.Web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-#if DEBUG
-                .ConfigureAppConfiguration(b => b.AddUserSecrets<Startup>())
-#endif
+                .ConfigureAppConfiguration(b =>
+                {
+                    var debug = Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>();
+                    if (debug.IsJITTrackingEnabled) b.AddUserSecrets<Startup>();
+                })
                 .ConfigureServices((ctx, services) => services.Configure<AppSettings>(ctx.Configuration))
                 .ConfigureLogging(b =>
                     b.AddFile(options =>
