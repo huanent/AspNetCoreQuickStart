@@ -27,6 +27,7 @@ namespace MyCompany.MyProject.Web
 
         public void Configure(IApplicationBuilder app)
         {
+            //LoggerMessage
             UseCors(app);
             AutoMigrate(app);
             app.UseAuthentication();
@@ -75,7 +76,7 @@ namespace MyCompany.MyProject.Web
             {
                 o.Filters.Add<GlobalExceptionHandleFilter>();
                 o.ModelMetadataDetailsProviders.Add(new RequiredBindingMetadataProvider());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         private void AutoMigrate(IApplicationBuilder app)
