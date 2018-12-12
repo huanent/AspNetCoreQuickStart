@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MyCompany.MyProject.Application;
-using MyCompany.MyProject.Core;
-using MyCompany.MyProject.Infrastructure;
 using MyCompany.MyProject.Web.Internal;
 
 namespace MyCompany.MyProject.Web
@@ -46,12 +42,7 @@ namespace MyCompany.MyProject.Web
             services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
             services.AddSwaggerDocument(s => s.DocumentProcessors.Add(new SwaggerDocumentProcessor()));
             services.AddHttpContextAccessor();
-            services.AddInject(new[] {
-                Assembly.GetExecutingAssembly(),
-                typeof(CoreServicesRegister).Assembly,
-                typeof(ApplicationServicesRegister).Assembly,
-                typeof(InfrastructureServicesRegister).Assembly,
-            });
+            services.AddInject();
             AddMvc(services);
         }
 

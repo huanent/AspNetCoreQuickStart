@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,15 +9,11 @@ namespace MyCompany.MyProject.Web.Internal
 {
     internal static class AddInjectByAttributeExtensions
     {
-        public static IServiceCollection AddInject(this IServiceCollection services, params Assembly[] assemblys)
+        public static IServiceCollection AddInject(this IServiceCollection services)
         {
-            if (assemblys.Count() == 0)
-            {
-                assemblys = new[] { Assembly.GetExecutingAssembly() };
-            }
-
-            var types = assemblys.SelectMany(s => s.GetTypes())
-                                 .Distinct();
+            var file = Directory.GetFiles(AppContext.BaseDirectory, "*MyCompany.MyProject*.dll");
+            var assemblys = file.Select(s => Assembly.LoadFile(s));
+            var types = assemblys.SelectMany(s => s.GetTypes()).Distinct();
 
             var injectScopedType = typeof(InjectScopedAttribute);
             var injectSingletonType = typeof(InjectSingletonAttribute);
