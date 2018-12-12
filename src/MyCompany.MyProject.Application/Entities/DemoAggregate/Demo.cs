@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MyCompany.MyProject.Application.Entities
+namespace MyCompany.MyProject.Application.Entities.DemoAggregate
 {
     public class Demo : EntityBase
     {

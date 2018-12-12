@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MyCompany.MyProject.Application.Dtos.Demo;
-using MyCompany.MyProject.Application.Entities;
+using MyCompany.MyProject.Application.Entities.DemoAggregate;
 using MyCompany.MyProject.Application.Interfaces;
 
 namespace MyCompany.MyProject.Application.Implements

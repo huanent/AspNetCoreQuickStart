@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyCompany.MyProject.Application.Entities;
+using MyCompany.MyProject.Application.Entities.DemoAggregate;
 
 namespace MyCompany.MyProject.Infrastructure.EntityTypeConfigurations
 {

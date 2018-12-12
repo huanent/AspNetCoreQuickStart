@@ -11,7 +11,7 @@ namespace MyCompany.MyProject.Infrastructure.Implements
         public AppSession(IHttpContextAccessor httpContextAccessor)
         {
             var ctx = httpContextAccessor.HttpContext;
-            if (ctx == null) throw new Exception("请勿在非Http请求情况下使用此服务！");
+            if (ctx == null) throw new Exception("请勿在Http请求之外使用此服务！");
             var sid = ctx.User.FindFirst(ClaimTypes.Sid);
             Guid.TryParse(sid.Value, out var userId);
             UserId = userId;

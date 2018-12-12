@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyCompany.MyProject.Application.Entities
+namespace MyCompany.MyProject.Application.Entities.DemoAggregate
 {
     public class DemoItem : ValueBase
     {

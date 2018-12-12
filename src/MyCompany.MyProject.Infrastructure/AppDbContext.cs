@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MyCompany.MyProject.Application.Entities;
+using MyCompany.MyProject.Application.Entities.DemoAggregate;
 
 namespace MyCompany.MyProject
 {

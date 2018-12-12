@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,14 +39,34 @@ namespace MyCompany.MyProject.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppAuthentication(_env);
-            services.AddAppAuthorization();
+            AddAuthentication(services);
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
             services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
             services.AddSwaggerDocument(s => s.DocumentProcessors.Add(new SwaggerDocumentProcessor()));
             services.AddHttpContextAccessor();
             services.AddInject();
             AddMvc(services);
+        }
+
+        public void AddAuthentication(IServiceCollection services)
+        {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Name = Constants.AppName;
+                options.Cookie.SameSite = _env.IsProduction() ? SameSiteMode.Lax : SameSiteMode.None;
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.FromResult(string.Empty);
+                };
+                options.Events.OnRedirectToLogout = context =>
+                {
+                    context.Response.StatusCode = 200;
+                    return Task.FromResult(string.Empty);
+                };
+            });
         }
 
         private void AddMvc(IServiceCollection services)
