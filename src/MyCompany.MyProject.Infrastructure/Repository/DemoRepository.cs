@@ -24,5 +24,23 @@ namespace MyCompany.MyProject.Infrastructure.Repository
             _appDbContext.Add(demo);
             await _appDbContext.SaveChangesAsync(_appSession.CancellationToken);
         }
+
+        public async Task DeleteAsync(Demo entity)
+        {
+            _appDbContext.Demo.Remove(entity);
+            await _appDbContext.SaveChangesAsync(_appSession.CancellationToken);
+        }
+
+        public async Task<Demo> GetByKeyAsync(Guid id)
+        {
+            return await _appDbContext.Demo
+                .FindAsync(new object[] { id }, cancellationToken: _appSession.CancellationToken);
+        }
+
+        public async Task UpdateAsync(Demo demo)
+        {
+            _appDbContext.Update(demo);
+            await _appDbContext.SaveChangesAsync(_appSession.CancellationToken);
+        }
     }
 }

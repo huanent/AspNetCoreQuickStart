@@ -9,5 +9,11 @@ namespace MyCompany.MyProject.Application.Repositories
     public interface IDemoRepository
     {
         Task AddAsync(Demo demo);
+
+        Task<Demo> GetByKeyAsync(Guid id);
+
+        Task UpdateAsync(Demo demo);
+
+        Task DeleteAsync(Demo entity);
     }
 }

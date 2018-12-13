@@ -1,8 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MyCompany.MyProject.Application.Dtos.Demo;
 using MyCompany.MyProject.Application.Entities.DemoAggregate;
 using MyCompany.MyProject.Application.Repositories;
+using MyCompany.MyProject.Core.Exceptions;
 
 namespace MyCompany.MyProject.Application.Services.Internal
 {
@@ -20,6 +22,20 @@ namespace MyCompany.MyProject.Application.Services.Internal
         {
             var entity = new Demo(dto.Name);
             await _demoRepository.AddAsync(entity);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var entity = await _demoRepository.GetByKeyAsync(id);
+            if (entity == null) throw new NotFoundEntityException();
+            await _demoRepository.DeleteAsync(entity);
+        }
+
+        public async Task UpdateDemoAsync(UpdateDemoDto dto)
+        {
+            var demo = await _demoRepository.GetByKeyAsync(dto.Id);
+            demo.Update(dto.Name);
+            await _demoRepository.UpdateAsync(demo);
         }
     }
 }
