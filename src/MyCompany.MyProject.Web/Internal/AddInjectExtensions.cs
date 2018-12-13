@@ -11,8 +11,7 @@ namespace MyCompany.MyProject.Web.Internal
     {
         public static IServiceCollection AddInject(this IServiceCollection services)
         {
-            var file = Directory.GetFiles(AppContext.BaseDirectory, "*MyCompany.MyProject*.dll");
-            var assemblys = file.Select(s => Assembly.LoadFile(s));
+            var assemblys = GetAppAssemblies();
             var types = assemblys.SelectMany(s => s.GetTypes()).Distinct();
 
             var injectScopedType = typeof(InjectScopedAttribute);
@@ -51,6 +50,30 @@ namespace MyCompany.MyProject.Web.Internal
 
                 services.Add(serviceDescriptor);
             }
+        }
+
+        private static Assembly[] GetAppAssemblies()
+        {
+            var assemblies = new List<Assembly>();
+            IEnumerable<Assembly> recursive(Assembly rootAssembly)
+            {
+                foreach (var AssemblyName in rootAssembly.GetReferencedAssemblies())
+                {
+                    if (AssemblyName.FullName.Contains("MyCompany.MyProject"))
+                    {
+                        var assembly = Assembly.Load(AssemblyName);
+                        yield return assembly;
+                        foreach (var item in recursive(assembly))
+                        {
+                            yield return item;
+                        }
+                    }
+                }
+            }
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            assemblies.Add(currentAssembly);
+            assemblies.AddRange(recursive(currentAssembly));
+            return assemblies.Distinct().ToArray();
         }
     }
 }

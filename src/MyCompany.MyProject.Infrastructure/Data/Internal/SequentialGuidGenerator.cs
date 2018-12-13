@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace MyCompany.MyProject.Infrastructure.Implements
+namespace MyCompany.MyProject.Infrastructure.Data.Internal
 {
     [InjectScoped(typeof(ISequentialGuidGenerator))]
     public class SequentialGuidGenerator : ISequentialGuidGenerator

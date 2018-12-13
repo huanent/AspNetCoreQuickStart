@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyCompany.MyProject.Application.Dtos.Demo;
 
-namespace MyCompany.MyProject.Application.Interfaces
+namespace MyCompany.MyProject.Application.Services
 {
     public interface IDemoService
     {

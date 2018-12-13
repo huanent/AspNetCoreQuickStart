@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyCompany.MyProject.Application.Services;
 using MyCompany.MyProject.Web.Internal;
 
 namespace MyCompany.MyProject.Web
@@ -27,7 +28,6 @@ namespace MyCompany.MyProject.Web
 
         public void Configure(IApplicationBuilder app)
         {
-            //LoggerMessage
             UseCors(app);
             AutoMigrate(app);
             app.UseAuthentication();
@@ -45,8 +45,8 @@ namespace MyCompany.MyProject.Web
             services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
             services.AddSwaggerDocument(s => s.DocumentProcessors.Add(new SwaggerDocumentProcessor()));
             services.AddHttpContextAccessor();
-            services.AddInject();
             AddMvc(services);
+            services.AddInject();
         }
 
         public void AddAuthentication(IServiceCollection services)

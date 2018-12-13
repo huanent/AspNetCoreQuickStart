@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyCompany.MyProject.Application.Dtos.Demo;
-using MyCompany.MyProject.Application.Interfaces;
+using MyCompany.MyProject.Application.Services;
 
 namespace MyCompany.MyProject.Web.Controllers
 {

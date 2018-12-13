@@ -1,7 +1,7 @@
 ﻿using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyCompany.MyProject.Infrastructure.Implements
+namespace MyCompany.MyProject.Infrastructure.Data.Internal
 {
     [InjectScoped(typeof(IDbConnectionFactory))]
     internal class DbConnectionFactory : IDbConnectionFactory
