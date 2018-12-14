@@ -21,6 +21,10 @@ namespace MyCompany.MyProject.Application.Services.Internal
         public async Task AddDemoAsync(AddDemoDto dto)
         {
             var entity = new Demo(dto.Name);
+            foreach (var item in dto.Items)
+            {
+                entity.AddItem(item.Name);
+            }
             await _demoRepository.AddAsync(entity);
         }
 
@@ -34,6 +38,7 @@ namespace MyCompany.MyProject.Application.Services.Internal
         public async Task UpdateDemoAsync(UpdateDemoDto dto)
         {
             var demo = await _demoRepository.GetByKeyAsync(dto.Id);
+            if (demo == null) throw new NotFoundEntityException();
             demo.Update(dto.Name);
             await _demoRepository.UpdateAsync(demo);
         }

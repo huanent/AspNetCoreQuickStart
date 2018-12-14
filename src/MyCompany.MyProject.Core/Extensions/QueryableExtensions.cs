@@ -26,34 +26,5 @@
         {
             return GetPage(ts, page.index, page.size);
         }
-
-        /// <summary>
-        /// 如果给定字段有值则执行
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="ts"></param>
-        /// <param name="prop"></param>
-        /// <param name="toDo"></param>
-        /// <returns></returns>
-        public static IQueryable<T> IfHaveValue<T, TValue>(this IQueryable<T> ts, TValue? prop, Func<IQueryable<T>, IQueryable<T>> toDo) where TValue : struct
-        {
-            if (prop.HasValue) ts = toDo(ts);
-            return ts;
-        }
-
-        /// <summary>
-        /// 如果给定字段不为空或者空白字符串则执行
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="ts"></param>
-        /// <param name="prop"></param>
-        /// <param name="toDo"></param>
-        /// <returns></returns>
-        public static IQueryable<T> IfNotNull<T>(this IQueryable<T> ts, string prop, Func<IQueryable<T>, IQueryable<T>> toDo)
-        {
-            if (!string.IsNullOrWhiteSpace(prop)) ts = toDo(ts);
-            return ts;
-        }
     }
 }

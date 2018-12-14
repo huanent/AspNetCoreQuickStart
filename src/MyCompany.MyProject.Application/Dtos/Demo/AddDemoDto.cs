@@ -9,5 +9,14 @@ namespace MyCompany.MyProject.Application.Dtos.Demo
     {
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public IEnumerable<Item> Items { get; set; }
+
+        public class Item
+        {
+            [Required]
+            public string Name { get; set; }
+        }
     }
 }
