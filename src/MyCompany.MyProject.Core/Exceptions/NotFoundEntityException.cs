@@ -6,7 +6,8 @@ namespace MyCompany.MyProject.Core.Exceptions
 {
     public class NotFoundEntityException : BadRequestException
     {
-        public NotFoundEntityException() : base($"未能找到要操作的数据")
+        public NotFoundEntityException(string entityName = "")
+            : base($"未能找到要操作的{entityName}数据")
         {
         }
     }
