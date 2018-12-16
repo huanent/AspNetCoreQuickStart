@@ -1,6 +1,6 @@
-FROM microsoft/dotnet:2.1-sdk AS sdk
-COPY . /work
-WORKDIR /work
+FROM microsoft/dotnet:2.2-sdk AS sdk
+COPY . /app
+WORKDIR /app
 RUN dotnet restore && dotnet build -c release
 WORKDIR /work/src/MyCompany.MyProject.Web
 RUN dotnet publish -c release -o /release
