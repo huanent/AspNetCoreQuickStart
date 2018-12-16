@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyCompany.MyProject.Application.Dtos.Demo;
-using MyCompany.MyProject.Application.Repositories;
+using MyCompany.MyProject.Application.Entities.DemoAggregate;
 using MyCompany.MyProject.Application.Services;
 
 namespace MyCompany.MyProject.Web.Controllers

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyCompany.MyProject.Application.Dtos.Demo;
 using MyCompany.MyProject.Application.Entities.DemoAggregate;
-using MyCompany.MyProject.Application.Repositories;
 
 namespace MyCompany.MyProject.Infrastructure.Repository
 {

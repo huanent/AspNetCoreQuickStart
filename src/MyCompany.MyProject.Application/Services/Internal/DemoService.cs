@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MyCompany.MyProject.Application.Dtos.Demo;
 using MyCompany.MyProject.Application.Entities.DemoAggregate;
-using MyCompany.MyProject.Application.Repositories;
 using MyCompany.MyProject.Core.Exceptions;
 
 namespace MyCompany.MyProject.Application.Services.Internal

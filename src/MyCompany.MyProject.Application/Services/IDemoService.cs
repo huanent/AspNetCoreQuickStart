@@ -11,6 +11,7 @@ namespace MyCompany.MyProject.Application.Services
         Task AddDemoAsync(AddDemoDto dto);
 
         Task UpdateDemoAsync(UpdateDemoDto dto);
+
         Task DeleteAsync(Guid id);
     }
 }

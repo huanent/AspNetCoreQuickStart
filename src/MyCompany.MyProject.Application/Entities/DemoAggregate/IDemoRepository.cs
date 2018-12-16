@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using MyCompany.MyProject.Application.Dtos.Demo;
-using MyCompany.MyProject.Application.Entities.DemoAggregate;
 
-namespace MyCompany.MyProject.Application.Repositories
+namespace MyCompany.MyProject.Application.Entities.DemoAggregate
 {
     public interface IDemoRepository
     {
@@ -16,7 +13,9 @@ namespace MyCompany.MyProject.Application.Repositories
         Task UpdateAsync(Demo demo);
 
         Task DeleteAsync(Demo entity);
+
         Task<PageDto<DemoDto>> GetPageAsync(GetDemoPageDto dto);
+
         Task<DemoDto> GetEditViewAsync(Guid id);
     }
 }
