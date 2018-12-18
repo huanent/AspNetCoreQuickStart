@@ -13,6 +13,7 @@ namespace MyCompany.MyProject.Infrastructure
             var ctx = httpContextAccessor.HttpContext;
             if (ctx == null) throw new Exception("请勿在Http请求之外使用此服务！");
             CancellationToken = ctx.RequestAborted;
+            Signed = ctx.User.Identity.IsAuthenticated;
             var sid = ctx.User.FindFirst(ClaimTypes.Sid);
             if (sid != null)
             {
@@ -21,7 +22,7 @@ namespace MyCompany.MyProject.Infrastructure
             }
         }
 
-        public bool Signed => UserId == default(Guid);
+        public bool Signed { get; }
 
         public Guid UserId { get; }
 
