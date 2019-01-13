@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace MyCompany.MyProject.Web.Controllers
 {
@@ -15,8 +17,9 @@ namespace MyCompany.MyProject.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("SiginOut")]
-        public async System.Threading.Tasks.Task SiginOutAsync()
+        public async Task SiginOutAsync([FromServices]ILogger<AccountController> logger)
         {
+            logger.LogInformation("退出");
             await HttpContext.SignOutAsync();
         }
 
@@ -25,7 +28,7 @@ namespace MyCompany.MyProject.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("Sign")]
-        public async System.Threading.Tasks.Task SignAsync()
+        public async Task SignAsync()
         {
             var claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

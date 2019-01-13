@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 
-namespace MyCompany.MyProject.Infrastructure
+namespace MyCompany.MyProject.Infrastructure.Internal
 {
     [InjectScoped(typeof(IAppSession))]
     internal class AppSession : IAppSession

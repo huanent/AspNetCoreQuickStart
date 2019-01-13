@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyCompany.MyProject.Infrastructure
+namespace MyCompany.MyProject.Infrastructure.Internal
 {
     [InjectSingleton(typeof(IDateTime))]
     internal class SystemDataTime : IDateTime

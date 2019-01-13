@@ -59,7 +59,7 @@ namespace MyCompany.MyProject.Web.Internal
             {
                 foreach (var AssemblyName in rootAssembly.GetReferencedAssemblies())
                 {
-                    if (AssemblyName.FullName.Contains("MyCompany.MyProject"))
+                    if (AssemblyName.FullName.Contains(Constants.AppName))
                     {
                         var assembly = Assembly.Load(AssemblyName);
                         yield return assembly;

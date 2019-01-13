@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace MyCompany.MyProject.Infrastructure
+namespace MyCompany.MyProject.Infrastructure.Internal
 {
     [InjectSingleton(typeof(IJson))]
     internal class Json : IJson
