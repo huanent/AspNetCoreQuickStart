@@ -48,7 +48,6 @@ namespace MyCompany.MyProject.Web
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(AddCookie);
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer(_settings.ConnectionStrings.Default));
-            services.AddLoggingFileUI(o => o.Path = Path.Combine(AppContext.BaseDirectory, Constants.DataPath, "logs"));
             services.AddSwaggerDocument(s => s.DocumentProcessors.Add(new SwaggerDocumentProcessor()));
             services.AddHttpContextAccessor();
             services.AddMvc(AddMvc).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
